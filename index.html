@@ -34,39 +34,16 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 .emotions-row{display:flex;align-items:center;gap:8px;}
 .elbl{font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;flex-shrink:0;}
 .etags{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
-.etag{
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:11px;
-  cursor:pointer;
-  border:0.5px solid rgba(255,255,255,0.25);
-  color:rgba(255,255,255,0.7);
-  background:transparent;
-  font-family:Arial,sans-serif;
-  -webkit-appearance:none;
-  appearance:none;
-  outline:none;
-  display:inline-block;
-  user-select:none;
-  -webkit-user-select:none;
-}
-.etag:hover{border-color:rgba(255,255,255,0.6);color:#fff;}
-.etag.sel{background:linear-gradient(135deg,#1a4fcc,#4da8ff) !important;color:#fff !important;border-color:transparent !important;}
-.sbtn{padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;background:rgba(77,168,255,0.08);color:rgba(77,168,255,0.3);border:0.5px solid rgba(77,168,255,0.2);font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;font-weight:700;}
-.sbtn.ready{background:rgba(77,168,255,0.2) !important;color:#4da8ff !important;border-color:rgba(77,168,255,0.5) !important;cursor:pointer;}
-.sbtn.ready:hover{background:rgba(77,168,255,0.35) !important;color:#fff !important;}
-.sbtn:disabled{cursor:default;}
+.etag{padding:4px 10px;border-radius:999px;font-size:11px;cursor:pointer;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);background:#1a1f2e;font-family:Arial,sans-serif;-webkit-appearance:none;appearance:none;outline:none;display:inline-block;user-select:none;-webkit-user-select:none;transition:none;}
+.sbtn{padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;background:#1a2a3a;color:rgba(77,168,255,0.4);border:1px solid rgba(77,168,255,0.2);font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;font-weight:700;}
 .results-panel{padding:10px 14px;display:none;}
 .res-track{font-size:13px;color:#fff;font-weight:700;margin-bottom:2px;}
 .res-ty{font-size:11px;color:rgba(77,168,255,0.9);margin-bottom:8px;}
 .res-title{font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
 .res-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
 .rlbl{font-size:11px;color:rgba(255,255,255,0.45);width:76px;flex-shrink:0;}
-.rlbl.mine{color:#fff;font-weight:700;}
 .rbar-bg{flex:1;height:3px;background:rgba(100,160,255,0.2);border-radius:2px;overflow:hidden;}
 .rbar{height:3px;border-radius:2px;width:0;transition:width 0.6s ease;}
-.rbar.mine{background:linear-gradient(90deg,#1a4fcc,#4da8ff);}
-.rbar.other{background:rgba(100,160,255,0.5);}
 .rpct{font-size:10px;color:rgba(255,255,255,0.35);width:28px;text-align:right;}
 </style>
 <meta id="ConnectiveDocSignExtentionInstalled" name="ConnectiveDocSignExtentionInstalled" data-extension-version="1.0.5"></head>
@@ -96,8 +73,8 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
     <div class="divider"></div>
     <div class="emotions-row">
       <span class="elbl">Felt? <span style="color:#f07040">*</span></span>
-      <div class="etags" id="etags"><button type="button" class="etag" data-emotion="Joy">Joy</button><button type="button" class="etag" data-emotion="Sadness">Sadness</button><button type="button" class="etag" data-emotion="Energy">Energy</button><button type="button" class="etag" data-emotion="Love">Love</button><button type="button" class="etag" data-emotion="Nostalgia">Nostalgia</button><button type="button" class="etag" data-emotion="Peace">Peace</button><button type="button" class="etag" data-emotion="Hope">Hope</button><button type="button" class="etag" data-emotion="Wonder">Wonder</button><button type="button" class="etag" data-emotion="Darkness">Darkness</button><button type="button" class="etag" data-emotion="Passion">Passion</button></div>
-      <button class="sbtn" id="sbtn" disabled="disabled">Send</button>
+      <div class="etags" id="etags"><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Joy" data-selected="false">Joy</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Sadness" data-selected="false">Sadness</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Energy" data-selected="false">Energy</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Love" data-selected="false">Love</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Nostalgia" data-selected="false">Nostalgia</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Peace" data-selected="false">Peace</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Hope" data-selected="false">Hope</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Wonder" data-selected="false">Wonder</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Darkness" data-selected="false">Darkness</button><button type="button" style="padding: 4px 10px; border-radius: 999px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.25); color: rgba(255, 255, 255, 0.7); background: rgb(26, 31, 46); font-family: Arial, sans-serif; margin: 0px; outline: none; display: inline-block;" data-emotion="Passion" data-selected="false">Passion</button></div>
+      <button type="button" class="sbtn" id="sbtn" disabled="disabled">Send</button>
     </div>
   </div>
   <div class="results-panel" id="results-panel"></div>
@@ -124,42 +101,54 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
   if (SOURCE === 'video') {
     badge.textContent = 'Video';
     badge.className = 'source-badge source-video';
-  } else {
-    badge.textContent = 'Music';
-    badge.className = 'source-badge source-music';
   }
 
+  var sbtn = document.getElementById('sbtn');
   var etags = document.getElementById('etags');
-  EMOTIONS.forEach(function(emotion) {
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'etag';
-    btn.textContent = emotion;
-    btn.setAttribute('data-emotion', emotion);
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (submitted) return;
-      var em = this.getAttribute('data-emotion');
-      var idx = selected.indexOf(em);
-      if (idx > -1) {
-        selected.splice(idx, 1);
-        this.classList.remove('sel');
-      } else {
-        selected.push(em);
-        this.classList.add('sel');
-      }
-      updateBtn();
-    });
-    etags.appendChild(btn);
-  });
-
   var sinput = document.getElementById('sinput');
   var sfill = document.getElementById('sfill');
   var sthumb = document.getElementById('sthumb');
   var srow = document.getElementById('srow');
   var idesc = document.getElementById('idesc');
-  var sbtn = document.getElementById('sbtn');
+
+  // Build emotion buttons using inline styles only — no CSS classes for state
+  EMOTIONS.forEach(function(emotion) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = emotion;
+    btn.style.cssText = 'padding:4px 10px;border-radius:999px;font-size:11px;cursor:pointer;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);background:#1a1f2e;font-family:Arial,sans-serif;margin:0;outline:none;display:inline-block;';
+    btn.setAttribute('data-emotion', emotion);
+    btn.setAttribute('data-selected', 'false');
+    
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (submitted) return;
+      
+      var em = this.getAttribute('data-emotion');
+      var isSel = this.getAttribute('data-selected') === 'true';
+      
+      if (isSel) {
+        // Deselect
+        this.setAttribute('data-selected', 'false');
+        this.style.background = '#1a1f2e';
+        this.style.color = 'rgba(255,255,255,0.7)';
+        this.style.border = '1px solid rgba(255,255,255,0.25)';
+        var idx = selected.indexOf(em);
+        if (idx > -1) selected.splice(idx, 1);
+      } else {
+        // Select
+        this.setAttribute('data-selected', 'true');
+        this.style.background = 'linear-gradient(135deg,#1a4fcc,#4da8ff)';
+        this.style.color = '#ffffff';
+        this.style.border = '1px solid transparent';
+        if (selected.indexOf(em) === -1) selected.push(em);
+      }
+      updateBtn();
+    });
+    
+    etags.appendChild(btn);
+  });
 
   function updateSlider(v) {
     var p = v / 10;
@@ -172,9 +161,15 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
     var ready = touched && selected.length > 0;
     sbtn.disabled = !ready;
     if (ready) {
-      sbtn.classList.add('ready');
+      sbtn.style.background = 'rgba(77,168,255,0.2)';
+      sbtn.style.color = '#4da8ff';
+      sbtn.style.borderColor = 'rgba(77,168,255,0.5)';
+      sbtn.style.cursor = 'pointer';
     } else {
-      sbtn.classList.remove('ready');
+      sbtn.style.background = '#1a2a3a';
+      sbtn.style.color = 'rgba(77,168,255,0.4)';
+      sbtn.style.borderColor = 'rgba(77,168,255,0.2)';
+      sbtn.style.cursor = 'default';
     }
   }
 
@@ -182,7 +177,7 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
     intensity = parseInt(this.value);
     touched = true;
     updateSlider(intensity);
-    idesc.className = 'idesc';
+    idesc.style.cssText = 'font-size:10px;color:#4da8ff;min-height:14px;margin-bottom:8px;font-style:italic;padding-left:42px;';
     idesc.textContent = intensity + '/10 — ' + LABELS[intensity];
     updateBtn();
   });
@@ -195,21 +190,18 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
     submitted = true;
     sbtn.textContent = '...';
     sbtn.disabled = true;
-    sbtn.classList.remove('ready');
-
-    var payload = {
-      trackId: TRACK_ID,
-      trackTitle: TRACK_TITLE,
-      intensity: intensity,
-      emotions: selected.slice(),
-      source: SOURCE
-    };
 
     fetch(SITE_URL + '/_functions/flydna_submit', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-    }).catch(function() {}).finally(function() {
+      body: JSON.stringify({
+        trackId: TRACK_ID,
+        trackTitle: TRACK_TITLE,
+        intensity: intensity,
+        emotions: selected.slice(),
+        source: SOURCE
+      })
+    }).catch(function(){}).finally(function() {
       sbtn.textContent = '✓';
       var bd = JSON.parse(JSON.stringify(aggData.emotionBreakdown || {}));
       var nt = (aggData.totalResponses || 0) + 1;
@@ -227,29 +219,28 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
     var h = '<div class="res-track">' + TRACK_TITLE + '</div>';
     h += '<div class="res-ty">FlyDNA™ recorded · ' + intensity + '/10 · ' + el + '</div>';
     h += '<div class="res-title">Community resonance — ' + resp + '</div>';
-    var entries = Object.entries(bd).filter(function(x) { return x[1] > 0; });
-    entries.sort(function(a, b) { return b[1] - a[1]; });
+    var entries = Object.entries(bd).filter(function(x){return x[1]>0;}).sort(function(a,b){return b[1]-a[1];});
     entries.forEach(function(entry) {
       var n = entry[0], c = entry[1];
-      var pct = Math.round(c / total * 100);
+      var pct = Math.round(c/total*100);
       var m = selected.indexOf(n) > -1;
-      h += '<div class="res-row"><span class="rlbl' + (m ? ' mine' : '') + '">' + n + (m ? ' ✓' : '') + '</span>';
-      h += '<div class="rbar-bg"><div class="rbar ' + (m ? 'mine' : 'other') + '" id="rb-' + n + '"></div></div>';
-      h += '<span class="rpct">' + pct + '%</span></div>';
+      var lbl = m ? '<span class="rlbl" style="color:#fff;font-weight:700;font-size:11px;width:76px;flex-shrink:0;">' + n + ' ✓</span>' : '<span class="rlbl" style="font-size:11px;color:rgba(255,255,255,0.45);width:76px;flex-shrink:0;">' + n + '</span>';
+      var barColor = m ? 'linear-gradient(90deg,#1a4fcc,#4da8ff)' : 'rgba(100,160,255,0.5)';
+      h += '<div class="res-row">' + lbl + '<div class="rbar-bg"><div class="rbar" id="rb-' + n + '" style="background:' + barColor + '"></div></div><span class="rpct">' + pct + '%</span></div>';
     });
     p.innerHTML = h;
     p.style.display = 'block';
     setTimeout(function() {
       entries.forEach(function(entry) {
         var bar = document.getElementById('rb-' + entry[0]);
-        if (bar) bar.style.width = Math.round(entry[1] / total * 100) + '%';
+        if (bar) bar.style.width = Math.round(entry[1]/total*100) + '%';
       });
     }, 100);
   }
 
   function updateDominant(bd, total) {
     var d = '', mx = 0;
-    Object.entries(bd).forEach(function(x) { if (x[1] > mx) { d = x[0]; mx = x[1]; } });
+    Object.entries(bd).forEach(function(x){if(x[1]>mx){d=x[0];mx=x[1];}});
     var el = document.getElementById('dcontent');
     if (d && total > 0) {
       el.className = 'dval live';
@@ -257,20 +248,20 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
       var sub = document.createElement('span');
       sub.className = 'dsub';
       var resp = total === 1 ? '1 response' : total.toLocaleString() + ' responses';
-      sub.textContent = Math.round(mx / total * 100) + '% of listeners · ' + resp;
+      sub.textContent = Math.round(mx/total*100) + '% of listeners · ' + resp;
       el.after(sub);
     }
   }
 
   function loadAggregate() {
     fetch(SITE_URL + '/_functions/flydna_aggregate?trackId=' + TRACK_ID)
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
+      .then(function(r){return r.json();})
+      .then(function(d){
         aggData = d;
         aggData.emotionBreakdown = d.emotionBreakdown || {};
         updateDominant(aggData.emotionBreakdown, aggData.totalResponses || 0);
       })
-      .catch(function() {
+      .catch(function(){
         document.getElementById('dcontent').textContent = 'Be the first to rate this track';
       });
   }
