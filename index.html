@@ -10,6 +10,9 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 .container{border-radius:0 0 8px 8px;overflow:hidden;background:#111827;border:0.5px solid rgba(255,255,255,0.1);}
 .dbar{display:flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(77,168,255,0.08);border-bottom:0.5px solid rgba(77,168,255,0.15);}
 .dlabel{font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0;font-weight:700;}
+.source-badge{font-size:9px;padding:2px 8px;border-radius:999px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0;}
+.source-music{background:rgba(77,168,255,0.15);color:#4da8ff;border:0.5px solid rgba(77,168,255,0.3);}
+.source-video{background:rgba(255,80,80,0.15);color:#ff6060;border:0.5px solid rgba(255,80,80,0.3);}
 .dval{font-size:11px;color:rgba(255,255,255,0.35);font-style:italic;}
 .dval.live{color:#4da8ff;font-style:normal;font-weight:700;font-size:12px;}
 .dsub{font-size:10px;color:rgba(255,255,255,0.3);margin-left:4px;}
@@ -56,7 +59,8 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 <div class="container">
   <div class="dbar">
     <span class="dlabel">FlyDNA™</span>
-    <span id="dcontent" class="dval">Be the first to rate this track</span>
+    <span id="source-badge" class="source-badge source-music">Music</span>
+    <span id="dcontent" class="dval" style="flex:1;">Be the first to rate this track</span>
   </div>
   <div class="track-title-bar"><span id="track-label">Unknown Track</span></div>
   <div class="panel" id="rating-panel">
@@ -87,12 +91,22 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 var params = new URLSearchParams(window.location.search);
 var TRACK_ID = params.get('track') || 'unknown';
 var TRACK_TITLE = params.get('title') ? decodeURIComponent(params.get('title')) : 'Unknown Track';
+var SOURCE = params.get('source') || 'music';
 var SITE_URL = 'https://www.beatsflyhigh.ai';
 var EMOTIONS = ['Joy','Sadness','Energy','Love','Nostalgia','Peace','Hope','Wonder','Darkness','Passion'];
 var LABELS = ['','Barely a flutter','A quiet stir','Something stirs','Gently touched','Noticeably felt','Clearly emotional','Deeply moved','Strongly felt','Overwhelming','Full emotional resonance'];
 var intensity = 0, touched = false, selected = new Set(), submitted = false, aggData = {};
 
 document.getElementById('track-label').textContent = TRACK_TITLE;
+
+var badge = document.getElementById('source-badge');
+if (SOURCE === 'video') {
+  badge.textContent = 'Video';
+  badge.className = 'source-badge source-video';
+} else {
+  badge.textContent = 'Music';
+  badge.className = 'source-badge source-music';
+}
 
 var etags = document.getElementById('etags');
 if (etags.children.length === 0) {
@@ -144,7 +158,13 @@ sbtn.onclick = async function() {
     await fetch(SITE_URL + '/_functions/flydna_submit', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({trackId: TRACK_ID, trackTitle: TRACK_TITLE, intensity: intensity, emotions: Array.from(selected)})
+      body: JSON.stringify({
+        trackId: TRACK_ID,
+        trackTitle: TRACK_TITLE,
+        intensity: intensity,
+        emotions: Array.from(selected),
+        source: SOURCE
+      })
     });
   } catch(e) {}
   var bd = Object.assign({}, aggData.emotionBreakdown || {});
