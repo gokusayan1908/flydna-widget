@@ -91,21 +91,22 @@ var SITE_URL = 'https://www.beatsflyhigh.ai';
 var EMOTIONS = ['Joy','Sadness','Energy','Love','Nostalgia','Peace','Hope','Wonder','Darkness','Passion'];
 var LABELS = ['','Barely a flutter','A quiet stir','Something stirs','Gently touched','Noticeably felt','Clearly emotional','Deeply moved','Strongly felt','Overwhelming','Full emotional resonance'];
 var intensity = 0, touched = false, selected = new Set(), submitted = false, aggData = {};
-var initialized = false;
 
 document.getElementById('track-label').textContent = TRACK_TITLE;
 
 var etags = document.getElementById('etags');
-EMOTIONS.forEach(function(e) {
-  var b = document.createElement('button');
-  b.className = 'etag'; b.textContent = e;
-  b.onclick = function() {
-    if (submitted) return;
-    selected.has(e) ? (selected.delete(e), b.classList.remove('sel')) : (selected.add(e), b.classList.add('sel'));
-    updateBtn();
-  };
-  etags.appendChild(b);
-});
+if (etags.children.length === 0) {
+  EMOTIONS.forEach(function(e) {
+    var b = document.createElement('button');
+    b.className = 'etag'; b.textContent = e;
+    b.onclick = function() {
+      if (submitted) return;
+      selected.has(e) ? (selected.delete(e), b.classList.remove('sel')) : (selected.add(e), b.classList.add('sel'));
+      updateBtn();
+    };
+    etags.appendChild(b);
+  });
+}
 
 var sinput = document.getElementById('sinput');
 var sfill = document.getElementById('sfill');
@@ -132,12 +133,8 @@ sinput.addEventListener('input', function() {
   updateBtn();
 });
 
-window.addEventListener('load', function() {
-  if (initialized) return;
-  initialized = true;
-  updateSlider(0);
-  loadAggregate();
-});
+updateSlider(0);
+loadAggregate();
 
 sbtn.onclick = async function() {
   if (submitted || !touched || selected.size === 0) return;
