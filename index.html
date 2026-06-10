@@ -13,7 +13,7 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 .source-badge{font-size:9px;padding:2px 8px;border-radius:999px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0;}
 .source-music{background:rgba(77,168,255,0.15);color:#4da8ff;border:0.5px solid rgba(77,168,255,0.3);}
 .source-video{background:rgba(255,80,80,0.15);color:#ff6060;border:0.5px solid rgba(255,80,80,0.3);}
-.dval{font-size:11px;color:rgba(255,255,255,0.35);font-style:italic;}
+.dval{font-size:11px;color:rgba(255,255,255,0.35);font-style:italic;flex:1;}
 .dval.live{color:#4da8ff;font-style:normal;font-weight:700;font-size:12px;}
 .dsub{font-size:10px;color:rgba(255,255,255,0.3);margin-left:4px;}
 .track-title-bar{padding:6px 14px;background:rgba(255,255,255,0.04);border-bottom:0.5px solid rgba(255,255,255,0.07);}
@@ -34,12 +34,27 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 .emotions-row{display:flex;align-items:center;gap:8px;}
 .elbl{font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;flex-shrink:0;}
 .etags{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
-.etag{padding:4px 10px;border-radius:999px;font-size:11px;cursor:pointer;border:0.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);background:transparent;font-family:Arial,sans-serif;transition:all 0.1s;}
+.etag{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11px;
+  cursor:pointer;
+  border:0.5px solid rgba(255,255,255,0.25);
+  color:rgba(255,255,255,0.7);
+  background:transparent;
+  font-family:Arial,sans-serif;
+  -webkit-appearance:none;
+  appearance:none;
+  outline:none;
+  display:inline-block;
+  user-select:none;
+  -webkit-user-select:none;
+}
 .etag:hover{border-color:rgba(255,255,255,0.6);color:#fff;}
-.etag.sel{background:linear-gradient(135deg,#1a4fcc,#4da8ff);color:#fff;border-color:transparent;}
-.sbtn{padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;background:rgba(77,168,255,0.08);color:rgba(77,168,255,0.3);border:0.5px solid rgba(77,168,255,0.2);font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;font-weight:700;transition:all 0.15s;}
-.sbtn.ready{background:rgba(77,168,255,0.2);color:#4da8ff;border-color:rgba(77,168,255,0.5);}
-.sbtn.ready:hover{background:rgba(77,168,255,0.35);color:#fff;}
+.etag.sel{background:linear-gradient(135deg,#1a4fcc,#4da8ff) !important;color:#fff !important;border-color:transparent !important;}
+.sbtn{padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;background:rgba(77,168,255,0.08);color:rgba(77,168,255,0.3);border:0.5px solid rgba(77,168,255,0.2);font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;font-weight:700;}
+.sbtn.ready{background:rgba(77,168,255,0.2) !important;color:#4da8ff !important;border-color:rgba(77,168,255,0.5) !important;cursor:pointer;}
+.sbtn.ready:hover{background:rgba(77,168,255,0.35) !important;color:#fff !important;}
 .sbtn:disabled{cursor:default;}
 .results-panel{padding:10px 14px;display:none;}
 .res-track{font-size:13px;color:#fff;font-weight:700;margin-bottom:2px;}
@@ -60,7 +75,7 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
   <div class="dbar">
     <span class="dlabel">FlyDNA™</span>
     <span id="source-badge" class="source-badge source-music">Music</span>
-    <span id="dcontent" class="dval" style="flex:1;">Be the first to rate this track</span>
+    <span id="dcontent" class="dval">Be the first to rate this track</span>
   </div>
   <div class="track-title-bar"><span id="track-label">Unknown Track</span></div>
   <div class="panel" id="rating-panel">
@@ -81,146 +96,187 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
     <div class="divider"></div>
     <div class="emotions-row">
       <span class="elbl">Felt? <span style="color:#f07040">*</span></span>
-      <div class="etags" id="etags"><button class="etag">Joy</button><button class="etag">Sadness</button><button class="etag">Energy</button><button class="etag">Love</button><button class="etag">Nostalgia</button><button class="etag">Peace</button><button class="etag">Hope</button><button class="etag">Wonder</button><button class="etag">Darkness</button><button class="etag">Passion</button></div>
+      <div class="etags" id="etags"><button type="button" class="etag" data-emotion="Joy">Joy</button><button type="button" class="etag" data-emotion="Sadness">Sadness</button><button type="button" class="etag" data-emotion="Energy">Energy</button><button type="button" class="etag" data-emotion="Love">Love</button><button type="button" class="etag" data-emotion="Nostalgia">Nostalgia</button><button type="button" class="etag" data-emotion="Peace">Peace</button><button type="button" class="etag" data-emotion="Hope">Hope</button><button type="button" class="etag" data-emotion="Wonder">Wonder</button><button type="button" class="etag" data-emotion="Darkness">Darkness</button><button type="button" class="etag" data-emotion="Passion">Passion</button></div>
       <button class="sbtn" id="sbtn" disabled="disabled">Send</button>
     </div>
   </div>
   <div class="results-panel" id="results-panel"></div>
 </div>
+
 <script>
-var params = new URLSearchParams(window.location.search);
-var TRACK_ID = params.get('track') || 'unknown';
-var TRACK_TITLE = params.get('title') ? decodeURIComponent(params.get('title')) : 'Unknown Track';
-var SOURCE = params.get('source') || 'music';
-var SITE_URL = 'https://www.beatsflyhigh.ai';
-var EMOTIONS = ['Joy','Sadness','Energy','Love','Nostalgia','Peace','Hope','Wonder','Darkness','Passion'];
-var LABELS = ['','Barely a flutter','A quiet stir','Something stirs','Gently touched','Noticeably felt','Clearly emotional','Deeply moved','Strongly felt','Overwhelming','Full emotional resonance'];
-var intensity = 0, touched = false, selected = new Set(), submitted = false, aggData = {};
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var TRACK_ID = params.get('track') || 'unknown';
+  var TRACK_TITLE = params.get('title') ? decodeURIComponent(params.get('title')) : 'Unknown Track';
+  var SOURCE = params.get('source') || 'music';
+  var SITE_URL = 'https://www.beatsflyhigh.ai';
+  var EMOTIONS = ['Joy','Sadness','Energy','Love','Nostalgia','Peace','Hope','Wonder','Darkness','Passion'];
+  var LABELS = ['','Barely a flutter','A quiet stir','Something stirs','Gently touched','Noticeably felt','Clearly emotional','Deeply moved','Strongly felt','Overwhelming','Full emotional resonance'];
+  var intensity = 0;
+  var touched = false;
+  var selected = [];
+  var submitted = false;
+  var aggData = {};
 
-document.getElementById('track-label').textContent = TRACK_TITLE;
+  document.getElementById('track-label').textContent = TRACK_TITLE;
 
-var badge = document.getElementById('source-badge');
-if (SOURCE === 'video') {
-  badge.textContent = 'Video';
-  badge.className = 'source-badge source-video';
-} else {
-  badge.textContent = 'Music';
-  badge.className = 'source-badge source-music';
-}
+  var badge = document.getElementById('source-badge');
+  if (SOURCE === 'video') {
+    badge.textContent = 'Video';
+    badge.className = 'source-badge source-video';
+  } else {
+    badge.textContent = 'Music';
+    badge.className = 'source-badge source-music';
+  }
 
-var etags = document.getElementById('etags');
-if (etags.children.length === 0) {
-  EMOTIONS.forEach(function(e) {
-    var b = document.createElement('button');
-    b.className = 'etag'; b.textContent = e;
-    b.onclick = function() {
+  var etags = document.getElementById('etags');
+  EMOTIONS.forEach(function(emotion) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'etag';
+    btn.textContent = emotion;
+    btn.setAttribute('data-emotion', emotion);
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       if (submitted) return;
-      selected.has(e) ? (selected.delete(e), b.classList.remove('sel')) : (selected.add(e), b.classList.add('sel'));
+      var em = this.getAttribute('data-emotion');
+      var idx = selected.indexOf(em);
+      if (idx > -1) {
+        selected.splice(idx, 1);
+        this.classList.remove('sel');
+      } else {
+        selected.push(em);
+        this.classList.add('sel');
+      }
       updateBtn();
-    };
-    etags.appendChild(b);
+    });
+    etags.appendChild(btn);
   });
-}
 
-var sinput = document.getElementById('sinput');
-var sfill = document.getElementById('sfill');
-var sthumb = document.getElementById('sthumb');
-var srow = document.getElementById('srow');
-var idesc = document.getElementById('idesc');
-var sbtn = document.getElementById('sbtn');
+  var sinput = document.getElementById('sinput');
+  var sfill = document.getElementById('sfill');
+  var sthumb = document.getElementById('sthumb');
+  var srow = document.getElementById('srow');
+  var idesc = document.getElementById('idesc');
+  var sbtn = document.getElementById('sbtn');
 
-function updateSlider(v) {
-  var p = v / 10, w = srow.offsetWidth;
-  sfill.style.width = (p * 100) + '%';
-  sthumb.style.left = (p * (w - 26) + 13) + 'px';
-}
-function updateBtn() {
-  var r = touched && selected.size > 0;
-  sbtn.disabled = !r;
-  r ? sbtn.classList.add('ready') : sbtn.classList.remove('ready');
-}
-sinput.addEventListener('input', function() {
-  intensity = parseInt(this.value); touched = true;
-  updateSlider(intensity);
-  idesc.className = 'idesc';
-  idesc.textContent = intensity + '/10 — ' + LABELS[intensity];
-  updateBtn();
-});
+  function updateSlider(v) {
+    var p = v / 10;
+    var w = srow.offsetWidth;
+    sfill.style.width = (p * 100) + '%';
+    sthumb.style.left = (p * (w - 26) + 13) + 'px';
+  }
 
-updateSlider(0);
-loadAggregate();
+  function updateBtn() {
+    var ready = touched && selected.length > 0;
+    sbtn.disabled = !ready;
+    if (ready) {
+      sbtn.classList.add('ready');
+    } else {
+      sbtn.classList.remove('ready');
+    }
+  }
 
-sbtn.onclick = async function() {
-  if (submitted || !touched || selected.size === 0) return;
-  submitted = true;
-  sbtn.textContent = '...'; sbtn.disabled = true; sbtn.classList.remove('ready');
-  try {
-    await fetch(SITE_URL + '/_functions/flydna_submit', {
+  sinput.addEventListener('input', function() {
+    intensity = parseInt(this.value);
+    touched = true;
+    updateSlider(intensity);
+    idesc.className = 'idesc';
+    idesc.textContent = intensity + '/10 — ' + LABELS[intensity];
+    updateBtn();
+  });
+
+  updateSlider(0);
+
+  sbtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (submitted || !touched || selected.length === 0) return;
+    submitted = true;
+    sbtn.textContent = '...';
+    sbtn.disabled = true;
+    sbtn.classList.remove('ready');
+
+    var payload = {
+      trackId: TRACK_ID,
+      trackTitle: TRACK_TITLE,
+      intensity: intensity,
+      emotions: selected.slice(),
+      source: SOURCE
+    };
+
+    fetch(SITE_URL + '/_functions/flydna_submit', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        trackId: TRACK_ID,
-        trackTitle: TRACK_TITLE,
-        intensity: intensity,
-        emotions: Array.from(selected),
-        source: SOURCE
-      })
+      body: JSON.stringify(payload)
+    }).catch(function() {}).finally(function() {
+      sbtn.textContent = '✓';
+      var bd = JSON.parse(JSON.stringify(aggData.emotionBreakdown || {}));
+      var nt = (aggData.totalResponses || 0) + 1;
+      selected.forEach(function(e) { bd[e] = (bd[e] || 0) + 1; });
+      document.getElementById('rating-panel').style.display = 'none';
+      showResults(bd, nt);
+      updateDominant(bd, nt);
     });
-  } catch(e) {}
-  var bd = Object.assign({}, aggData.emotionBreakdown || {});
-  var nt = (aggData.totalResponses || 0) + 1;
-  selected.forEach(function(e) { bd[e] = (bd[e] || 0) + 1; });
-  document.getElementById('rating-panel').style.display = 'none';
-  showResults(bd, nt);
-  updateDominant(bd, nt);
-};
-
-function showResults(bd, total) {
-  var p = document.getElementById('results-panel');
-  var el = Array.from(selected).join(' · ');
-  var resp = total === 1 ? '1 response' : total.toLocaleString() + ' responses';
-  var h = '<div class="res-track">' + TRACK_TITLE + '</div>';
-  h += '<div class="res-ty">FlyDNA™ recorded · ' + intensity + '/10 · ' + el + '</div>';
-  h += '<div class="res-title">Community resonance — ' + resp + '</div>';
-  var sorted = Object.entries(bd).filter(function(x) { return x[1] > 0; }).sort(function(a,b) { return b[1]-a[1]; });
-  sorted.forEach(function(entry) {
-    var n = entry[0], c = entry[1];
-    var pct = Math.round(c / total * 100);
-    var m = selected.has(n);
-    h += '<div class="res-row"><span class="rlbl' + (m?' mine':'') + '">' + n + (m?' ✓':'') + '</span><div class="rbar-bg"><div class="rbar ' + (m?'mine':'other') + '" id="rb-' + n + '"></div></div><span class="rpct">' + pct + '%</span></div>';
   });
-  p.innerHTML = h; p.style.display = 'block';
-  setTimeout(function() {
-    sorted.forEach(function(entry) {
-      var b = document.getElementById('rb-' + entry[0]);
-      if (b) b.style.width = Math.round(entry[1] / total * 100) + '%';
-    });
-  }, 100);
-}
 
-function updateDominant(bd, total) {
-  var d = '', mx = 0;
-  Object.entries(bd).forEach(function(x) { if (x[1] > mx) { d = x[0]; mx = x[1]; } });
-  var el = document.getElementById('dcontent');
-  if (d && total > 0) {
-    el.className = 'dval live'; el.textContent = d;
-    var sub = document.createElement('span'); sub.className = 'dsub';
+  function showResults(bd, total) {
+    var p = document.getElementById('results-panel');
+    var el = selected.join(' · ');
     var resp = total === 1 ? '1 response' : total.toLocaleString() + ' responses';
-    sub.textContent = Math.round(mx / total * 100) + '% of listeners · ' + resp;
-    el.after(sub);
+    var h = '<div class="res-track">' + TRACK_TITLE + '</div>';
+    h += '<div class="res-ty">FlyDNA™ recorded · ' + intensity + '/10 · ' + el + '</div>';
+    h += '<div class="res-title">Community resonance — ' + resp + '</div>';
+    var entries = Object.entries(bd).filter(function(x) { return x[1] > 0; });
+    entries.sort(function(a, b) { return b[1] - a[1]; });
+    entries.forEach(function(entry) {
+      var n = entry[0], c = entry[1];
+      var pct = Math.round(c / total * 100);
+      var m = selected.indexOf(n) > -1;
+      h += '<div class="res-row"><span class="rlbl' + (m ? ' mine' : '') + '">' + n + (m ? ' ✓' : '') + '</span>';
+      h += '<div class="rbar-bg"><div class="rbar ' + (m ? 'mine' : 'other') + '" id="rb-' + n + '"></div></div>';
+      h += '<span class="rpct">' + pct + '%</span></div>';
+    });
+    p.innerHTML = h;
+    p.style.display = 'block';
+    setTimeout(function() {
+      entries.forEach(function(entry) {
+        var bar = document.getElementById('rb-' + entry[0]);
+        if (bar) bar.style.width = Math.round(entry[1] / total * 100) + '%';
+      });
+    }, 100);
   }
-}
 
-async function loadAggregate() {
-  try {
-    var r = await fetch(SITE_URL + '/_functions/flydna_aggregate?trackId=' + TRACK_ID);
-    var d = await r.json();
-    aggData = d; aggData.emotionBreakdown = d.emotionBreakdown || {};
-    updateDominant(aggData.emotionBreakdown, aggData.totalResponses || 0);
-  } catch(e) {
-    document.getElementById('dcontent').textContent = 'Be the first to rate this track';
+  function updateDominant(bd, total) {
+    var d = '', mx = 0;
+    Object.entries(bd).forEach(function(x) { if (x[1] > mx) { d = x[0]; mx = x[1]; } });
+    var el = document.getElementById('dcontent');
+    if (d && total > 0) {
+      el.className = 'dval live';
+      el.textContent = d;
+      var sub = document.createElement('span');
+      sub.className = 'dsub';
+      var resp = total === 1 ? '1 response' : total.toLocaleString() + ' responses';
+      sub.textContent = Math.round(mx / total * 100) + '% of listeners · ' + resp;
+      el.after(sub);
+    }
   }
-}
+
+  function loadAggregate() {
+    fetch(SITE_URL + '/_functions/flydna_aggregate?trackId=' + TRACK_ID)
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        aggData = d;
+        aggData.emotionBreakdown = d.emotionBreakdown || {};
+        updateDominant(aggData.emotionBreakdown, aggData.totalResponses || 0);
+      })
+      .catch(function() {
+        document.getElementById('dcontent').textContent = 'Be the first to rate this track';
+      });
+  }
+
+  loadAggregate();
+})();
 </script>
 
 </body></html>
