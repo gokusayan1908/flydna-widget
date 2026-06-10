@@ -91,6 +91,7 @@ var SITE_URL = 'https://www.beatsflyhigh.ai';
 var EMOTIONS = ['Joy','Sadness','Energy','Love','Nostalgia','Peace','Hope','Wonder','Darkness','Passion'];
 var LABELS = ['','Barely a flutter','A quiet stir','Something stirs','Gently touched','Noticeably felt','Clearly emotional','Deeply moved','Strongly felt','Overwhelming','Full emotional resonance'];
 var intensity = 0, touched = false, selected = new Set(), submitted = false, aggData = {};
+var initialized = false;
 
 document.getElementById('track-label').textContent = TRACK_TITLE;
 
@@ -130,8 +131,13 @@ sinput.addEventListener('input', function() {
   idesc.textContent = intensity + '/10 — ' + LABELS[intensity];
   updateBtn();
 });
-window.addEventListener('load', function() { updateSlider(0); });
-window.addEventListener('resize', function() { updateSlider(intensity); });
+
+window.addEventListener('load', function() {
+  if (initialized) return;
+  initialized = true;
+  updateSlider(0);
+  loadAggregate();
+});
 
 sbtn.onclick = async function() {
   if (submitted || !touched || selected.size === 0) return;
@@ -198,7 +204,6 @@ async function loadAggregate() {
     document.getElementById('dcontent').textContent = 'Be the first to rate this track';
   }
 }
-loadAggregate();
 </script>
 
 </body></html>
