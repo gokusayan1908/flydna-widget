@@ -34,14 +34,12 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 .emotions-row{display:flex;align-items:center;gap:8px;}
 .elbl{font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;flex-shrink:0;}
 .etags{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
-.etag{padding:4px 10px;border-radius:999px;font-size:11px;cursor:pointer;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);background:#1a1f2e;font-family:Arial,sans-serif;-webkit-appearance:none;appearance:none;outline:none;display:inline-block;user-select:none;-webkit-user-select:none;transition:none;}
 .sbtn{padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;background:#1a2a3a;color:rgba(77,168,255,0.4);border:1px solid rgba(77,168,255,0.2);font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;font-weight:700;}
 .results-panel{padding:10px 14px;display:none;}
 .res-track{font-size:13px;color:#fff;font-weight:700;margin-bottom:2px;}
 .res-ty{font-size:11px;color:rgba(77,168,255,0.9);margin-bottom:8px;}
 .res-title{font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
 .res-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-.rlbl{font-size:11px;color:rgba(255,255,255,0.45);width:76px;flex-shrink:0;}
 .rbar-bg{flex:1;height:3px;background:rgba(100,160,255,0.2);border-radius:2px;overflow:hidden;}
 .rbar{height:3px;border-radius:2px;width:0;transition:width 0.6s ease;}
 .rpct{font-size:10px;color:rgba(255,255,255,0.35);width:28px;text-align:right;}
@@ -81,7 +79,10 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 </div>
 
 <script>
-(function() {
+// Guard against multiple executions
+if (!window.__flydnaLoaded) {
+  window.__flydnaLoaded = true;
+
   var params = new URLSearchParams(window.location.search);
   var TRACK_ID = params.get('track') || 'unknown';
   var TRACK_TITLE = params.get('title') ? decodeURIComponent(params.get('title')) : 'Unknown Track';
@@ -111,7 +112,9 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
   var srow = document.getElementById('srow');
   var idesc = document.getElementById('idesc');
 
-  // Build emotion buttons using inline styles only — no CSS classes for state
+  // Clear any existing buttons first
+  etags.innerHTML = '';
+
   EMOTIONS.forEach(function(emotion) {
     var btn = document.createElement('button');
     btn.type = 'button';
@@ -119,17 +122,14 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
     btn.style.cssText = 'padding:4px 10px;border-radius:999px;font-size:11px;cursor:pointer;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);background:#1a1f2e;font-family:Arial,sans-serif;margin:0;outline:none;display:inline-block;';
     btn.setAttribute('data-emotion', emotion);
     btn.setAttribute('data-selected', 'false');
-    
+
     btn.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       if (submitted) return;
-      
       var em = this.getAttribute('data-emotion');
       var isSel = this.getAttribute('data-selected') === 'true';
-      
       if (isSel) {
-        // Deselect
         this.setAttribute('data-selected', 'false');
         this.style.background = '#1a1f2e';
         this.style.color = 'rgba(255,255,255,0.7)';
@@ -137,7 +137,6 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
         var idx = selected.indexOf(em);
         if (idx > -1) selected.splice(idx, 1);
       } else {
-        // Select
         this.setAttribute('data-selected', 'true');
         this.style.background = 'linear-gradient(135deg,#1a4fcc,#4da8ff)';
         this.style.color = '#ffffff';
@@ -146,7 +145,6 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
       }
       updateBtn();
     });
-    
     etags.appendChild(btn);
   });
 
@@ -224,9 +222,11 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
       var n = entry[0], c = entry[1];
       var pct = Math.round(c/total*100);
       var m = selected.indexOf(n) > -1;
-      var lbl = m ? '<span class="rlbl" style="color:#fff;font-weight:700;font-size:11px;width:76px;flex-shrink:0;">' + n + ' ✓</span>' : '<span class="rlbl" style="font-size:11px;color:rgba(255,255,255,0.45);width:76px;flex-shrink:0;">' + n + '</span>';
+      var lblStyle = m ? 'color:#fff;font-weight:700;font-size:11px;width:76px;flex-shrink:0;' : 'font-size:11px;color:rgba(255,255,255,0.45);width:76px;flex-shrink:0;';
       var barColor = m ? 'linear-gradient(90deg,#1a4fcc,#4da8ff)' : 'rgba(100,160,255,0.5)';
-      h += '<div class="res-row">' + lbl + '<div class="rbar-bg"><div class="rbar" id="rb-' + n + '" style="background:' + barColor + '"></div></div><span class="rpct">' + pct + '%</span></div>';
+      h += '<div class="res-row"><span style="' + lblStyle + '">' + n + (m?' ✓':'') + '</span>';
+      h += '<div class="rbar-bg"><div class="rbar" id="rb-' + n + '" style="background:' + barColor + '"></div></div>';
+      h += '<span class="rpct">' + pct + '%</span></div>';
     });
     p.innerHTML = h;
     p.style.display = 'block';
@@ -267,7 +267,7 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
   }
 
   loadAggregate();
-})();
+}
 </script>
 
 </body></html>
