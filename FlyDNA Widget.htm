@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlyDNA Widget</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:transparent;font-family:Arial,sans-serif;}
+.container{border-radius:0 0 8px 8px;overflow:hidden;background:#111827;border:0.5px solid rgba(255,255,255,0.1);}
+.dbar{display:flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(77,168,255,0.08);border-bottom:0.5px solid rgba(77,168,255,0.15);}
+.dlabel{font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;flex-shrink:0;font-weight:700;}
+.dval{font-size:11px;color:rgba(255,255,255,0.35);font-style:italic;}
+.dval.live{color:#4da8ff;font-style:normal;font-weight:700;font-size:12px;}
+.dsub{font-size:10px;color:rgba(255,255,255,0.3);margin-left:4px;}
+.track-title-bar{padding:6px 14px;background:rgba(255,255,255,0.04);border-bottom:0.5px solid rgba(255,255,255,0.07);}
+.track-title-bar span{font-size:12px;color:rgba(255,255,255,0.85);font-weight:700;}
+.panel{padding:12px 14px;}
+.slider-labels{display:flex;justify-content:space-between;margin-bottom:4px;}
+.slider-lbl{font-size:10px;color:rgba(255,255,255,0.5);}
+.slider-section{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.logo img{width:32px;height:20px;object-fit:contain;mix-blend-mode:screen;flex-shrink:0;}
+.srow{position:relative;height:26px;flex:1;display:flex;align-items:center;}
+.strack{position:absolute;left:0;right:0;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;}
+.sfill{position:absolute;left:0;height:3px;background:linear-gradient(90deg,#1a4fcc,#4da8ff);border-radius:2px;width:0%;}
+.sthumb{position:absolute;width:26px;height:26px;object-fit:contain;mix-blend-mode:screen;pointer-events:none;transform:translateX(-50%);filter:drop-shadow(0 0 4px rgba(77,168,255,0.6));}
+.sinput{position:absolute;left:0;right:0;width:100%;opacity:0;height:26px;cursor:pointer;-webkit-appearance:none;}
+.idesc{font-size:10px;color:#4da8ff;min-height:14px;margin-bottom:8px;font-style:italic;padding-left:42px;}
+.shint{font-size:10px;color:rgba(255,255,255,0.25);min-height:14px;margin-bottom:8px;font-style:italic;padding-left:42px;}
+.divider{border:none;border-top:0.5px solid rgba(255,255,255,0.08);margin:8px 0;}
+.emotions-row{display:flex;align-items:center;gap:8px;}
+.elbl{font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;flex-shrink:0;}
+.etags{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+.etag{padding:4px 10px;border-radius:999px;font-size:11px;cursor:pointer;border:0.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);background:transparent;font-family:Arial,sans-serif;transition:all 0.1s;}
+.etag:hover{border-color:rgba(255,255,255,0.6);color:#fff;}
+.etag.sel{background:linear-gradient(135deg,#1a4fcc,#4da8ff);color:#fff;border-color:transparent;}
+.sbtn{padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;background:rgba(77,168,255,0.08);color:rgba(77,168,255,0.3);border:0.5px solid rgba(77,168,255,0.2);font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;font-weight:700;transition:all 0.15s;}
+.sbtn.ready{background:rgba(77,168,255,0.2);color:#4da8ff;border-color:rgba(77,168,255,0.5);}
+.sbtn.ready:hover{background:rgba(77,168,255,0.35);color:#fff;}
+.sbtn:disabled{cursor:default;}
+.results-panel{padding:10px 14px;display:none;}
+.res-track{font-size:13px;color:#fff;font-weight:700;margin-bottom:2px;}
+.res-ty{font-size:11px;color:rgba(77,168,255,0.9);margin-bottom:8px;}
+.res-title{font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+.res-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.rlbl{font-size:11px;color:rgba(255,255,255,0.45);width:76px;flex-shrink:0;}
+.rlbl.mine{color:#fff;font-weight:700;}
+.rbar-bg{flex:1;height:3px;background:rgba(100,160,255,0.2);border-radius:2px;overflow:hidden;}
+.rbar{height:3px;border-radius:2px;width:0;transition:width 0.6s ease;}
+.rbar.mine{background:linear-gradient(90deg,#1a4fcc,#4da8ff);}
+.rbar.other{background:rgba(100,160,255,0.5);}
+.rpct{font-size:10px;color:rgba(255,255,255,0.35);width:28px;text-align:right;}
+</style>
+<meta id="ConnectiveDocSignExtentionInstalled" name="ConnectiveDocSignExtentionInstalled" data-extension-version="1.0.5"></head>
+<body>
+<div class="container">
+  <div class="dbar">
+    <span class="dlabel">FlyDNA™</span>
+    <span id="dcontent" class="dval">Be the first to rate this track</span>
+  </div>
+  <div class="track-title-bar"><span id="track-label">Unknown Track</span></div>
+  <div class="panel" id="rating-panel">
+    <div class="slider-labels">
+      <span class="slider-lbl">no emotion</span>
+      <span class="slider-lbl">full emotion</span>
+    </div>
+    <div class="slider-section">
+      <div class="logo"><img src="data:image/png;base64,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" alt="FlyDNA"></div>
+      <div class="srow" id="srow">
+        <div class="strack"></div>
+        <div class="sfill" id="sfill" style="width: 0%;"></div>
+        <img id="sthumb" class="sthumb" src="data:image/png;base64,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" alt="" style="left: 13px;">
+        <input type="range" min="0" max="10" value="0" step="1" class="sinput" id="sinput">
+      </div>
+    </div>
+    <div id="idesc" class="shint">How deeply did this move you?</div>
+    <div class="divider"></div>
+    <div class="emotions-row">
+      <span class="elbl">Felt? <span style="color:#f07040">*</span></span>
+      <div class="etags" id="etags"><button class="etag">Joy</button><button class="etag">Sadness</button><button class="etag">Energy</button><button class="etag">Love</button><button class="etag">Nostalgia</button><button class="etag">Peace</button><button class="etag">Hope</button><button class="etag">Wonder</button><button class="etag">Darkness</button><button class="etag">Passion</button></div>
+      <button class="sbtn" id="sbtn" disabled="disabled">Send</button>
+    </div>
+  </div>
+  <div class="results-panel" id="results-panel"></div>
+</div>
+<script>
+var params = new URLSearchParams(window.location.search);
+var TRACK_ID = params.get('track') || 'unknown';
+var TRACK_TITLE = params.get('title') ? decodeURIComponent(params.get('title')) : 'Unknown Track';
+var SITE_URL = 'https://www.beatsflyhigh.ai';
+var EMOTIONS = ['Joy','Sadness','Energy','Love','Nostalgia','Peace','Hope','Wonder','Darkness','Passion'];
+var LABELS = ['','Barely a flutter','A quiet stir','Something stirs','Gently touched','Noticeably felt','Clearly emotional','Deeply moved','Strongly felt','Overwhelming','Full emotional resonance'];
+var intensity = 0, touched = false, selected = new Set(), submitted = false, aggData = {};
+
+document.getElementById('track-label').textContent = TRACK_TITLE;
+
+var etags = document.getElementById('etags');
+EMOTIONS.forEach(function(e) {
+  var b = document.createElement('button');
+  b.className = 'etag'; b.textContent = e;
+  b.onclick = function() {
+    if (submitted) return;
+    selected.has(e) ? (selected.delete(e), b.classList.remove('sel')) : (selected.add(e), b.classList.add('sel'));
+    updateBtn();
+  };
+  etags.appendChild(b);
+});
+
+var sinput = document.getElementById('sinput');
+var sfill = document.getElementById('sfill');
+var sthumb = document.getElementById('sthumb');
+var srow = document.getElementById('srow');
+var idesc = document.getElementById('idesc');
+var sbtn = document.getElementById('sbtn');
+
+function updateSlider(v) {
+  var p = v / 10, w = srow.offsetWidth;
+  sfill.style.width = (p * 100) + '%';
+  sthumb.style.left = (p * (w - 26) + 13) + 'px';
+}
+function updateBtn() {
+  var r = touched && selected.size > 0;
+  sbtn.disabled = !r;
+  r ? sbtn.classList.add('ready') : sbtn.classList.remove('ready');
+}
+sinput.addEventListener('input', function() {
+  intensity = parseInt(this.value); touched = true;
+  updateSlider(intensity);
+  idesc.className = 'idesc';
+  idesc.textContent = intensity + '/10 — ' + LABELS[intensity];
+  updateBtn();
+});
+window.addEventListener('load', function() { updateSlider(0); });
+window.addEventListener('resize', function() { updateSlider(intensity); });
+
+sbtn.onclick = async function() {
+  if (submitted || !touched || selected.size === 0) return;
+  submitted = true;
+  sbtn.textContent = '...'; sbtn.disabled = true; sbtn.classList.remove('ready');
+  try {
+    await fetch(SITE_URL + '/_functions/flydna_submit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({trackId: TRACK_ID, trackTitle: TRACK_TITLE, intensity: intensity, emotions: Array.from(selected)})
+    });
+  } catch(e) {}
+  var bd = Object.assign({}, aggData.emotionBreakdown || {});
+  var nt = (aggData.totalResponses || 0) + 1;
+  selected.forEach(function(e) { bd[e] = (bd[e] || 0) + 1; });
+  document.getElementById('rating-panel').style.display = 'none';
+  showResults(bd, nt);
+  updateDominant(bd, nt);
+};
+
+function showResults(bd, total) {
+  var p = document.getElementById('results-panel');
+  var el = Array.from(selected).join(' · ');
+  var resp = total === 1 ? '1 response' : total.toLocaleString() + ' responses';
+  var h = '<div class="res-track">' + TRACK_TITLE + '</div>';
+  h += '<div class="res-ty">FlyDNA™ recorded · ' + intensity + '/10 · ' + el + '</div>';
+  h += '<div class="res-title">Community resonance — ' + resp + '</div>';
+  var sorted = Object.entries(bd).filter(function(x) { return x[1] > 0; }).sort(function(a,b) { return b[1]-a[1]; });
+  sorted.forEach(function(entry) {
+    var n = entry[0], c = entry[1];
+    var pct = Math.round(c / total * 100);
+    var m = selected.has(n);
+    h += '<div class="res-row"><span class="rlbl' + (m?' mine':'') + '">' + n + (m?' ✓':'') + '</span><div class="rbar-bg"><div class="rbar ' + (m?'mine':'other') + '" id="rb-' + n + '"></div></div><span class="rpct">' + pct + '%</span></div>';
+  });
+  p.innerHTML = h; p.style.display = 'block';
+  setTimeout(function() {
+    sorted.forEach(function(entry) {
+      var b = document.getElementById('rb-' + entry[0]);
+      if (b) b.style.width = Math.round(entry[1] / total * 100) + '%';
+    });
+  }, 100);
+}
+
+function updateDominant(bd, total) {
+  var d = '', mx = 0;
+  Object.entries(bd).forEach(function(x) { if (x[1] > mx) { d = x[0]; mx = x[1]; } });
+  var el = document.getElementById('dcontent');
+  if (d && total > 0) {
+    el.className = 'dval live'; el.textContent = d;
+    var sub = document.createElement('span'); sub.className = 'dsub';
+    var resp = total === 1 ? '1 response' : total.toLocaleString() + ' responses';
+    sub.textContent = Math.round(mx / total * 100) + '% of listeners · ' + resp;
+    el.after(sub);
+  }
+}
+
+async function loadAggregate() {
+  try {
+    var r = await fetch(SITE_URL + '/_functions/flydna_aggregate?trackId=' + TRACK_ID);
+    var d = await r.json();
+    aggData = d; aggData.emotionBreakdown = d.emotionBreakdown || {};
+    updateDominant(aggData.emotionBreakdown, aggData.totalResponses || 0);
+  } catch(e) {
+    document.getElementById('dcontent').textContent = 'Be the first to rate this track';
+  }
+}
+loadAggregate();
+</script>
+
+</body></html>
