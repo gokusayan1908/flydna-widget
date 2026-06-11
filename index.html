@@ -44,6 +44,7 @@ html,body{background:transparent;font-family:Arial,sans-serif;}
 .rbar{height:3px;border-radius:2px;width:0;transition:width 0.6s ease;}
 .rpct{font-size:10px;color:rgba(255,255,255,0.35);width:28px;text-align:right;}
 .no-track{padding:12px 14px;font-size:11px;color:rgba(255,255,255,0.3);font-style:italic;}
+.voted-msg{padding:6px 14px 0;font-size:10px;color:rgba(77,168,255,0.5);font-style:italic;text-align:center;}
 </style>
 </head>
 <body>
@@ -90,6 +91,19 @@ if (!window.__flydnaLoaded) {
   var SITE_URL = 'https://www.beatsflyhigh.ai';
   var EMOTIONS = ['Joy','Sadness','Energy','Love','Nostalgia','Peace','Healing','Wonder','Darkness','Passion'];
   var LABELS = ['','Barely a flutter','A quiet stir','Something stirs','Gently touched','Noticeably felt','Clearly emotional','Deeply moved','Strongly felt','Overwhelming','Full emotional resonance'];
+
+  // Persistent session ID
+  var SESSION_KEY = 'flydna_session';
+  var sessionId = localStorage.getItem(SESSION_KEY);
+  if (!sessionId) {
+    sessionId = 'sess_' + Math.random().toString(36).substr(2,9) + '_' + Date.now();
+    localStorage.setItem(SESSION_KEY, sessionId);
+  }
+
+  // Check if already voted for this track
+  var VOTE_KEY = 'flydna_voted_' + TRACK_ID;
+  var alreadyVoted = TRACK_ID ? !!localStorage.getItem(VOTE_KEY) : false;
+
   var intensity = 0;
   var touched = false;
   var selected = [];
@@ -104,9 +118,8 @@ if (!window.__flydnaLoaded) {
     badge.className = 'source-badge source-video';
   }
 
-  // If no trackId, show message and stop
   if (!TRACK_ID) {
-    document.getElementById('rating-panel').innerHTML = '<div class="no-track">No track ID provided. Please embed this widget with ?track=YOUR_TRACK_ID</div>';
+    document.getElementById('rating-panel').innerHTML = '<div class="no-track">No track ID provided.</div>';
     document.getElementById('dcontent').textContent = 'Widget not configured';
   }
 
@@ -200,17 +213,20 @@ if (!window.__flydnaLoaded) {
         trackTitle: TRACK_TITLE,
         intensity: intensity,
         emotions: selected.slice(),
-        source: SOURCE
+        source: SOURCE,
+        sessionId: sessionId
       })
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
+      // Block future votes on this track from this browser
+      localStorage.setItem(VOTE_KEY, '1');
       sbtn.textContent = '✓';
       var bd = JSON.parse(JSON.stringify(aggData.emotionBreakdown || {}));
       var nt = (aggData.totalResponses || 0) + 1;
       selected.forEach(function(e) { bd[e] = (bd[e] || 0) + 1; });
       document.getElementById('rating-panel').style.display = 'none';
-      showResults(bd, nt);
+      showResults(bd, nt, false);
       updateDominant(bd, nt);
     })
     .catch(function(err) {
@@ -222,12 +238,11 @@ if (!window.__flydnaLoaded) {
     });
   });
 
-  function showResults(bd, total) {
+  function showResults(bd, total, isRepeat) {
     var p = document.getElementById('results-panel');
-    var el = selected.join(' · ');
     var resp = total === 1 ? '1 response' : total.toLocaleString() + ' responses';
     var h = '<div class="res-track">' + TRACK_TITLE + '</div>';
-    h += '<div class="res-ty">FlyDNA™ recorded · ' + intensity + '/10 · ' + el + '</div>';
+    h += '<div class="res-ty">FlyDNA™ ' + (isRepeat ? 'already recorded' : 'recorded · ' + intensity + '/10 · ' + selected.join(' · ')) + '</div>';
     h += '<div class="res-title">Community resonance — ' + resp + '</div>';
     var entries = Object.entries(bd).filter(function(x){return x[1]>0;}).sort(function(a,b){return b[1]-a[1];});
     entries.forEach(function(entry) {
@@ -240,6 +255,9 @@ if (!window.__flydnaLoaded) {
       h += '<div class="rbar-bg"><div class="rbar" id="rb-' + n + '" style="background:' + barColor + '"></div></div>';
       h += '<span class="rpct">' + pct + '%</span></div>';
     });
+    if (isRepeat) {
+      h += '<div class="voted-msg">✓ You already rated this track</div>';
+    }
     p.innerHTML = h;
     p.style.display = 'block';
     setTimeout(function() {
@@ -273,9 +291,18 @@ if (!window.__flydnaLoaded) {
         aggData = d;
         aggData.emotionBreakdown = d.emotionBreakdown || {};
         updateDominant(aggData.emotionBreakdown, aggData.totalResponses || 0);
+        if (alreadyVoted) {
+          document.getElementById('rating-panel').style.display = 'none';
+          showResults(aggData.emotionBreakdown, aggData.totalResponses || 0, true);
+        }
       })
       .catch(function(){
         document.getElementById('dcontent').textContent = 'Be the first to rate this track';
+        if (alreadyVoted) {
+          document.getElementById('rating-panel').style.display = 'none';
+          document.getElementById('results-panel').innerHTML = '<div class="voted-msg">✓ You already rated this track</div>';
+          document.getElementById('results-panel').style.display = 'block';
+        }
       });
   }
 
