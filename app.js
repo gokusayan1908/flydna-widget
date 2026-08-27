@@ -21,7 +21,9 @@ window.onload = () => {
     </div>
 
     <div class="section">
+
         <h2>${TRACK_TITLE}</h2>
+
     </div>
 
     <div class="section">
@@ -31,19 +33,21 @@ window.onload = () => {
         <div id="intensityValue" class="intensityValue"></div>
 
         <div class="slider">
+
             <input
                 type="range"
                 id="intensity"
                 min="1"
                 max="10"
                 value="5">
+
         </div>
 
     </div>
 
     <div class="section">
 
-        <h2>Choose emotions</h2>
+        <h2>Choose your emotions</h2>
 
         <div
             id="emotionContainer"
@@ -53,24 +57,35 @@ window.onload = () => {
     </div>
 
     <button id="submitBtn">
+
         SHARE MY DNA
+
     </button>
 
     <div class="stats">
 
         <div class="stat">
-            <span>Average</span>
-            <strong id="fd-intensity">-</strong>
-        </div>
 
-        <div class="stat">
-            <span>Responses</span>
+            <span>Total Responses</span>
+
             <strong id="fd-total">0</strong>
+
         </div>
 
         <div class="stat">
-            <span>Dominant</span>
+
+            <span>Average Emotional Impact</span>
+
+            <strong id="fd-intensity">0 / 10</strong>
+
+        </div>
+
+        <div class="stat">
+
+            <span>Dominant Emotion</span>
+
             <strong id="fd-dominant">-</strong>
+
         </div>
 
         <div id="fd-breakdown"></div>
@@ -87,69 +102,20 @@ window.onload = () => {
 
     const intensityLabels = {
 
-        1: {
-            emoji: "😐",
-            text: "No Emotional Impact",
-            color: "#777777"
-        },
-
-        2: {
-            emoji: "🙂",
-            text: "Slightly Touched",
-            color: "#8b8b8b"
-        },
-
-        3: {
-            emoji: "😊",
-            text: "Pleasant",
-            color: "#55c4ff"
-        },
-
-        4: {
-            emoji: "❤️",
-            text: "Emotionally Connected",
-            color: "#3ea8ff"
-        },
-
-        5: {
-            emoji: "🔥",
-            text: "Strong Impact",
-            color: "#1f8fff"
-        },
-
-        6: {
-            emoji: "✨",
-            text: "Deep Impact",
-            color: "#0077ff"
-        },
-
-        7: {
-            emoji: "💥",
-            text: "Powerful",
-            color: "#8d5cff"
-        },
-
-        8: {
-            emoji: "🚀",
-            text: "Exceptional",
-            color: "#b45cff"
-        },
-
-        9: {
-            emoji: "🤯",
-            text: "Unforgettable",
-            color: "#f4b400"
-        },
-
-        10: {
-            emoji: "🧬",
-            text: "Changed Me",
-            color: "#ffd700"
-        }
+        1:{emoji:"😐",text:"No Emotional Impact",color:"#808080"},
+        2:{emoji:"🙂",text:"Slightly Touched",color:"#9ca3af"},
+        3:{emoji:"😊",text:"Pleasant",color:"#38bdf8"},
+        4:{emoji:"❤️",text:"Emotionally Connected",color:"#3b82f6"},
+        5:{emoji:"🔥",text:"Strong Impact",color:"#2563eb"},
+        6:{emoji:"✨",text:"Deep Impact",color:"#0ea5e9"},
+        7:{emoji:"💥",text:"Powerful",color:"#7c3aed"},
+        8:{emoji:"🚀",text:"Exceptional",color:"#9333ea"},
+        9:{emoji:"🤯",text:"Unforgettable",color:"#f59e0b"},
+        10:{emoji:"🧬",text:"Changed Me",color:"#facc15"}
 
     };
 
-    function updateIntensity() {
+    function updateIntensity(){
 
         const value = Number(slider.value);
 
@@ -157,15 +123,13 @@ window.onload = () => {
 
         document.getElementById("intensityValue").innerHTML = `
 
-<div style="font-size:40px">
-${level.emoji}
-</div>
+<div style="font-size:42px">${level.emoji}</div>
 
-<div style="font-size:34px;font-weight:bold;margin-top:6px;color:${level.color}">
+<div style="font-size:34px;font-weight:bold;color:${level.color}">
 ${value} / 10
 </div>
 
-<div style="font-size:16px;color:${level.color};margin-top:8px">
+<div style="margin-top:8px;color:${level.color};font-size:16px">
 ${level.text}
 </div>
 
@@ -178,6 +142,8 @@ ${level.text}
     slider.oninput = updateIntensity;
 
     updateIntensity();
+
+    initialiseVoting(TRACK_ID, SOURCE);
 
     document
         .getElementById("submitBtn")
