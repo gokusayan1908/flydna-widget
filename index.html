@@ -39,9 +39,7 @@
     <div class="intensity">
 
         <label>
-
             Emotional Intensity
-
         </label>
 
         <input
@@ -52,9 +50,7 @@
             value="5">
 
         <div id="intensityValue">
-
             5 / 10
-
         </div>
 
     </div>
@@ -62,63 +58,74 @@
     <div class="emotions">
 
         <label>
-
             Choose emotions
-
         </label>
 
         <div id="emotionContainer">
+        </div>
 
+        <div
+            id="emotionCounter"
+            class="emotion-counter">
+            0 of 3 emotions selected
         </div>
 
     </div>
 
     <button id="submitBtn">
 
-        SHARE MY DNA
+        🧬 Contribute Your DNA to the Community
 
     </button>
 
     <div id="status">
-
     </div>
 
     <hr>
 
     <h3>
-
         Community DNA
-
     </h3>
 
     <div class="stats">
 
         <div class="stat">
 
-            <span>Total Responses</span>
+            <span>
+                Community Contributors
+            </span>
 
-            <strong id="fd-total">0</strong>
-
-        </div>
-
-        <div class="stat">
-
-            <span>Average Emotional Impact</span>
-
-            <strong id="fd-intensity">0 / 10</strong>
+            <strong id="fd-total">
+                0
+            </strong>
 
         </div>
 
         <div class="stat">
 
-            <span>Dominant Emotion</span>
+            <span>
+                Average Emotional Impact
+            </span>
 
-            <strong id="fd-dominant">-</strong>
+            <strong id="fd-intensity">
+                0 / 10
+            </strong>
+
+        </div>
+
+        <div class="stat">
+
+            <span>
+                Community Emotional DNA
+            </span>
+
+            <strong id="fd-dominant">
+                -
+            </strong>
 
         </div>
 
         <div id="fd-breakdown">
-
         </div>
 
     </div>
@@ -127,10 +134,10 @@
 
 <!-- Load order is important -->
 
-<script src="emotions.js"></script>
-<script src="renderer.js"></script>
-<script src="api.js"></script>
-<script src="app.js"></script>
+<script src="emotions.js?v=2"></script>
+<script src="renderer.js?v=2"></script>
+<script src="api.js?v=2"></script>
+<script src="app.js?v=2"></script>
 
 </body>
 
