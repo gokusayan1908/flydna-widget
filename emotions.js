@@ -66,7 +66,17 @@ function renderEmotions() {
 
     const container = document.getElementById("emotionContainer");
 
+    if (!container) {
+
+        console.error("FlyDNA: emotionContainer not found");
+
+        return;
+
+    }
+
     container.innerHTML = "";
+
+    selectedEmotions = [];
 
     emotions.forEach((emotion) => {
 
@@ -76,53 +86,105 @@ function renderEmotions() {
 
         button.className = "emotion-btn";
 
+        button.dataset.emotion = emotion.name;
+
         button.innerHTML = `
             <span class="emoji">${emotion.emoji}</span>
             <span>${emotion.name}</span>
         `;
 
-        button.onclick = () => {
+        // ----------------------------------
+        // Base appearance
+        // ----------------------------------
 
-            const index = selectedEmotions.indexOf(emotion.name);
+        button.style.cursor = "pointer";
+        button.style.transition = "all 0.2s ease";
+        button.style.border = "1px solid rgba(255,255,255,0.15)";
+        button.style.background = "rgba(255,255,255,0.06)";
+        button.style.color = "#ffffff";
+        button.style.padding = "12px 18px";
+        button.style.borderRadius = "12px";
+        button.style.fontSize = "15px";
+        button.style.fontWeight = "500";
+
+        // ----------------------------------
+        // Click
+        // ----------------------------------
+
+        button.addEventListener("click", function () {
+
+            console.log(
+                "FlyDNA emotion clicked:",
+                emotion.name
+            );
+
+            const index =
+                selectedEmotions.indexOf(emotion.name);
 
             // ----------------------------------
-            // Remove selection
+            // Deselect
             // ----------------------------------
 
             if (index !== -1) {
 
                 selectedEmotions.splice(index, 1);
 
-                button.classList.remove("selected");
+                button.style.background =
+                    "rgba(255,255,255,0.06)";
+
+                button.style.border =
+                    "1px solid rgba(255,255,255,0.15)";
+
+                button.style.transform =
+                    "scale(1)";
 
                 return;
 
             }
 
             // ----------------------------------
-            // Maximum of 3 emotions
+            // Maximum 3
             // ----------------------------------
 
             if (selectedEmotions.length >= 3) {
 
-                alert("Please select a maximum of 3 emotions.");
+                console.log(
+                    "FlyDNA: maximum of 3 emotions reached"
+                );
 
                 return;
 
             }
 
             // ----------------------------------
-            // Add selection
+            // Select
             // ----------------------------------
 
             selectedEmotions.push(emotion.name);
 
-            button.classList.add("selected");
+            button.style.background =
+                "linear-gradient(135deg, #2563eb, #7c3aed)";
 
-        };
+            button.style.border =
+                "1px solid rgba(255,255,255,0.5)";
+
+            button.style.transform =
+                "scale(1.03)";
+
+            console.log(
+                "FlyDNA selected emotions:",
+                selectedEmotions
+            );
+
+        });
 
         container.appendChild(button);
 
     });
+
+    console.log(
+        "FlyDNA emotions rendered:",
+        emotions.length
+    );
 
 }
