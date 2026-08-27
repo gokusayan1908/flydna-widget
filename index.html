@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -72,7 +73,7 @@
 
     </div>
 
-    <button id="submitButton">
+    <button id="submitBtn">
 
         SHARE MY DNA
 
@@ -90,53 +91,45 @@
 
     </h3>
 
-    <div id="community">
+    <div class="stats">
 
-        <div>
+        <div class="stat">
 
-            Average
+            <span>Total Responses</span>
 
-            <span id="avgIntensity">
-
-                -
-
-            </span>
+            <strong id="fd-total">0</strong>
 
         </div>
 
-        <div>
+        <div class="stat">
 
-            Responses
+            <span>Average Emotional Impact</span>
 
-            <span id="responses">
-
-                0
-
-            </span>
+            <strong id="fd-intensity">0 / 10</strong>
 
         </div>
 
-        <div>
+        <div class="stat">
 
-            Dominant
+            <span>Dominant Emotion</span>
 
-            <span id="dominant">
-
-                -
-
-            </span>
+            <strong id="fd-dominant">-</strong>
 
         </div>
 
-    </div>
+        <div id="fd-breakdown">
 
-    <div id="emotionBreakdown">
+        </div>
 
     </div>
 
 </div>
 
+<!-- Load order is important -->
+
 <script src="emotions.js"></script>
+<script src="renderer.js"></script>
+<script src="api.js"></script>
 <script src="app.js"></script>
 
 </body>
