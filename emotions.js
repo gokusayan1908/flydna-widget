@@ -1,62 +1,65 @@
 // ======================================
-// FlyDNA Emotions v1.1
+// FlyDNA Emotions v1.2
 // ======================================
 
-const emotions = [
-
+const EMOTIONS = [
     {
-        name: "Love",
+        id: "love",
+        label: "Love",
         emoji: "❤️"
     },
-
     {
-        name: "Energy",
+        id: "energy",
+        label: "Energy",
         emoji: "⚡"
     },
-
     {
-        name: "Joy",
+        id: "joy",
+        label: "Joy",
         emoji: "😊"
     },
-
     {
-        name: "Sadness",
+        id: "sadness",
+        label: "Sadness",
         emoji: "😢"
     },
-
     {
-        name: "Nostalgia",
+        id: "nostalgia",
+        label: "Nostalgia",
         emoji: "🌌"
     },
-
     {
-        name: "Passion",
+        id: "passion",
+        label: "Passion",
         emoji: "🔥"
     },
-
     {
-        name: "Peace",
+        id: "peace",
+        label: "Peace",
         emoji: "🕊️"
     },
-
     {
-        name: "Hope",
+        id: "hope",
+        label: "Hope",
         emoji: "✨"
     },
-
     {
-        name: "Celebration",
+        id: "celebration",
+        label: "Celebration",
         emoji: "🎉"
     },
-
     {
-        name: "Cinematic",
+        id: "cinematic",
+        label: "Cinematic",
         emoji: "🎬"
     }
-
 ];
 
+const MAX_EMOTIONS = 3;
+
+// Global selection used by app.js
 let selectedEmotions = [];
+
 
 // ======================================
 // Render emotions
@@ -68,56 +71,15 @@ function renderEmotions() {
         document.getElementById("emotionContainer");
 
     if (!container) {
-
         console.error(
             "FlyDNA: emotionContainer not found"
         );
-
         return;
-
     }
-
-    // ----------------------------------
-    // Compact responsive grid
-    // ----------------------------------
-
-    container.style.setProperty(
-        "display",
-        "grid",
-        "important"
-    );
-
-    container.style.setProperty(
-        "grid-template-columns",
-        "repeat(auto-fit, minmax(130px, 1fr))",
-        "important"
-    );
-
-    container.style.setProperty(
-        "gap",
-        "10px",
-        "important"
-    );
-
-    container.style.setProperty(
-        "width",
-        "100%",
-        "important"
-    );
-
-    container.style.setProperty(
-        "box-sizing",
-        "border-box",
-        "important"
-    );
 
     container.innerHTML = "";
 
-    selectedEmotions = [];
-
-    updateEmotionCounter();
-
-    emotions.forEach((emotion) => {
+    EMOTIONS.forEach(emotion => {
 
         const button =
             document.createElement("button");
@@ -125,362 +87,114 @@ function renderEmotions() {
         button.type = "button";
 
         button.className =
-            "emotion-btn";
+            "emotion-button";
 
         button.dataset.emotion =
-            emotion.name;
-
-        button.setAttribute(
-            "aria-pressed",
-            "false"
-        );
-
-        // ----------------------------------
-        // Content
-        // ----------------------------------
+            emotion.label;
 
         button.innerHTML = `
+            <span class="emotion-check"></span>
             <span class="emotion-emoji">
                 ${emotion.emoji}
             </span>
-
-            <span class="emotion-name">
-                ${emotion.name}
+            <span class="emotion-label">
+                ${emotion.label}
             </span>
         `;
 
-        // ----------------------------------
-        // Force compact dimensions
-        // ----------------------------------
-
-        button.style.setProperty(
-            "width",
-            "100%",
-            "important"
-        );
-
-        button.style.setProperty(
-            "min-width",
-            "0",
-            "important"
-        );
-
-        button.style.setProperty(
-            "height",
-            "50px",
-            "important"
-        );
-
-        button.style.setProperty(
-            "padding",
-            "8px 12px",
-            "important"
-        );
-
-        button.style.setProperty(
-            "box-sizing",
-            "border-box",
-            "important"
-        );
-
-        button.style.setProperty(
-            "display",
-            "flex",
-            "important"
-        );
-
-        button.style.setProperty(
-            "align-items",
-            "center",
-            "important"
-        );
-
-        button.style.setProperty(
-            "justify-content",
-            "center",
-            "important"
-        );
-
-        button.style.setProperty(
-            "gap",
-            "7px",
-            "important"
-        );
-
-        button.style.setProperty(
-            "border-radius",
-            "12px",
-            "important"
-        );
-
-        button.style.setProperty(
-            "border",
-            "1px solid rgba(255,255,255,0.10)",
-            "important"
-        );
-
-        button.style.setProperty(
-            "background",
-            "rgba(255,255,255,0.045)",
-            "important"
-        );
-
-        button.style.setProperty(
-            "color",
-            "#ffffff",
-            "important"
-        );
-
-        button.style.setProperty(
-            "font-size",
-            "14px",
-            "important"
-        );
-
-        button.style.setProperty(
-            "font-weight",
-            "500",
-            "important"
-        );
-
-        button.style.setProperty(
-            "cursor",
-            "pointer",
-            "important"
-        );
-
-        button.style.setProperty(
-            "transition",
-            "all 0.2s ease",
-            "important"
-        );
-
-        // ----------------------------------
-        // Click
-        // ----------------------------------
-
         button.addEventListener(
             "click",
-            function () {
-
-                const index =
-                    selectedEmotions.indexOf(
-                        emotion.name
-                    );
-
-                console.log(
-                    "FlyDNA emotion clicked:",
-                    emotion.name
-                );
-
-                // ------------------------------
-                // Deselect
-                // ------------------------------
-
-                if (index !== -1) {
-
-                    selectedEmotions.splice(
-                        index,
-                        1
-                    );
-
-                    setButtonState(
-                        button,
-                        emotion,
-                        false
-                    );
-
-                    updateEmotionCounter();
-
-                    console.log(
-                        "FlyDNA selected emotions:",
-                        selectedEmotions
-                    );
-
-                    return;
-
-                }
-
-                // ------------------------------
-                // Maximum 3
-                // ------------------------------
-
-                if (
-                    selectedEmotions.length >= 3
-                ) {
-
-                    console.log(
-                        "FlyDNA: maximum of 3 emotions reached"
-                    );
-
-                    button.animate(
-                        [
-                            {
-                                transform:
-                                    "translateX(-4px)"
-                            },
-
-                            {
-                                transform:
-                                    "translateX(4px)"
-                            },
-
-                            {
-                                transform:
-                                    "translateX(-4px)"
-                            },
-
-                            {
-                                transform:
-                                    "translateX(0)"
-                            }
-                        ],
-                        {
-                            duration: 180
-                        }
-                    );
-
-                    return;
-
-                }
-
-                // ------------------------------
-                // Select
-                // ------------------------------
-
-                selectedEmotions.push(
-                    emotion.name
-                );
-
-                setButtonState(
-                    button,
-                    emotion,
-                    true
-                );
-
-                updateEmotionCounter();
-
-                console.log(
-                    "FlyDNA selected emotions:",
-                    selectedEmotions
-                );
-
-            }
+            () => toggleEmotion(
+                emotion.label,
+                button
+            )
         );
 
         container.appendChild(button);
 
     });
 
+    updateEmotionCounter();
+
     console.log(
         "FlyDNA emotions rendered:",
-        emotions.length
+        EMOTIONS.length
     );
-
 }
 
+
 // ======================================
-// Button state
+// Toggle emotion
 // ======================================
 
-function setButtonState(
-    button,
+function toggleEmotion(
     emotion,
-    selected
+    button
 ) {
 
-    const emoji =
-        selected
-            ? "✓ " + emotion.emoji
-            : emotion.emoji;
+    const index =
+        selectedEmotions.indexOf(emotion);
 
-    button.innerHTML = `
-        <span class="emotion-emoji">
-            ${emoji}
-        </span>
+    // ----------------------------------
+    // Already selected → remove
+    // ----------------------------------
 
-        <span class="emotion-name">
-            ${emotion.name}
-        </span>
-    `;
+    if (index !== -1) {
 
-    button.setAttribute(
-        "aria-pressed",
-        selected
-            ? "true"
-            : "false"
-    );
-
-    if (selected) {
-
-        button.style.setProperty(
-            "background",
-            "linear-gradient(135deg, #2563eb, #7c3aed)",
-            "important"
+        selectedEmotions.splice(
+            index,
+            1
         );
 
-        button.style.setProperty(
-            "border",
-            "1px solid rgba(255,255,255,0.7)",
-            "important"
+        button.classList.remove(
+            "selected"
         );
 
-        button.style.setProperty(
-            "box-shadow",
-            "0 0 0 2px rgba(124,58,237,0.25)",
-            "important"
-        );
+        button
+            .querySelector(".emotion-check")
+            .textContent = "";
 
-        button.style.setProperty(
-            "transform",
-            "scale(1.02)",
-            "important"
-        );
+        updateEmotionCounter();
 
-        button.style.setProperty(
-            "font-weight",
-            "700",
-            "important"
-        );
-
-    } else {
-
-        button.style.setProperty(
-            "background",
-            "rgba(255,255,255,0.045)",
-            "important"
-        );
-
-        button.style.setProperty(
-            "border",
-            "1px solid rgba(255,255,255,0.10)",
-            "important"
-        );
-
-        button.style.setProperty(
-            "box-shadow",
-            "none",
-            "important"
-        );
-
-        button.style.setProperty(
-            "transform",
-            "scale(1)",
-            "important"
-        );
-
-        button.style.setProperty(
-            "font-weight",
-            "500",
-            "important"
-        );
-
+        return;
     }
 
+    // ----------------------------------
+    // Maximum reached
+    // ----------------------------------
+
+    if (
+        selectedEmotions.length >=
+        MAX_EMOTIONS
+    ) {
+
+        updateEmotionCounter();
+
+        return;
+    }
+
+    // ----------------------------------
+    // Add emotion
+    // ----------------------------------
+
+    selectedEmotions.push(
+        emotion
+    );
+
+    button.classList.add(
+        "selected"
+    );
+
+    button
+        .querySelector(".emotion-check")
+        .textContent = "✓";
+
+    updateEmotionCounter();
 }
 
+
 // ======================================
-// Emotion counter
+// Update selection counter
 // ======================================
 
 function updateEmotionCounter() {
@@ -490,12 +204,19 @@ function updateEmotionCounter() {
             "emotionCounter"
         );
 
-    if (!counter) return;
+    if (!counter) {
+        return;
+    }
 
     const count =
         selectedEmotions.length;
 
     counter.textContent =
-        `${count} / 3 selected`;
+        `${count} of ${MAX_EMOTIONS} emotions selected`;
 
+    // Optional visual state
+    counter.classList.toggle(
+        "complete",
+        count === MAX_EMOTIONS
+    );
 }
