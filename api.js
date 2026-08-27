@@ -2,19 +2,41 @@
 // FlyDNA API Bridge
 // ======================================
 
-function requestAggregate(trackId, source) {
+let voteTrackId = "";
+let voteType = "";
+
+// --------------------------------------
+// Initialise
+// --------------------------------------
+
+function initialiseVoting(trackId, type) {
+
+    voteTrackId = trackId;
+    voteType = type;
+
+}
+
+// --------------------------------------
+// Request Community DNA
+// --------------------------------------
+
+function requestAggregate(trackId, type) {
 
     window.parent.postMessage({
 
         type: "getAggregate",
 
-        trackId,
+        trackId: trackId,
 
-        source
+        type: type
 
     }, "*");
 
 }
+
+// --------------------------------------
+// Submit Vote
+// --------------------------------------
 
 function submitVote(vote) {
 
@@ -28,10 +50,13 @@ function submitVote(vote) {
 
 }
 
+// --------------------------------------
+// Receive messages from Wix
+// --------------------------------------
+
 window.addEventListener("message", (event) => {
 
-    if (!event.data)
-        return;
+    if (!event.data) return;
 
     console.log("FlyDNA ← Wix", event.data);
 
@@ -50,7 +75,7 @@ window.addEventListener("message", (event) => {
 
             requestAggregate(
                 voteTrackId,
-                voteSource
+                voteType
             );
 
             break;
@@ -58,14 +83,3 @@ window.addEventListener("message", (event) => {
     }
 
 });
-
-let voteTrackId = "";
-let voteSource = "";
-
-function initialiseVoting(trackId, source) {
-
-    voteTrackId = trackId;
-
-    voteSource = source;
-
-}
