@@ -4,32 +4,75 @@
 
 function renderAggregate(data) {
 
-    const total = document.getElementById("fd-total");
-    const intensity = document.getElementById("fd-intensity");
-    const dominant = document.getElementById("fd-dominant");
-    const emotions = document.getElementById("fd-breakdown");
+    document.getElementById("fd-total").innerText =
+        data.totalResponses || 0;
 
-    if (!total) return;
+    document.getElementById("fd-intensity").innerText =
+        (data.avgIntensity || 0) + " / 10";
 
-    total.textContent = data.totalResponses ?? 0;
-    intensity.textContent = data.avgIntensity ?? 0;
-    dominant.textContent = data.dominantEmotion || "-";
+    document.getElementById("fd-dominant").innerText =
+        data.dominantEmotion || "-";
 
-    emotions.innerHTML = "";
+    const breakdown =
+        document.getElementById("fd-breakdown");
 
-    if (!data.emotionBreakdown) return;
+    breakdown.innerHTML = "";
 
-    Object.entries(data.emotionBreakdown).forEach(([emotion, value]) => {
+    if (!data.emotionBreakdown)
+        return;
 
-        const row = document.createElement("div");
-        row.className = "emotionRow";
+    const emotions =
+        Object.entries(data.emotionBreakdown);
 
-        row.innerHTML = `
-            <span>${emotion}</span>
-            <span>${value}</span>
-        `;
+    emotions.sort((a, b) => b[1] - a[1]);
 
-        emotions.appendChild(row);
+    emotions.forEach(([emotion, count]) => {
+
+        const pct = Math.round(
+            (count / data.totalResponses) * 100
+        );
+
+        breakdown.innerHTML += `
+
+<div class="emotionRow">
+
+    <div
+        style="
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:4px;">
+
+        <span>${emotion}</span>
+
+        <strong>${pct}%</strong>
+
+    </div>
+
+    <div
+        style="
+        width:100%;
+        height:10px;
+        background:#2b2b38;
+        border-radius:10px;
+        overflow:hidden;">
+
+        <div
+            style="
+            width:${pct}%;
+            height:100%;
+            background:linear-gradient(
+                90deg,
+                #3b82f6,
+                #06b6d4
+            );">
+
+        </div>
+
+    </div>
+
+</div>
+
+`;
 
     });
 
