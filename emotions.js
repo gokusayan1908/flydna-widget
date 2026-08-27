@@ -1,55 +1,63 @@
 const EMOTIONS = [
-    "😊 Happy",
+
     "❤️ Love",
+    "😊 Happiness",
     "🔥 Energy",
-    "💙 Nostalgic",
     "😌 Calm",
     "🌌 Dreamy",
-    "💪 Powerful",
-    "🌞 Hopeful",
-    "🎉 Excited",
-    "🥲 Emotional",
-    "🌙 Melancholy",
-    "⚡ Motivated",
-    "🕺 Dance",
-    "🚀 Epic",
-    "✨ Inspired",
-    "🤯 Surprised"
+    "💃 Dance",
+    "🚗 Roadtrip",
+    "💪 Motivation",
+    "😢 Sadness",
+    "🤔 Reflection",
+    "⚡ Power",
+    "🎬 Cinematic",
+    "🌍 Adventure",
+    "✨ Hope",
+    "🎉 Celebration",
+    "🌙 Night Vibes"
+
 ];
 
 let selectedEmotions = [];
 
-const container = document.getElementById("emotionContainer");
+function renderEmotions() {
 
-EMOTIONS.forEach(emotion => {
+    const container = document.getElementById("emotionContainer");
 
-    const button = document.createElement("div");
+    if (!container) return;
 
-    button.className = "emotion";
+    container.innerHTML = "";
 
-    button.innerText = emotion;
+    EMOTIONS.forEach(emotion => {
 
-    button.onclick = () => {
+        const chip = document.createElement("div");
 
-        if (selectedEmotions.includes(emotion)) {
+        chip.className = "emotion";
 
-            selectedEmotions =
-                selectedEmotions.filter(e => e !== emotion);
+        chip.innerText = emotion;
 
-            button.classList.remove("selected");
+        chip.onclick = () => {
 
-        } else {
+            if (selectedEmotions.includes(emotion)) {
 
-            selectedEmotions.push(emotion);
+                selectedEmotions =
+                    selectedEmotions.filter(e => e !== emotion);
 
-            button.classList.add("selected");
+                chip.classList.remove("selected");
 
-        }
+            } else {
 
-    };
+                selectedEmotions.push(emotion);
 
-    container.appendChild(button);
+                chip.classList.add("selected");
 
-});
+            }
 
-window.getSelectedEmotions = () => selectedEmotions;
+        };
+
+        container.appendChild(chip);
+
+    });
+
+}
