@@ -6,7 +6,7 @@ const params = new URLSearchParams(window.location.search);
 
 const TRACK_ID = params.get("track") || "unknown";
 const TRACK_TITLE = decodeURIComponent(params.get("title") || "Unknown Track");
-const SOURCE = params.get("source") || "music";
+const ENTITY_TYPE = params.get("type") || "music";
 
 window.onload = () => {
 
@@ -17,7 +17,7 @@ window.onload = () => {
     <h1>🧬 FlyDNA</h1>
 
     <div class="subtitle">
-        How deeply did this music move you?
+        How deeply did this ${ENTITY_TYPE} move you?
     </div>
 
     <div class="section">
@@ -143,7 +143,7 @@ ${level.text}
 
     updateIntensity();
 
-    initialiseVoting(TRACK_ID, SOURCE);
+    initialiseVoting(TRACK_ID, ENTITY_TYPE);
 
     document
         .getElementById("submitBtn")
@@ -155,7 +155,7 @@ ${level.text}
 
                 title: TRACK_TITLE,
 
-                source: SOURCE,
+                type: ENTITY_TYPE,
 
                 intensity: Number(slider.value),
 
@@ -165,6 +165,6 @@ ${level.text}
 
         };
 
-    requestAggregate(TRACK_ID, SOURCE);
+    requestAggregate(TRACK_ID, ENTITY_TYPE);
 
 };
