@@ -1,0 +1,258 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+
+    background:#111;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    padding:25px;
+
+}
+
+#app{
+
+    width:100%;
+
+    max-width:420px;
+
+    background:#1d1d1d;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:0 10px 35px rgba(0,0,0,.45);
+
+}
+
+.logo{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.logo h1{
+
+    margin-top:10px;
+
+    font-size:34px;
+
+}
+
+.logo p{
+
+    opacity:.7;
+
+    margin-top:8px;
+
+}
+
+.track{
+
+    margin-bottom:25px;
+
+}
+
+.track h2{
+
+    font-size:22px;
+
+    text-align:center;
+
+}
+
+.intensity{
+
+    margin-bottom:30px;
+
+}
+
+.intensity label{
+
+    display:block;
+
+    margin-bottom:12px;
+
+}
+
+#intensity{
+
+    width:100%;
+
+}
+
+#intensityValue{
+
+    text-align:center;
+
+    margin-top:10px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+.emotions{
+
+    margin-bottom:30px;
+
+}
+
+.emotions label{
+
+    display:block;
+
+    margin-bottom:15px;
+
+}
+
+#emotionContainer{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.emotion{
+
+    padding:10px 16px;
+
+    border-radius:999px;
+
+    background:#303030;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    user-select:none;
+
+}
+
+.emotion:hover{
+
+    background:#444;
+
+}
+
+.selected{
+
+    background:#29b6f6;
+
+    color:white;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#29b6f6;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    opacity:.9;
+
+}
+
+#status{
+
+    margin-top:15px;
+
+    text-align:center;
+
+    min-height:25px;
+
+}
+
+hr{
+
+    margin:35px 0;
+
+    border:none;
+
+    border-top:1px solid #333;
+
+}
+
+#community div{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:12px 0;
+
+}
+
+#emotionBreakdown{
+
+    margin-top:25px;
+
+}
+
+.bar{
+
+    margin:12px 0;
+
+}
+
+.barLabel{
+
+    margin-bottom:6px;
+
+}
+
+.progress{
+
+    width:100%;
+
+    height:12px;
+
+    background:#333;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+}
+
+.fill{
+
+    height:100%;
+
+    background:#29b6f6;
+
+    width:0;
+
+}
