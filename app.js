@@ -1,158 +1,97 @@
+// ======================================
+// FlyDNA Application
+// ======================================
+
 const params = new URLSearchParams(window.location.search);
 
-const entityId =
-    params.get("track") || "unknown";
+const TRACK_ID = params.get("track") || "unknown";
+const TRACK_TITLE = decodeURIComponent(params.get("title") || "Unknown Track");
+const SOURCE = params.get("source") || "music";
 
-const entityTitle =
-    params.get("title") || entityId;
+window.onload = () => {
 
-const entityType =
-    params.get("source") || "music";
+    document.getElementById("app").innerHTML = `
 
-const sessionId =
-    localStorage.getItem("flydna-session") ||
-    crypto.randomUUID();
+<div class="flydna-card">
 
-localStorage.setItem(
-    "flydna-session",
-    sessionId
-);
+<h1>🧬 FlyDNA</h1>
 
-document.getElementById("trackTitle").innerText =
-    entityTitle;
+<div class="subtitle">
 
-const slider =
-    document.getElementById("intensity");
-
-const value =
-    document.getElementById("intensityValue");
-
-slider.oninput = () => {
-
-    value.innerText =
-        slider.value + " / 10";
-
-};
-
-window.addEventListener("message",(event)=>{
-
-    const msg = event.data;
-
-    if(!msg) return;
-
-    if(msg.type==="aggregate"){
-
-        updateCommunity(msg.data);
-
-    }
-
-    if(msg.type==="submitSuccess"){
-
-        document.getElementById("status").innerHTML =
-            "✅ Thank you for sharing your FlyDNA.";
-
-    }
-
-});
-
-function requestAggregate(){
-
-    parent.postMessage({
-
-        type:"getAggregate",
-
-        entityId,
-        entityTitle,
-        entityType
-
-    },"*");
-
-}
-
-document
-.getElementById("submitButton")
-.onclick=()=>{
-
-    const emotions =
-        window.getSelectedEmotions();
-
-    if(emotions.length===0){
-
-        alert(
-            "Please choose at least one emotion."
-        );
-
-        return;
-
-    }
-
-    parent.postMessage({
-
-        type:"submit",
-
-        entityId,
-        entityTitle,
-        entityType,
-
-        intensity:Number(slider.value),
-
-        emotions,
-
-        sessionId
-
-    },"*");
-
-};
-
-function updateCommunity(data){
-
-    document.getElementById("avgIntensity").innerText =
-        data.avgIntensity ?? "-";
-
-    document.getElementById("responses").innerText =
-        data.totalResponses ?? 0;
-
-    document.getElementById("dominant").innerText =
-        data.dominantEmotion ?? "-";
-
-    const container =
-        document.getElementById("emotionBreakdown");
-
-    container.innerHTML="";
-
-    const breakdown =
-        data.emotionBreakdown || {};
-
-    Object.entries(breakdown)
-        .sort((a,b)=>b[1]-a[1])
-        .forEach(([emotion,count])=>{
-
-            const pct =
-                Math.round(
-                    count /
-                    data.totalResponses
-                    *100
-                );
-
-            container.innerHTML +=`
-
-<div class="bar">
-
-<div class="barLabel">
-
-${emotion}
-
-(${pct}%)
+How did this track make you feel?
 
 </div>
 
-<div class="progress">
+<div class="section">
+
+<h2>${TRACK_TITLE}</h2>
+
+</div>
+
+<div class="section">
+
+<h2>Intensity</h2>
+
+<div class="intensityValue" id="intensityValue">5</div>
+
+<div class="slider">
+
+<input
+type="range"
+id="intensity"
+min="1"
+max="10"
+value="5">
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Emotions</h2>
 
 <div
-class="fill"
-style="width:${pct}%">
+id="emotionContainer"
+class="emotions">
 
 </div>
+
+</div>
+
+<button id="submitBtn">
+
+Submit my FlyDNA
+
+</button>
+
+<div class="stats">
+
+<div class="stat">
+
+<span>Total Responses</span>
+
+<strong id="fd-total">0</strong>
+
+</div>
+
+<div class="stat">
+
+<span>Average Intensity</span>
+
+<strong id="fd-intensity">0</strong>
+
+</div>
+
+<div class="stat">
+
+<span>Dominant Emotion</span>
+
+<strong id="fd-dominant">-</strong>
+
+</div>
+
+<div id="fd-breakdown"></div>
 
 </div>
 
@@ -160,8 +99,36 @@ style="width:${pct}%">
 
 `;
 
-        });
+    renderEmotions();
 
-}
+    const slider = document.getElementById("intensity");
 
-requestAggregate();
+    slider.oninput = () => {
+
+        document.getElementById("intensityValue").innerHTML = slider.value;
+
+    };
+
+    document
+        .getElementById("submitBtn")
+        .onclick = () => {
+
+            submitVote({
+
+                trackId: TRACK_ID,
+
+                title: TRACK_TITLE,
+
+                source: SOURCE,
+
+                intensity: Number(slider.value),
+
+                emotions: selectedEmotions
+
+            });
+
+        };
+
+    requestAggregate(TRACK_ID, SOURCE);
+
+};
