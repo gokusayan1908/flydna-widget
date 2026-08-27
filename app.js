@@ -62,7 +62,7 @@ window.onload = () => {
 
     <button id="submitBtn">
 
-        Share My Emotional DNA
+        🧬 Contribute Your DNA to the Community
 
     </button>
 
@@ -70,7 +70,7 @@ window.onload = () => {
 
         <div class="stat">
 
-            <span>Total Responses</span>
+            <span>Community Contributors</span>
 
             <strong id="fd-total">0</strong>
 
@@ -122,6 +122,7 @@ window.onload = () => {
     function updateIntensity() {
 
         const value = Number(slider.value);
+
         const level = intensityLabels[value];
 
         document.getElementById("intensityValue").innerHTML = `
