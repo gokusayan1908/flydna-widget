@@ -1,275 +1,510 @@
-// ======================================
-// FlyDNA Application v1.1
-// ======================================
+/* ======================================
+   FlyDNA Application v1.1
+   Premium Dark UI
+   ====================================== */
 
-const params = new URLSearchParams(window.location.search);
+* {
+    box-sizing: border-box;
+}
 
-const TRACK_ID = params.get("track") || "unknown";
-const TRACK_TITLE = decodeURIComponent(
-    params.get("title") || "Unknown Track"
-);
-const ENTITY_TYPE = params.get("type") || "music";
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
 
-window.onload = () => {
+    background: #0d0d14;
+    color: #ffffff;
 
-    document.getElementById("app").innerHTML = `
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
 
-<div class="flydna-card">
+body {
+    padding: 6px;
+}
 
-    <h1>🧬 FlyDNA</h1>
+/* ======================================
+   Main FlyDNA Card
+   ====================================== */
 
-    <div class="subtitle">
-        What impact did this experience have on you?
-    </div>
+#app {
+    width: 100%;
+}
 
-    <div class="section">
+.flydna-card {
+    width: 100%;
+    max-width: 1400px;
 
-        <h2>${TRACK_TITLE}</h2>
+    margin: 0 auto;
 
-    </div>
+    padding: 24px 26px 22px;
 
-    <div class="section">
+    background:
+        linear-gradient(
+            145deg,
+            #171720 0%,
+            #111119 100%
+        );
 
-        <h2>Emotional Impact</h2>
+    border:
+        1px solid rgba(255,255,255,0.10);
 
-        <div id="intensityValue" class="intensityValue"></div>
+    border-radius: 18px;
 
-        <div class="slider">
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.35);
 
-            <input
-                type="range"
-                id="intensity"
-                min="1"
-                max="10"
-                value="5">
+    overflow: hidden;
+}
 
-        </div>
+/* ======================================
+   Header
+   ====================================== */
 
-    </div>
+.flydna-card h1 {
+    margin: 0;
 
-    <div class="section">
+    font-size: 28px;
+    line-height: 1.15;
 
-        <h2>What did you feel?</h2>
+    font-weight: 700;
 
-        <p class="emotion-help">
-            Select up to <strong>3</strong> emotions
-            that best describe your experience.
-        </p>
+    letter-spacing: -0.5px;
+}
 
-        <div
-            id="emotionContainer"
-            class="emotions">
-        </div>
+.subtitle {
+    margin-top: 7px;
 
-        <div
-            id="emotionCounter"
-            class="emotion-counter">
-            0 / 3 selected
-        </div>
+    color: #9ca3b8;
 
-    </div>
+    font-size: 15px;
+    line-height: 1.4;
+}
 
-    <button id="submitBtn">
+/* ======================================
+   Sections
+   ====================================== */
 
-        🧬 Contribute Your DNA to the Community
+.section {
+    margin-top: 24px;
+}
 
-    </button>
+.section h2 {
+    margin: 0;
 
-    <div class="stats">
+    font-size: 17px;
+    line-height: 1.3;
 
-        <div class="stat">
+    font-weight: 700;
 
-            <span>Community Contributors</span>
+    color: #ffffff;
+}
 
-            <strong id="fd-total">0</strong>
+/* Track title */
 
-        </div>
+.section:first-of-type {
+    margin-top: 22px;
+}
 
-        <div class="stat">
+.section:first-of-type h2 {
+    font-size: 17px;
+}
 
-            <span>Average Emotional Impact</span>
+/* ======================================
+   Intensity
+   ====================================== */
 
-            <strong id="fd-intensity">0 / 10</strong>
+.intensityValue {
+    min-height: 105px;
 
-        </div>
+    display: flex;
 
-        <div class="stat">
+    flex-direction: column;
 
-            <span>Community Emotional DNA</span>
+    align-items: center;
+    justify-content: center;
 
-            <strong id="fd-dominant">-</strong>
+    text-align: center;
 
-        </div>
+    margin-top: 8px;
+}
 
-        <div id="fd-breakdown"></div>
+.intensityValue > div:first-child {
+    line-height: 1;
+}
 
-    </div>
-
-</div>
-
-`;
-
-    renderEmotions();
-
-    // ==================================
-    // Intensity
-    // ==================================
-
-    const slider =
-        document.getElementById("intensity");
-
-    const intensityLabels = {
-
-        1: {
-            emoji: "😐",
-            text: "No Emotional Impact",
-            color: "#808080"
-        },
-
-        2: {
-            emoji: "🙂",
-            text: "Slightly Touched",
-            color: "#9ca3af"
-        },
-
-        3: {
-            emoji: "😊",
-            text: "Pleasant",
-            color: "#38bdf8"
-        },
-
-        4: {
-            emoji: "❤️",
-            text: "Emotionally Connected",
-            color: "#3b82f6"
-        },
-
-        5: {
-            emoji: "🔥",
-            text: "Strong Impact",
-            color: "#2563eb"
-        },
-
-        6: {
-            emoji: "✨",
-            text: "Deep Impact",
-            color: "#0ea5e9"
-        },
-
-        7: {
-            emoji: "💥",
-            text: "Powerful",
-            color: "#7c3aed"
-        },
-
-        8: {
-            emoji: "🚀",
-            text: "Exceptional",
-            color: "#9333ea"
-        },
-
-        9: {
-            emoji: "🤯",
-            text: "Unforgettable",
-            color: "#f59e0b"
-        },
-
-        10: {
-            emoji: "🧬",
-            text: "Changed Me",
-            color: "#facc15"
-        }
-
-    };
-
-    function updateIntensity() {
-
-        const value =
-            Number(slider.value);
-
-        const level =
-            intensityLabels[value];
-
-        document
-            .getElementById("intensityValue")
-            .innerHTML = `
-
-                <div style="
-                    font-size:42px;
-                ">
-                    ${level.emoji}
-                </div>
-
-                <div style="
-                    font-size:34px;
-                    font-weight:bold;
-                    color:${level.color};
-                ">
-                    ${value} / 10
-                </div>
-
-                <div style="
-                    margin-top:8px;
-                    color:${level.color};
-                    font-size:16px;
-                ">
-                    ${level.text}
-                </div>
-
-            `;
-
-        slider.style.accentColor =
-            level.color;
+.slider {
+    width: 100%;
 
+    margin-top: 8px;
+}
+
+.slider input[type="range"] {
+    appearance: none;
+
+    width: 100%;
+    height: 6px;
+
+    margin: 0;
+
+    background:
+        rgba(255,255,255,0.20);
+
+    border-radius: 999px;
+
+    cursor: pointer;
+}
+
+.slider input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,0.22);
+}
+
+.slider input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+
+    width: 17px;
+    height: 17px;
+
+    margin-top: -5.5px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(255,255,255,0.9);
+
+    background:
+        #2563eb;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.15);
+}
+
+.slider input[type="range"]::-moz-range-track {
+    height: 6px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,0.22);
+}
+
+.slider input[type="range"]::-moz-range-thumb {
+    width: 17px;
+    height: 17px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(255,255,255,0.9);
+
+    background:
+        #2563eb;
+
+    cursor: pointer;
+}
+
+/* ======================================
+   Emotion Section
+   ====================================== */
+
+.emotion-help {
+    margin: 8px 0 14px;
+
+    color: #aeb3c2;
+
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.emotions {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(125px, 1fr)
+        );
+
+    gap: 10px;
+}
+
+/* ======================================
+   Emotion Buttons
+   ====================================== */
+
+.emotion-btn {
+    width: 100%;
+    min-width: 0;
+
+    height: 48px;
+
+    padding: 8px 12px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+    outline: none;
+}
+
+.emotion-btn:hover {
+    background:
+        rgba(255,255,255,0.09);
+
+    border-color:
+        rgba(255,255,255,0.22);
+
+    transform:
+        translateY(-1px);
+}
+
+.emotion-btn:focus-visible {
+    box-shadow:
+        0 0 0 2px
+        rgba(96,165,250,0.65);
+}
+
+.emotion-emoji {
+    display: inline-flex;
+
+    align-items: center;
+
+    line-height: 1;
+}
+
+.emotion-name {
+    white-space: nowrap;
+}
+
+/* ======================================
+   Emotion Counter
+   ====================================== */
+
+.emotion-counter {
+    margin-top: 9px;
+
+    color: #8f95a8;
+
+    font-size: 12px;
+
+    text-align: right;
+}
+
+/* ======================================
+   Contribution Button
+   ====================================== */
+
+#submitBtn {
+    width: 100%;
+
+    min-height: 50px;
+
+    margin-top: 20px;
+
+    padding: 12px 18px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb 0%,
+            #3b82f6 50%,
+            #7c3aed 100%
+        );
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 24px
+        rgba(37,99,235,0.22);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+#submitBtn:hover {
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 10px 28px
+        rgba(37,99,235,0.32);
+
+    filter:
+        brightness(1.05);
+}
+
+#submitBtn:active {
+    transform:
+        translateY(0);
+}
+
+/* ======================================
+   Community Statistics
+   ====================================== */
+
+.stats {
+    margin-top: 20px;
+
+    padding-top: 17px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.10);
+}
+
+.stat {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 30px;
+
+    font-size: 14px;
+}
+
+.stat span {
+    color: #d5d8e1;
+}
+
+.stat strong {
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    text-align: right;
+}
+
+#fd-breakdown {
+    margin-top: 10px;
+}
+
+/* ======================================
+   Mobile
+   ====================================== */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 4px;
     }
 
-    slider.oninput =
-        updateIntensity;
+    .flydna-card {
+        padding:
+            20px 16px 18px;
 
-    updateIntensity();
+        border-radius: 15px;
+    }
 
-    // ==================================
-    // Initialise voting
-    // ==================================
+    .flydna-card h1 {
+        font-size: 25px;
+    }
 
-    initialiseVoting(
-        TRACK_ID,
-        ENTITY_TYPE
-    );
+    .subtitle {
+        font-size: 14px;
+    }
 
-    // ==================================
-    // Contribution
-    // ==================================
+    .section {
+        margin-top: 20px;
+    }
 
-    document
-        .getElementById("submitBtn")
-        .onclick = () => {
+    .intensityValue {
+        min-height: 95px;
+    }
 
-            submitVote({
+    .emotions {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
 
-                trackId: TRACK_ID,
+        gap: 8px;
+    }
 
-                title: TRACK_TITLE,
+    .emotion-btn {
+        height: 46px;
 
-                type: ENTITY_TYPE,
+        padding:
+            7px 8px;
 
-                intensity:
-                    Number(slider.value),
+        font-size: 13px;
+    }
 
-                emotions:
-                    selectedEmotions
+    #submitBtn {
+        font-size: 14px;
+    }
 
-            });
+}
 
-        };
+/* ======================================
+   Very Small Screens
+   ====================================== */
 
-    // ==================================
-    // Initial community data
-    // ==================================
+@media (max-width: 380px) {
 
-    requestAggregate(
-        TRACK_ID,
-        ENTITY_TYPE
-    );
+    .emotions {
+        grid-template-columns:
+            1fr 1fr;
+    }
 
-};
+    .emotion-btn {
+        font-size: 12px;
+    }
+
+}
