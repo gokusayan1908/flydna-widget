@@ -1,5 +1,5 @@
 // ======================================
-// FlyDNA Emotions v1.0
+// FlyDNA Emotions v1.1
 // ======================================
 
 const emotions = [
@@ -78,7 +78,7 @@ function renderEmotions() {
     }
 
     // ----------------------------------
-    // Force compact responsive layout
+    // Compact responsive grid
     // ----------------------------------
 
     container.style.setProperty(
@@ -89,7 +89,7 @@ function renderEmotions() {
 
     container.style.setProperty(
         "grid-template-columns",
-        "repeat(auto-fit, minmax(120px, 1fr))",
+        "repeat(auto-fit, minmax(130px, 1fr))",
         "important"
     );
 
@@ -115,6 +115,8 @@ function renderEmotions() {
 
     selectedEmotions = [];
 
+    updateEmotionCounter();
+
     emotions.forEach((emotion) => {
 
         const button =
@@ -122,9 +124,11 @@ function renderEmotions() {
 
         button.type = "button";
 
-        button.className = "emotion-btn";
+        button.className =
+            "emotion-btn";
 
-        button.dataset.emotion = emotion.name;
+        button.dataset.emotion =
+            emotion.name;
 
         button.setAttribute(
             "aria-pressed",
@@ -132,7 +136,7 @@ function renderEmotions() {
         );
 
         // ----------------------------------
-        // Button content
+        // Content
         // ----------------------------------
 
         button.innerHTML = `
@@ -146,7 +150,7 @@ function renderEmotions() {
         `;
 
         // ----------------------------------
-        // Force compact button dimensions
+        // Force compact dimensions
         // ----------------------------------
 
         button.style.setProperty(
@@ -163,7 +167,7 @@ function renderEmotions() {
 
         button.style.setProperty(
             "height",
-            "52px",
+            "50px",
             "important"
         );
 
@@ -211,13 +215,13 @@ function renderEmotions() {
 
         button.style.setProperty(
             "border",
-            "1px solid rgba(255,255,255,0.16)",
+            "1px solid rgba(255,255,255,0.10)",
             "important"
         );
 
         button.style.setProperty(
             "background",
-            "rgba(255,255,255,0.06)",
+            "rgba(255,255,255,0.045)",
             "important"
         );
 
@@ -286,6 +290,8 @@ function renderEmotions() {
                         false
                     );
 
+                    updateEmotionCounter();
+
                     console.log(
                         "FlyDNA selected emotions:",
                         selectedEmotions
@@ -313,14 +319,17 @@ function renderEmotions() {
                                 transform:
                                     "translateX(-4px)"
                             },
+
                             {
                                 transform:
                                     "translateX(4px)"
                             },
+
                             {
                                 transform:
                                     "translateX(-4px)"
                             },
+
                             {
                                 transform:
                                     "translateX(0)"
@@ -348,6 +357,8 @@ function renderEmotions() {
                     emotion,
                     true
                 );
+
+                updateEmotionCounter();
 
                 console.log(
                     "FlyDNA selected emotions:",
@@ -383,24 +394,21 @@ function setButtonState(
             ? "✓ " + emotion.emoji
             : emotion.emoji;
 
-    const name =
-        selected
-            ? emotion.name
-            : emotion.name;
-
     button.innerHTML = `
         <span class="emotion-emoji">
             ${emoji}
         </span>
 
         <span class="emotion-name">
-            ${name}
+            ${emotion.name}
         </span>
     `;
 
     button.setAttribute(
         "aria-pressed",
-        selected ? "true" : "false"
+        selected
+            ? "true"
+            : "false"
     );
 
     if (selected) {
@@ -439,13 +447,13 @@ function setButtonState(
 
         button.style.setProperty(
             "background",
-            "rgba(255,255,255,0.06)",
+            "rgba(255,255,255,0.045)",
             "important"
         );
 
         button.style.setProperty(
             "border",
-            "1px solid rgba(255,255,255,0.16)",
+            "1px solid rgba(255,255,255,0.10)",
             "important"
         );
 
@@ -468,5 +476,26 @@ function setButtonState(
         );
 
     }
+
+}
+
+// ======================================
+// Emotion counter
+// ======================================
+
+function updateEmotionCounter() {
+
+    const counter =
+        document.getElementById(
+            "emotionCounter"
+        );
+
+    if (!counter) return;
+
+    const count =
+        selectedEmotions.length;
+
+    counter.textContent =
+        `${count} / 3 selected`;
 
 }
