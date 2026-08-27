@@ -9,36 +9,36 @@ let voteType = "";
 // Initialise
 // --------------------------------------
 
-function initialiseVoting(trackId, type) {
+window.initialiseVoting = function(trackId, type) {
 
     voteTrackId = trackId;
     voteType = type;
 
-}
+};
 
 // --------------------------------------
 // Request Community DNA
 // --------------------------------------
 
-function requestAggregate(trackId, type) {
+window.requestAggregate = function(trackId, type) {
 
     window.parent.postMessage({
 
         type: "getAggregate",
 
-        trackId: trackId,
+        trackId,
 
-        type: type
+        type
 
     }, "*");
 
-}
+};
 
 // --------------------------------------
 // Submit Vote
 // --------------------------------------
 
-function submitVote(vote) {
+window.submitVote = function(vote) {
 
     window.parent.postMessage({
 
@@ -48,7 +48,7 @@ function submitVote(vote) {
 
     }, "*");
 
-}
+};
 
 // --------------------------------------
 // Receive messages from Wix
@@ -65,7 +65,6 @@ window.addEventListener("message", (event) => {
         case "aggregate":
 
             renderAggregate(event.data.data);
-
             break;
 
         case "submitSuccess":
@@ -73,7 +72,7 @@ window.addEventListener("message", (event) => {
             document.getElementById("submitBtn").innerHTML =
                 "✅ Thank you!";
 
-            requestAggregate(
+            window.requestAggregate(
                 voteTrackId,
                 voteType
             );
