@@ -17,7 +17,7 @@ window.onload = () => {
     <h1>🧬 FlyDNA</h1>
 
     <div class="subtitle">
-        How deeply did this ${ENTITY_TYPE} move you?
+        What impact did this experience have on you?
     </div>
 
     <div class="section">
@@ -28,7 +28,7 @@ window.onload = () => {
 
     <div class="section">
 
-        <h2>Your Emotional Impact</h2>
+        <h2>Emotional Impact</h2>
 
         <div id="intensityValue" class="intensityValue"></div>
 
@@ -47,10 +47,10 @@ window.onload = () => {
 
     <div class="section">
 
-        <h2>Your Emotional DNA</h2>
+        <h2>What did you feel?</h2>
 
         <p class="emotion-help">
-            Select up to <strong>3</strong> emotions
+            Select up to <strong>3</strong> emotions that best describe your experience.
         </p>
 
         <div
@@ -62,7 +62,7 @@ window.onload = () => {
 
     <button id="submitBtn">
 
-        SHARE MY DNA
+        Share My Emotional DNA
 
     </button>
 
@@ -86,7 +86,7 @@ window.onload = () => {
 
         <div class="stat">
 
-            <span>Dominant Emotional DNA</span>
+            <span>Community Emotional DNA</span>
 
             <strong id="fd-dominant">-</strong>
 
@@ -119,10 +119,9 @@ window.onload = () => {
 
     };
 
-    function updateIntensity(){
+    function updateIntensity() {
 
         const value = Number(slider.value);
-
         const level = intensityLabels[value];
 
         document.getElementById("intensityValue").innerHTML = `
@@ -156,13 +155,9 @@ ${level.text}
             submitVote({
 
                 trackId: TRACK_ID,
-
                 title: TRACK_TITLE,
-
                 type: ENTITY_TYPE,
-
                 intensity: Number(slider.value),
-
                 emotions: selectedEmotions
 
             });
