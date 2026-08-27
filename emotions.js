@@ -1,62 +1,127 @@
-const EMOTIONS = [
+// ======================================
+// FlyDNA Emotions v1.0
+// ======================================
 
-    "❤️ Love",
-    "😊 Happiness",
-    "🔥 Energy",
-    "😌 Calm",
-    "🌌 Dreamy",
-    "💃 Dance",
-    "🚗 Roadtrip",
-    "💪 Motivation",
-    "😢 Sadness",
-    "🤔 Reflection",
-    "⚡ Power",
-    "🎬 Cinematic",
-    "🌍 Adventure",
-    "✨ Hope",
-    "🎉 Celebration",
-    "🌙 Night Vibes"
+const emotions = [
+
+    {
+        name: "Love",
+        emoji: "❤️"
+    },
+
+    {
+        name: "Energy",
+        emoji: "⚡"
+    },
+
+    {
+        name: "Joy",
+        emoji: "😊"
+    },
+
+    {
+        name: "Sadness",
+        emoji: "😢"
+    },
+
+    {
+        name: "Nostalgia",
+        emoji: "🌌"
+    },
+
+    {
+        name: "Passion",
+        emoji: "🔥"
+    },
+
+    {
+        name: "Peace",
+        emoji: "🕊️"
+    },
+
+    {
+        name: "Hope",
+        emoji: "✨"
+    },
+
+    {
+        name: "Celebration",
+        emoji: "🎉"
+    },
+
+    {
+        name: "Cinematic",
+        emoji: "🎬"
+    }
 
 ];
 
 let selectedEmotions = [];
 
+// ======================================
+// Render emotions
+// ======================================
+
 function renderEmotions() {
 
     const container = document.getElementById("emotionContainer");
 
-    if (!container) return;
-
     container.innerHTML = "";
 
-    EMOTIONS.forEach(emotion => {
+    emotions.forEach((emotion) => {
 
-        const chip = document.createElement("div");
+        const button = document.createElement("button");
 
-        chip.className = "emotion";
+        button.type = "button";
 
-        chip.innerText = emotion;
+        button.className = "emotion-btn";
 
-        chip.onclick = () => {
+        button.innerHTML = `
+            <span class="emoji">${emotion.emoji}</span>
+            <span>${emotion.name}</span>
+        `;
 
-            if (selectedEmotions.includes(emotion)) {
+        button.onclick = () => {
 
-                selectedEmotions =
-                    selectedEmotions.filter(e => e !== emotion);
+            const index = selectedEmotions.indexOf(emotion.name);
 
-                chip.classList.remove("selected");
+            // ----------------------------------
+            // Remove selection
+            // ----------------------------------
 
-            } else {
+            if (index !== -1) {
 
-                selectedEmotions.push(emotion);
+                selectedEmotions.splice(index, 1);
 
-                chip.classList.add("selected");
+                button.classList.remove("selected");
+
+                return;
 
             }
 
+            // ----------------------------------
+            // Maximum of 3 emotions
+            // ----------------------------------
+
+            if (selectedEmotions.length >= 3) {
+
+                alert("Please select a maximum of 3 emotions.");
+
+                return;
+
+            }
+
+            // ----------------------------------
+            // Add selection
+            // ----------------------------------
+
+            selectedEmotions.push(emotion.name);
+
+            button.classList.add("selected");
+
         };
 
-        container.appendChild(chip);
+        container.appendChild(button);
 
     });
 
