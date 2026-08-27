@@ -14,86 +14,68 @@ window.onload = () => {
 
 <div class="flydna-card">
 
-<h1>🧬 FlyDNA</h1>
+    <h1>🧬 FlyDNA</h1>
 
-<div class="subtitle">
+    <div class="subtitle">
+        How deeply did this music move you?
+    </div>
 
-How did this track make you feel?
+    <div class="section">
+        <h2>${TRACK_TITLE}</h2>
+    </div>
 
-</div>
+    <div class="section">
 
-<div class="section">
+        <h2>Your Emotional Impact</h2>
 
-<h2>${TRACK_TITLE}</h2>
+        <div id="intensityValue" class="intensityValue"></div>
 
-</div>
+        <div class="slider">
+            <input
+                type="range"
+                id="intensity"
+                min="1"
+                max="10"
+                value="5">
+        </div>
 
-<div class="section">
+    </div>
 
-<h2>Intensity</h2>
+    <div class="section">
 
-<div class="intensityValue" id="intensityValue">5</div>
+        <h2>Choose emotions</h2>
 
-<div class="slider">
+        <div
+            id="emotionContainer"
+            class="emotions">
+        </div>
 
-<input
-type="range"
-id="intensity"
-min="1"
-max="10"
-value="5">
+    </div>
 
-</div>
+    <button id="submitBtn">
+        SHARE MY DNA
+    </button>
 
-</div>
+    <div class="stats">
 
-<div class="section">
+        <div class="stat">
+            <span>Average</span>
+            <strong id="fd-intensity">-</strong>
+        </div>
 
-<h2>Emotions</h2>
+        <div class="stat">
+            <span>Responses</span>
+            <strong id="fd-total">0</strong>
+        </div>
 
-<div
-id="emotionContainer"
-class="emotions">
+        <div class="stat">
+            <span>Dominant</span>
+            <strong id="fd-dominant">-</strong>
+        </div>
 
-</div>
+        <div id="fd-breakdown"></div>
 
-</div>
-
-<button id="submitBtn">
-
-Submit my FlyDNA
-
-</button>
-
-<div class="stats">
-
-<div class="stat">
-
-<span>Total Responses</span>
-
-<strong id="fd-total">0</strong>
-
-</div>
-
-<div class="stat">
-
-<span>Average Intensity</span>
-
-<strong id="fd-intensity">0</strong>
-
-</div>
-
-<div class="stat">
-
-<span>Dominant Emotion</span>
-
-<strong id="fd-dominant">-</strong>
-
-</div>
-
-<div id="fd-breakdown"></div>
-
-</div>
+    </div>
 
 </div>
 
@@ -103,11 +85,99 @@ Submit my FlyDNA
 
     const slider = document.getElementById("intensity");
 
-    slider.oninput = () => {
+    const intensityLabels = {
 
-        document.getElementById("intensityValue").innerHTML = slider.value;
+        1: {
+            emoji: "😐",
+            text: "No Emotional Impact",
+            color: "#777777"
+        },
+
+        2: {
+            emoji: "🙂",
+            text: "Slightly Touched",
+            color: "#8b8b8b"
+        },
+
+        3: {
+            emoji: "😊",
+            text: "Pleasant",
+            color: "#55c4ff"
+        },
+
+        4: {
+            emoji: "❤️",
+            text: "Emotionally Connected",
+            color: "#3ea8ff"
+        },
+
+        5: {
+            emoji: "🔥",
+            text: "Strong Impact",
+            color: "#1f8fff"
+        },
+
+        6: {
+            emoji: "✨",
+            text: "Deep Impact",
+            color: "#0077ff"
+        },
+
+        7: {
+            emoji: "💥",
+            text: "Powerful",
+            color: "#8d5cff"
+        },
+
+        8: {
+            emoji: "🚀",
+            text: "Exceptional",
+            color: "#b45cff"
+        },
+
+        9: {
+            emoji: "🤯",
+            text: "Unforgettable",
+            color: "#f4b400"
+        },
+
+        10: {
+            emoji: "🧬",
+            text: "Changed Me",
+            color: "#ffd700"
+        }
 
     };
+
+    function updateIntensity() {
+
+        const value = Number(slider.value);
+
+        const level = intensityLabels[value];
+
+        document.getElementById("intensityValue").innerHTML = `
+
+<div style="font-size:40px">
+${level.emoji}
+</div>
+
+<div style="font-size:34px;font-weight:bold;margin-top:6px;color:${level.color}">
+${value} / 10
+</div>
+
+<div style="font-size:16px;color:${level.color};margin-top:8px">
+${level.text}
+</div>
+
+`;
+
+        slider.style.accentColor = level.color;
+
+    }
+
+    slider.oninput = updateIntensity;
+
+    updateIntensity();
 
     document
         .getElementById("submitBtn")
