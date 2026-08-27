@@ -1,5 +1,5 @@
 // ======================================
-// FlyDNA Application
+// FlyDNA Application v1.0
 // ======================================
 
 const params = new URLSearchParams(window.location.search);
@@ -47,7 +47,11 @@ window.onload = () => {
 
     <div class="section">
 
-        <h2>Choose your emotions</h2>
+        <h2>Your Emotional DNA</h2>
+
+        <p class="emotion-help">
+            Select up to <strong>3</strong> emotions
+        </p>
 
         <div
             id="emotionContainer"
@@ -82,7 +86,7 @@ window.onload = () => {
 
         <div class="stat">
 
-            <span>Dominant Emotion</span>
+            <span>Dominant Emotional DNA</span>
 
             <strong id="fd-dominant">-</strong>
 
