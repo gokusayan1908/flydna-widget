@@ -1,5 +1,5 @@
 // ======================================
-// FlyDNA Emotions v1.1
+// FlyDNA Emotions v1.2
 // ======================================
 
 const EMOTIONS = [
@@ -85,14 +85,22 @@ function renderEmotions() {
 
         button.type = "button";
 
-        button.className =
-            "emotion-button";
+        // IMPORTANT:
+        // This must match style.css
+        button.className = "emotion-btn";
 
         button.dataset.emotion =
             emotion.label;
 
-        button.innerHTML =
-            `${emotion.emoji} ${emotion.label}`;
+        button.innerHTML = `
+            <span class="emotion-emoji">
+                ${emotion.emoji}
+            </span>
+
+            <span class="emotion-name">
+                ${emotion.label}
+            </span>
+        `;
 
         button.addEventListener(
             "click",
@@ -127,7 +135,10 @@ function toggleEmotion(
     const index =
         selectedEmotions.indexOf(emotion);
 
+    // ----------------------------------
     // Already selected → remove
+    // ----------------------------------
+
     if (index !== -1) {
 
         selectedEmotions.splice(
@@ -139,26 +150,27 @@ function toggleEmotion(
             "selected"
         );
 
-        button.innerHTML =
-            getEmotionDisplay(emotion);
-
         updateEmotionCounter();
 
         return;
     }
 
+    // ----------------------------------
     // Maximum reached
+    // ----------------------------------
+
     if (
         selectedEmotions.length >=
         MAX_EMOTIONS
     ) {
 
-        updateEmotionCounter();
-
         return;
     }
 
+    // ----------------------------------
     // Add emotion
+    // ----------------------------------
+
     selectedEmotions.push(
         emotion
     );
@@ -167,32 +179,7 @@ function toggleEmotion(
         "selected"
     );
 
-    button.innerHTML =
-        `✓ ${getEmotionDisplay(emotion)}`;
-
     updateEmotionCounter();
-}
-
-
-// ======================================
-// Get emotion display
-// ======================================
-
-function getEmotionDisplay(
-    emotionLabel
-) {
-
-    const emotion =
-        EMOTIONS.find(
-            item =>
-                item.label === emotionLabel
-        );
-
-    if (!emotion) {
-        return emotionLabel;
-    }
-
-    return `${emotion.emoji} ${emotion.label}`;
 }
 
 
@@ -211,6 +198,9 @@ function updateEmotionCounter() {
         return;
     }
 
+    const count =
+        selectedEmotions.length;
+
     counter.textContent =
-        `${selectedEmotions.length} / ${MAX_EMOTIONS} selected`;
+        `${count} of ${MAX_EMOTIONS} emotions selected`;
 }
