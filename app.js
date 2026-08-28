@@ -8,6 +8,10 @@ const TRACK_ID = params.get("track") || "unknown";
 const TRACK_TITLE = decodeURIComponent(params.get("title") || "Unknown Track");
 const ENTITY_TYPE = params.get("type") || "music";
 
+let submittedIntensity = null;
+let submittedEmotions = [];
+let latestAggregate = null;
+
 window.onload = () => {
 
     document.getElementById("app").innerHTML = `
@@ -20,13 +24,13 @@ window.onload = () => {
         What impact did this experience have on you?
     </div>
 
-    <div class="section">
+    <div class="section track-section">
 
         <h2>${TRACK_TITLE}</h2>
 
     </div>
 
-    <div class="section">
+    <div class="section" id="impactSection">
 
         <h2>Emotional Impact</h2>
 
@@ -45,7 +49,7 @@ window.onload = () => {
 
     </div>
 
-    <div class="section">
+    <div class="section" id="emotionSection">
 
         <h2>What did you feel?</h2>
 
@@ -59,6 +63,8 @@ window.onload = () => {
         </div>
 
     </div>
+
+    <div id="communityResult"></div>
 
     <button id="submitBtn">
 
@@ -152,56 +158,62 @@ ${level.text}
     const submitBtn = document.getElementById("submitBtn");
 
     // ====================================================
-    // Receive response from Wix
+    // Receive messages from Wix
     // ====================================================
 
     window.addEventListener("message", function(event) {
 
-        if (!event.data) {
+        if (!event.data || !event.data.type) {
             return;
         }
 
-        // --------------------------------------------
-        // Successful submission
-        // --------------------------------------------
+        console.log("FlyDNA ← Wix", event.data);
+
+        // ------------------------------------------------
+        // Submission successful
+        // ------------------------------------------------
 
         if (event.data.type === "submitSuccess") {
 
-            submitBtn.disabled = true;
-
-            submitBtn.innerHTML = `
-                ✅ Thank you!
-            `;
+            showCommunityResult();
 
             return;
         }
 
-        // --------------------------------------------
+        // ------------------------------------------------
         // Already submitted
-        // --------------------------------------------
+        // ------------------------------------------------
 
         if (event.data.type === "alreadySubmitted") {
 
-            submitBtn.disabled = true;
-
-            submitBtn.innerHTML = `
-                ✅ Already submitted
-            `;
+            showAlreadySubmitted();
 
             return;
         }
 
-        // --------------------------------------------
+        // ------------------------------------------------
+        // Aggregate received
+        // ------------------------------------------------
+
+        if (event.data.type === "aggregate") {
+
+            latestAggregate = event.data.data;
+
+            updateCommunityStats(latestAggregate);
+
+            return;
+        }
+
+        // ------------------------------------------------
         // Submission error
-        // --------------------------------------------
+        // ------------------------------------------------
 
         if (event.data.type === "submitError") {
 
             submitBtn.disabled = false;
 
-            submitBtn.innerHTML = `
-                🧬 Contribute Your DNA to the Community
-            `;
+            submitBtn.textContent =
+                "🧬 Contribute Your DNA to the Community";
 
             return;
         }
@@ -209,17 +221,15 @@ ${level.text}
     });
 
     // ====================================================
-    // Submit Vote
+    // Submit
     // ====================================================
 
     submitBtn.onclick = () => {
 
-        // Prevent multiple submissions
         if (submitBtn.disabled) {
             return;
         }
 
-        // Prevent submission without emotions
         if (
             typeof selectedEmotions === "undefined" ||
             selectedEmotions.length === 0
@@ -227,14 +237,15 @@ ${level.text}
             return;
         }
 
-        // Lock immediately
+        submittedIntensity = Number(slider.value);
+        submittedEmotions = selectedEmotions.slice();
+
         submitBtn.disabled = true;
 
         submitBtn.innerHTML = `
-            ⏳ Submitting...
+            ⏳ Adding your DNA...
         `;
 
-        // Send submission to Wix page
         window.parent.postMessage({
 
             type: "submit",
@@ -247,9 +258,9 @@ ${level.text}
 
                 type: ENTITY_TYPE,
 
-                intensity: Number(slider.value),
+                intensity: submittedIntensity,
 
-                emotions: selectedEmotions.slice()
+                emotions: submittedEmotions
 
             }
 
@@ -264,3 +275,212 @@ ${level.text}
     requestAggregate(TRACK_ID, ENTITY_TYPE);
 
 };
+
+
+// ========================================================
+// SHOW COMMUNITY RESULT
+// ========================================================
+
+function showCommunityResult() {
+
+    const submitBtn = document.getElementById("submitBtn");
+
+    const impactSection = document.getElementById("impactSection");
+    const emotionSection = document.getElementById("emotionSection");
+    const communityResult = document.getElementById("communityResult");
+
+    if (impactSection) {
+        impactSection.style.display = "none";
+    }
+
+    if (emotionSection) {
+        emotionSection.style.display = "none";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "none";
+    }
+
+    const emotionsText =
+        submittedEmotions.length > 0
+            ? submittedEmotions.join(" · ")
+            : "Your emotional DNA";
+
+    communityResult.innerHTML = `
+
+<div class="community-result">
+
+    <div class="community-title">
+        🧬 Your DNA is now part of the universe
+    </div>
+
+    <div class="community-track">
+        ${TRACK_TITLE}
+    </div>
+
+    <div class="your-dna">
+
+        <div class="your-dna-title">
+            YOUR EMOTIONAL DNA
+        </div>
+
+        <div class="your-score">
+            ${submittedIntensity} / 10
+        </div>
+
+        <div class="your-emotions">
+            ${emotionsText}
+        </div>
+
+    </div>
+
+    <div class="community-heading">
+        🌍 The Community Feeling
+    </div>
+
+</div>
+
+`;
+
+    updateCommunityStats(latestAggregate);
+
+}
+
+
+// ========================================================
+// ALREADY SUBMITTED
+// ========================================================
+
+function showAlreadySubmitted() {
+
+    const impactSection = document.getElementById("impactSection");
+    const emotionSection = document.getElementById("emotionSection");
+    const submitBtn = document.getElementById("submitBtn");
+
+    if (impactSection) {
+        impactSection.style.display = "none";
+    }
+
+    if (emotionSection) {
+        emotionSection.style.display = "none";
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = "none";
+    }
+
+}
+
+
+// ========================================================
+// UPDATE COMMUNITY STATS
+// ========================================================
+
+function updateCommunityStats(data) {
+
+    if (!data) {
+        return;
+    }
+
+    const total = Number(data.totalResponses || 0);
+
+    const avg = Number(data.avgIntensity || 0);
+
+    const dominant = data.dominantEmotion || "-";
+
+    const dominantPct = Number(data.dominantPct || 0);
+
+    const totalElement =
+        document.getElementById("fd-total");
+
+    const intensityElement =
+        document.getElementById("fd-intensity");
+
+    const dominantElement =
+        document.getElementById("fd-dominant");
+
+    if (totalElement) {
+        totalElement.textContent = total;
+    }
+
+    if (intensityElement) {
+        intensityElement.textContent =
+            `${avg} / 10`;
+    }
+
+    if (dominantElement) {
+        dominantElement.textContent =
+            dominant === "-"
+                ? "-"
+                : `${dominant}`;
+    }
+
+    renderBreakdown(data);
+
+}
+
+
+// ========================================================
+// EMOTION BREAKDOWN
+// ========================================================
+
+function renderBreakdown(data) {
+
+    const container =
+        document.getElementById("fd-breakdown");
+
+    if (!container) {
+        return;
+    }
+
+    const breakdown =
+        data.emotionBreakdown || {};
+
+    const total =
+        Number(data.totalResponses || 0);
+
+    if (!total) {
+
+        container.innerHTML = "";
+
+        return;
+    }
+
+    const sorted =
+        Object.entries(breakdown)
+            .sort((a, b) => b[1] - a[1]);
+
+    container.innerHTML =
+        sorted.map(([emotion, count]) => {
+
+            const percentage =
+                Math.round((count / total) * 100);
+
+            return `
+
+<div class="emotion-result">
+
+    <div class="emotion-result-label">
+
+        <span>${emotion}</span>
+
+        <strong>${percentage}%</strong>
+
+    </div>
+
+    <div class="emotion-result-bar">
+
+        <div
+            class="emotion-result-fill"
+            style="width:${percentage}%">
+        </div>
+
+    </div>
+
+</div>
+
+`;
+
+        }).join("");
+
+}
