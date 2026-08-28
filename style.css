@@ -1,6 +1,7 @@
 /* ======================================
-   FlyDNA Application v1.8
-   Compact Fixed-Box Layout
+   FlyDNA Application v1.4
+   Premium Dark UI
+   Ultra Compact Layout
    ====================================== */
 
 * {
@@ -12,6 +13,7 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
+    min-height: 100%;
 
     background: #0d0d14;
     color: #ffffff;
@@ -30,18 +32,20 @@ body {
 }
 
 /* ======================================
-   MAIN FLYDNA BOX
+   Main FlyDNA Card
    ====================================== */
 
 #app {
-    position: relative;
+    width: 100%;
+}
 
+.flydna-card {
     width: 100%;
     max-width: 1400px;
 
     margin: 0 auto;
 
-    padding: 8px 12px 7px;
+    padding: 7px 12px 6px;
 
     background:
         linear-gradient(
@@ -62,149 +66,92 @@ body {
 }
 
 /* ======================================
-   LOGO
+   Header
    ====================================== */
 
-.logo {
-    width: 48%;
-
-    margin: 0;
-    padding: 0;
-}
-
-.logo h1 {
-    display: inline-block;
-
+.flydna-card h1 {
     margin: 0;
 
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 19px;
+    line-height: 1;
 
     font-weight: 700;
 
     letter-spacing: -0.3px;
 }
 
-.logo p {
-    margin: 1px 0 0;
+.subtitle {
+    margin-top: 2px;
 
     color: #9ca3b8;
 
-    font-size: 9px;
-    line-height: 10px;
+    font-size: 10px;
+    line-height: 1.1;
 }
 
 /* ======================================
-   TRACK TITLE
-   UPPER RIGHT
+   Sections
    ====================================== */
 
-.track {
-    position: absolute;
-
-    top: 8px;
-    right: 12px;
-
-    width: 42%;
-
-    margin: 0;
-    padding: 0;
-
-    text-align: right;
+.section {
+    margin-top: 5px;
 }
 
-.track h2 {
+.section h2 {
     margin: 0;
 
-    font-size: 11px;
-    line-height: 12px;
+    font-size: 12px;
+    line-height: 1.1;
 
     font-weight: 700;
 
     color: #ffffff;
+}
 
-    white-space: nowrap;
+.section:first-of-type {
+    margin-top: 5px;
+}
 
-    overflow: hidden;
-    text-overflow: ellipsis;
+.section:first-of-type h2 {
+    font-size: 12px;
 }
 
 /* ======================================
-   INTENSITY AREA
+   Intensity
    ====================================== */
 
-.intensity {
-    position: relative;
-
-    width: 100%;
-
-    margin-top: 7px;
-
-    padding: 0;
-}
-
-/* Emotional Impact label
-   positioned upper-right */
-
-.intensity label {
-    position: absolute;
-
-    top: -1px;
-    right: 0;
-
-    margin: 0;
-
-    color: #ffffff;
-
-    font-size: 10px;
-    line-height: 11px;
-
-    font-weight: 600;
-}
-
-/* ======================================
-   SCORE
-   ====================================== */
-
-#intensityValue {
-    width: 100%;
-
-    height: 18px;
-
-    margin: 0;
-
-    padding: 0;
+.intensityValue {
+    min-height: 31px;
 
     display: flex;
+
+    flex-direction: column;
 
     align-items: center;
     justify-content: center;
 
-    color: #2563eb;
-
-    font-size: 14px !important;
-    line-height: 18px !important;
-
-    font-weight: 700;
-
     text-align: center;
+
+    margin-top: 1px;
 }
 
-/* ======================================
-   SLIDER
-   ====================================== */
+.intensityValue > div:first-child {
+    line-height: 1;
+}
 
-#intensity {
+.slider {
+    width: 100%;
+
+    margin-top: 2px;
+}
+
+.slider input[type="range"] {
     appearance: none;
-
-    display: block;
 
     width: 100%;
     height: 4px;
 
-    margin: 2px 0 0;
-
-    padding: 0;
+    margin: 0;
 
     background:
         rgba(255,255,255,0.20);
@@ -214,7 +161,7 @@ body {
     cursor: pointer;
 }
 
-#intensity::-webkit-slider-runnable-track {
+.slider input[type="range"]::-webkit-slider-runnable-track {
     height: 4px;
 
     border-radius: 999px;
@@ -223,7 +170,7 @@ body {
         rgba(255,255,255,0.22);
 }
 
-#intensity::-webkit-slider-thumb {
+.slider input[type="range"]::-webkit-slider-thumb {
     appearance: none;
 
     width: 11px;
@@ -245,7 +192,7 @@ body {
         0 0 0 2px rgba(37,99,235,0.15);
 }
 
-#intensity::-moz-range-track {
+.slider input[type="range"]::-moz-range-track {
     height: 4px;
 
     border-radius: 999px;
@@ -254,7 +201,7 @@ body {
         rgba(255,255,255,0.22);
 }
 
-#intensity::-moz-range-thumb {
+.slider input[type="range"]::-moz-range-thumb {
     width: 11px;
     height: 11px;
 
@@ -270,34 +217,27 @@ body {
 }
 
 /* ======================================
-   EMOTIONS
+   Emotion Section
    ====================================== */
 
-.emotions {
-    width: 100%;
-
-    margin-top: 4px;
-    padding: 0;
-}
-
-.emotions > label {
-    display: block;
-
-    margin: 0 0 2px;
+.emotion-help {
+    margin: 2px 0 3px;
 
     color: #aeb3c2;
 
     font-size: 9px;
-    line-height: 10px;
+    line-height: 1.1;
 }
 
-/* Javascript populates this */
-
-#emotionContainer {
+.emotions {
     width: 100%;
 
     display: grid;
 
+    /*
+       Exactly 5 columns x 2 rows
+       so all ten emotions stay compact.
+    */
     grid-template-columns:
         repeat(5, minmax(0, 1fr));
 
@@ -305,16 +245,14 @@ body {
 }
 
 /* ======================================
-   EMOTION BUTTONS
-   IMPORTANT:
-   KEEPING WORKING SELECTED STATE
+   Emotion Buttons
    ====================================== */
 
 .emotion-btn {
     width: 100%;
     min-width: 0;
 
-    height: 24px;
+    height: 25px;
 
     padding: 2px 4px;
 
@@ -337,7 +275,7 @@ body {
 
     font-family: inherit;
 
-    font-size: 8px;
+    font-size: 9px;
 
     font-weight: 500;
 
@@ -352,6 +290,10 @@ body {
     outline: none;
 }
 
+/* --------------------------------------
+   Hover
+   -------------------------------------- */
+
 .emotion-btn:hover {
     background:
         rgba(255,255,255,0.09);
@@ -362,6 +304,10 @@ body {
     transform:
         translateY(-1px);
 }
+
+/* --------------------------------------
+   SELECTED STATE
+   -------------------------------------- */
 
 .emotion-btn.selected {
     background:
@@ -387,6 +333,8 @@ body {
         translateY(-1px);
 }
 
+/* Keep selected state visually dominant on hover */
+
 .emotion-btn.selected:hover {
     background:
         linear-gradient(
@@ -404,11 +352,19 @@ body {
         rgba(59,130,246,0.35);
 }
 
+/* --------------------------------------
+   Focus
+   -------------------------------------- */
+
 .emotion-btn:focus-visible {
     box-shadow:
         0 0 0 2px
         rgba(96,165,250,0.65);
 }
+
+/* --------------------------------------
+   Emotion contents
+   -------------------------------------- */
 
 .emotion-emoji {
     display: inline-flex;
@@ -423,17 +379,17 @@ body {
 }
 
 /* ======================================
-   EMOTION COUNTER
+   Emotion Counter
    ====================================== */
 
 .emotion-counter {
-    margin-top: 1px;
+    margin-top: 2px;
 
     color: #8f95a8;
 
-    font-size: 8px;
+    font-size: 9px;
 
-    line-height: 9px;
+    line-height: 1;
 
     text-align: right;
 }
@@ -445,17 +401,17 @@ body {
 }
 
 /* ======================================
-   CONTRIBUTION BUTTON
+   Contribution Button
    ====================================== */
 
 #submitBtn {
     width: 100%;
 
-    min-height: 26px;
+    min-height: 28px;
 
-    margin-top: 3px;
+    margin-top: 4px;
 
-    padding: 4px 8px;
+    padding: 5px 10px;
 
     border: 0;
 
@@ -473,7 +429,7 @@ body {
 
     font-family: inherit;
 
-    font-size: 9px;
+    font-size: 10px;
 
     font-weight: 600;
 
@@ -507,42 +463,16 @@ body {
 }
 
 /* ======================================
-   STATUS
+   Community Statistics
    ====================================== */
 
-#status {
-    margin: 0;
-    padding: 0;
+.stats {
+    margin-top: 4px;
 
-    font-size: 8px;
-    line-height: 8px;
-}
-
-/* ======================================
-   COMMUNITY
-   ====================================== */
-
-hr {
-    margin: 3px 0;
-
-    border: 0;
+    padding-top: 4px;
 
     border-top:
         1px solid rgba(255,255,255,0.10);
-}
-
-#app h3 {
-    margin: 0 0 2px;
-
-    font-size: 9px;
-    line-height: 10px;
-
-    font-weight: 700;
-}
-
-.stats {
-    margin: 0;
-    padding: 0;
 }
 
 .stat {
@@ -551,10 +481,9 @@ hr {
     align-items: center;
     justify-content: space-between;
 
-    min-height: 12px;
+    min-height: 15px;
 
-    font-size: 8px;
-    line-height: 1;
+    font-size: 9px;
 }
 
 .stat span {
@@ -564,7 +493,7 @@ hr {
 .stat strong {
     color: #ffffff;
 
-    font-size: 9px;
+    font-size: 10px;
 
     font-weight: 600;
 
@@ -572,14 +501,11 @@ hr {
 }
 
 #fd-breakdown {
-    margin-top: 1px;
-
-    font-size: 8px;
-    line-height: 9px;
+    margin-top: 2px;
 }
 
 /* ======================================
-   MOBILE
+   Mobile
    ====================================== */
 
 @media (max-width: 700px) {
@@ -588,137 +514,88 @@ hr {
         padding: 1px;
     }
 
-    #app {
-        padding: 6px 8px 5px;
+    .flydna-card {
+        padding:
+            6px 9px 5px;
 
         border-radius: 10px;
     }
 
-    .logo {
-        width: 45%;
+    .flydna-card h1 {
+        font-size: 17px;
     }
 
-    .logo h1 {
-        font-size: 16px;
-        line-height: 16px;
-    }
-
-    .logo p {
-        font-size: 8px;
-        line-height: 9px;
-    }
-
-    .track {
-        top: 6px;
-        right: 8px;
-
-        width: 45%;
-    }
-
-    .track h2 {
+    .subtitle {
         font-size: 9px;
-        line-height: 10px;
     }
 
-    .intensity {
-        margin-top: 6px;
+    .section {
+        margin-top: 4px;
     }
 
-    .intensity label {
-        font-size: 8px;
-        line-height: 9px;
-    }
-
-    #intensityValue {
-        height: 15px;
-
-        font-size: 11px !important;
-        line-height: 15px !important;
-    }
-
-    #intensity {
-        margin-top: 1px;
+    .intensityValue {
+        min-height: 27px;
     }
 
     .emotions {
-        margin-top: 3px;
-    }
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
 
-    #emotionContainer {
         gap: 2px;
     }
 
     .emotion-btn {
-        height: 22px;
+        height: 23px;
 
-        padding: 2px 3px;
+        padding:
+            2px 3px;
 
-        font-size: 7px;
+        font-size: 8px;
 
         border-radius: 5px;
     }
 
     .emotion-emoji {
-        font-size: 8px;
+        font-size: 9px;
     }
 
     .emotion-counter {
-        font-size: 7px;
-        line-height: 8px;
+        font-size: 8px;
     }
 
     #submitBtn {
-        min-height: 24px;
+        min-height: 26px;
 
-        margin-top: 2px;
+        margin-top: 3px;
 
-        font-size: 8px;
-    }
-
-    hr {
-        margin: 2px 0;
-    }
-
-    #app h3 {
-        font-size: 8px;
-        line-height: 9px;
+        font-size: 9px;
     }
 
     .stat {
-        min-height: 11px;
+        min-height: 14px;
 
-        font-size: 7px;
-    }
-
-    .stat strong {
         font-size: 8px;
     }
 
-    #fd-breakdown {
-        font-size: 7px;
-        line-height: 8px;
+    .stat strong {
+        font-size: 9px;
     }
+
 }
 
 /* ======================================
-   VERY SMALL SCREENS
+   Very Small Screens
    ====================================== */
 
 @media (max-width: 380px) {
 
-    .track {
-        width: 43%;
-    }
-
-    .track h2 {
-        font-size: 8px;
+    .emotions {
+        grid-template-columns:
+            1fr 1fr;
     }
 
     .emotion-btn {
-        font-size: 6.5px;
-    }
-
-    .emotion-emoji {
         font-size: 7px;
     }
+
 }
