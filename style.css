@@ -96,24 +96,40 @@ body {
 }
 
 /* ======================================
-   INLINE SONG TITLE
-   ONLY NEW CHANGE
+   SONG TITLE
+   Places title directly after FlyDNA
    ====================================== */
 
-.track-inline {
-    color: #ffffff;
+.track {
+    position: absolute;
+
+    left: 78px;
+    top: 8px;
+
+    margin: 0;
+    padding: 0;
+
+    pointer-events: none;
+}
+
+.track h2 {
+    margin: 0;
+    padding: 0;
 
     font-size: 13px;
+    line-height: 18px;
 
     font-weight: 600;
 
-    margin-left: 4px;
-
-    letter-spacing: -0.1px;
-}
-
-#trackTitle {
     color: #ffffff;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    max-width: calc(100vw - 100px);
 }
 
 /* ======================================
@@ -648,10 +664,16 @@ body {
         font-size: 9px;
     }
 
-    .track-inline {
-        font-size: 11px;
+    .track {
+        left: 68px;
+        top: 7px;
+    }
 
-        margin-left: 3px;
+    .track h2 {
+        font-size: 11px;
+        line-height: 17px;
+
+        max-width: calc(100vw - 85px);
     }
 
     .section {
@@ -772,10 +794,16 @@ body {
         padding: 6px 7px 5px;
     }
 
-    .track-inline {
-        font-size: 10px;
+    .track {
+        left: 62px;
+        top: 6px;
+    }
 
-        margin-left: 2px;
+    .track h2 {
+        font-size: 10px;
+        line-height: 16px;
+
+        max-width: calc(100vw - 76px);
     }
 
     .emotion-btn {
