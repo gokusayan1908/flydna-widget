@@ -141,30 +141,31 @@ body {
 }
 
 /*
-   IMPORTANT:
-   Force the emoji/icon to stay compact.
+   FIRE ICON
+   Reduced only as requested.
 */
 
 .intensityValue > div:first-child {
-    font-size: 24px !important;
-    line-height: 24px !important;
+    font-size: 16px !important;
+    line-height: 16px !important;
 
-    height: 24px !important;
-    min-height: 24px !important;
+    height: 16px !important;
+    min-height: 16px !important;
 
     margin: 0 !important;
     padding: 0 !important;
 }
 
 /*
-   Score value
+   SCORE
+   Reduced only as requested.
 */
 
 .intensityValue > div:nth-child(2) {
-    font-size: 24px !important;
-    line-height: 25px !important;
+    font-size: 17px !important;
+    line-height: 18px !important;
 
-    height: 25px !important;
+    height: 18px !important;
 
     margin: 0 !important;
     padding: 0 !important;
@@ -172,6 +173,7 @@ body {
 
 /*
    Intensity description
+   UNCHANGED
 */
 
 .intensityValue > div:nth-child(3) {
@@ -616,16 +618,16 @@ body {
     }
 
     .intensityValue > div:first-child {
-        font-size: 21px !important;
-        line-height: 21px !important;
-        height: 21px !important;
-        min-height: 21px !important;
+        font-size: 16px !important;
+        line-height: 16px !important;
+        height: 16px !important;
+        min-height: 16px !important;
     }
 
     .intensityValue > div:nth-child(2) {
-        font-size: 22px !important;
-        line-height: 23px !important;
-        height: 23px !important;
+        font-size: 17px !important;
+        line-height: 18px !important;
+        height: 18px !important;
     }
 
     .intensityValue > div:nth-child(3) {
