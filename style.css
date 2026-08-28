@@ -1,154 +1,599 @@
-<!DOCTYPE html>
-<html lang="en">
+/* ======================================
+   FlyDNA Application v1.2
+   Premium Dark UI
+   Compact Layout + Selected State
+   ====================================== */
 
-<head>
+* {
+    box-sizing: border-box;
+}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
 
-    <title>FlyDNA</title>
+    background: #0d0d14;
+    color: #ffffff;
 
-    <link rel="stylesheet" href="style.css?v=5">
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
 
-    <!-- Restore selected emotion visual state -->
-    <style>
+body {
+    padding: 6px;
+}
 
-        .emotion-btn.selected {
-            background:
-                linear-gradient(
-                    135deg,
-                    #2563eb 0%,
-                    #7c3aed 100%
-                );
+/* ======================================
+   Main FlyDNA Card
+   ====================================== */
 
-            border-color:
-                rgba(255,255,255,0.35);
+#app {
+    width: 100%;
+}
 
-            color:
-                #ffffff;
+.flydna-card {
+    width: 100%;
+    max-width: 1400px;
 
-            box-shadow:
-                0 6px 18px
-                rgba(37,99,235,0.25);
-        }
+    margin: 0 auto;
 
-    </style>
+    padding: 20px 24px 18px;
 
-</head>
+    background:
+        linear-gradient(
+            145deg,
+            #171720 0%,
+            #111119 100%
+        );
 
-<body>
+    border:
+        1px solid rgba(255,255,255,0.10);
 
-<div id="app">
+    border-radius: 18px;
 
-    <div class="logo">
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.35);
 
-        🧬
+    overflow: hidden;
+}
 
-        <h1>FlyDNA</h1>
+/* ======================================
+   Header
+   ====================================== */
 
-        <p>
-            How deeply did this music move you?
-        </p>
+.flydna-card h1 {
+    margin: 0;
 
-    </div>
+    font-size: 27px;
+    line-height: 1.15;
 
-    <div class="track">
+    font-weight: 700;
 
-        <h2 id="trackTitle">
-            Loading...
-        </h2>
+    letter-spacing: -0.5px;
+}
 
-    </div>
+.subtitle {
+    margin-top: 5px;
 
-    <div class="intensity">
+    color: #9ca3b8;
 
-        <label>
-            Emotional Intensity
-        </label>
+    font-size: 14px;
+    line-height: 1.35;
+}
 
-        <input
-            id="intensity"
-            type="range"
-            min="1"
-            max="10"
-            value="5">
+/* ======================================
+   Sections
+   ====================================== */
 
-        <div id="intensityValue">
-            5 / 10
-        </div>
+.section {
+    margin-top: 18px;
+}
 
-    </div>
+.section h2 {
+    margin: 0;
 
-    <div class="emotions">
+    font-size: 17px;
+    line-height: 1.25;
 
-        <label>
-            Choose emotions
-        </label>
+    font-weight: 700;
 
-        <div id="emotionContainer">
-        </div>
+    color: #ffffff;
+}
 
-    </div>
+.section:first-of-type {
+    margin-top: 17px;
+}
 
-    <button id="submitBtn">
-        SHARE MY DNA
-    </button>
+.section:first-of-type h2 {
+    font-size: 17px;
+}
 
-    <div id="status">
-    </div>
+/* ======================================
+   Intensity
+   ====================================== */
 
-    <hr>
+.intensityValue {
+    min-height: 82px;
 
-    <h3>
-        Community DNA
-    </h3>
+    display: flex;
 
-    <div class="stats">
+    flex-direction: column;
 
-        <div class="stat">
+    align-items: center;
+    justify-content: center;
 
-            <span>Total Responses</span>
+    text-align: center;
 
-            <strong id="fd-total">
-                0
-            </strong>
+    margin-top: 3px;
+}
 
-        </div>
+.intensityValue > div:first-child {
+    line-height: 1;
+}
 
-        <div class="stat">
+.slider {
+    width: 100%;
 
-            <span>Average Emotional Impact</span>
+    margin-top: 3px;
+}
 
-            <strong id="fd-intensity">
-                0 / 10
-            </strong>
+.slider input[type="range"] {
+    appearance: none;
 
-        </div>
+    width: 100%;
+    height: 6px;
 
-        <div class="stat">
+    margin: 0;
 
-            <span>Dominant Emotion</span>
+    background:
+        rgba(255,255,255,0.20);
 
-            <strong id="fd-dominant">
-                -
-            </strong>
+    border-radius: 999px;
 
-        </div>
+    cursor: pointer;
+}
 
-        <div id="fd-breakdown">
-        </div>
+.slider input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
 
-    </div>
+    border-radius: 999px;
 
-</div>
+    background:
+        rgba(255,255,255,0.22);
+}
 
-<!-- Load order is important -->
+.slider input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
 
-<script src="emotions.js"></script>
-<script src="renderer.js"></script>
-<script src="api.js"></script>
-<script src="app.js"></script>
+    width: 17px;
+    height: 17px;
 
-</body>
+    margin-top: -5.5px;
 
-</html>
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(255,255,255,0.9);
+
+    background:
+        #2563eb;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.15);
+}
+
+.slider input[type="range"]::-moz-range-track {
+    height: 6px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,0.22);
+}
+
+.slider input[type="range"]::-moz-range-thumb {
+    width: 17px;
+    height: 17px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(255,255,255,0.9);
+
+    background:
+        #2563eb;
+
+    cursor: pointer;
+}
+
+/* ======================================
+   Emotion Section
+   ====================================== */
+
+.emotion-help {
+    margin: 6px 0 10px;
+
+    color: #aeb3c2;
+
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.emotions {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(125px, 1fr)
+        );
+
+    gap: 8px;
+}
+
+/* ======================================
+   Emotion Buttons
+   ====================================== */
+
+.emotion-btn {
+    width: 100%;
+    min-width: 0;
+
+    height: 46px;
+
+    padding: 7px 11px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+    outline: none;
+}
+
+/* ======================================
+   Emotion Button Hover
+   ====================================== */
+
+.emotion-btn:hover {
+    background:
+        rgba(255,255,255,0.09);
+
+    border-color:
+        rgba(255,255,255,0.22);
+
+    transform:
+        translateY(-1px);
+}
+
+/* ======================================
+   Emotion Button Selected
+   ====================================== */
+
+.emotion-btn.selected {
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb 0%,
+            #3b82f6 50%,
+            #7c3aed 100%
+        );
+
+    border-color:
+        rgba(255,255,255,0.65);
+
+    color:
+        #ffffff;
+
+    font-weight:
+        600;
+
+    box-shadow:
+        0 6px 18px
+        rgba(37,99,235,0.28);
+
+    transform:
+        translateY(-1px);
+}
+
+/* Keep selected state visible on hover */
+
+.emotion-btn.selected:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb 0%,
+            #3b82f6 50%,
+            #7c3aed 100%
+        );
+
+    border-color:
+        rgba(255,255,255,0.85);
+
+    box-shadow:
+        0 7px 22px
+        rgba(37,99,235,0.35);
+}
+
+/* ======================================
+   Focus
+   ====================================== */
+
+.emotion-btn:focus-visible {
+    box-shadow:
+        0 0 0 2px
+        rgba(96,165,250,0.65);
+}
+
+/* ======================================
+   Emotion Contents
+   ====================================== */
+
+.emotion-emoji {
+    display: inline-flex;
+
+    align-items: center;
+
+    line-height: 1;
+}
+
+.emotion-name {
+    white-space: nowrap;
+}
+
+/* ======================================
+   Emotion Counter
+   ====================================== */
+
+.emotion-counter {
+    margin-top: 6px;
+
+    color: #8f95a8;
+
+    font-size: 12px;
+
+    text-align: right;
+}
+
+.emotion-counter.complete {
+    color: #a78bfa;
+
+    font-weight: 600;
+}
+
+/* ======================================
+   Contribution Button
+   ====================================== */
+
+#submitBtn {
+    width: 100%;
+
+    min-height: 48px;
+
+    margin-top: 14px;
+
+    padding: 10px 18px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb 0%,
+            #3b82f6 50%,
+            #7c3aed 100%
+        );
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 24px
+        rgba(37,99,235,0.22);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+#submitBtn:hover {
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 10px 28px
+        rgba(37,99,235,0.32);
+
+    filter:
+        brightness(1.05);
+}
+
+#submitBtn:active {
+    transform:
+        translateY(0);
+}
+
+/* ======================================
+   Community Statistics
+   ====================================== */
+
+.stats {
+    margin-top: 14px;
+
+    padding-top: 12px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.10);
+}
+
+.stat {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 27px;
+
+    font-size: 14px;
+}
+
+.stat span {
+    color: #d5d8e1;
+}
+
+.stat strong {
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    text-align: right;
+}
+
+#fd-breakdown {
+    margin-top: 8px;
+}
+
+/* ======================================
+   Mobile
+   ====================================== */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 4px;
+    }
+
+    .flydna-card {
+        padding:
+            17px 14px 16px;
+
+        border-radius: 15px;
+    }
+
+    .flydna-card h1 {
+        font-size: 24px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .section {
+        margin-top: 16px;
+    }
+
+    .section:first-of-type {
+        margin-top: 15px;
+    }
+
+    .intensityValue {
+        min-height: 76px;
+    }
+
+    .emotions {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 7px;
+    }
+
+    .emotion-btn {
+        height: 44px;
+
+        padding:
+            6px 7px;
+
+        font-size: 13px;
+    }
+
+    .emotion-help {
+        margin-bottom: 8px;
+    }
+
+    #submitBtn {
+        min-height: 46px;
+
+        margin-top: 12px;
+
+        font-size: 14px;
+    }
+
+    .stats {
+        margin-top: 12px;
+
+        padding-top: 10px;
+    }
+
+}
+
+/* ======================================
+   Very Small Screens
+   ====================================== */
+
+@media (max-width: 380px) {
+
+    .flydna-card {
+        padding:
+            16px 12px 14px;
+    }
+
+    .emotions {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .emotion-btn {
+        font-size: 12px;
+    }
+
+}
