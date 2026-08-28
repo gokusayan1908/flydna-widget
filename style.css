@@ -96,7 +96,8 @@ body {
 }
 
 /* ======================================
-   Inline Track Title
+   INLINE SONG TITLE
+   ONLY NEW CHANGE
    ====================================== */
 
 .track-inline {
@@ -106,9 +107,9 @@ body {
 
     font-weight: 600;
 
-    letter-spacing: -0.1px;
-
     margin-left: 4px;
+
+    letter-spacing: -0.1px;
 }
 
 #trackTitle {
@@ -169,7 +170,8 @@ body {
 }
 
 /* ======================================
-   Fire Icon
+   FIRE ICON
+   FROZEN SIZE
    ====================================== */
 
 .intensityValue > div:first-child {
@@ -187,7 +189,8 @@ body {
 }
 
 /* ======================================
-   Score
+   SCORE
+   FROZEN SIZE
    ====================================== */
 
 .intensityValue > div:nth-child(2) {
@@ -398,6 +401,7 @@ body {
 
 /* ======================================
    SELECTED STATE
+   FROZEN
    ====================================== */
 
 .emotion-btn.selected {
