@@ -39,7 +39,7 @@ body {
 }
 
 .flydna-card {
-    width: 111.111%;
+    width: 133.333%;
     max-width: none;
 
     margin: 0;
@@ -63,13 +63,7 @@ body {
 
     overflow: hidden;
 
-    /*
-       IMPORTANT:
-       Reduce the complete card proportionally.
-       This reduces the actual layout height,
-       unlike transform: scale().
-    */
-    zoom: 0.9;
+    zoom: 0.75;
 }
 
 /* ======================================
@@ -519,20 +513,15 @@ body {
     }
 
     .flydna-card {
-        /*
-           On mobile we don't apply the desktop
-           zoom because the two-column emotion
-           layout already uses the available width.
-        */
-        width: 100%;
-        max-width: 100%;
+        width: 117.647%;
+        max-width: none;
 
         padding:
             20px 16px 18px;
 
         border-radius: 15px;
 
-        zoom: 1;
+        zoom: 0.85;
     }
 
     .flydna-card h1 {
