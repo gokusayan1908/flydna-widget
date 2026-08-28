@@ -1,7 +1,7 @@
 /* ======================================
-   FlyDNA Application v1.4
+   FlyDNA Application v1.5
    Premium Dark UI
-   Ultra Compact Layout
+   Fixed Compact Embedded Layout
    ====================================== */
 
 * {
@@ -28,7 +28,7 @@ body {
 }
 
 body {
-    padding: 2px;
+    padding: 0;
 }
 
 /* ======================================
@@ -45,7 +45,7 @@ body {
 
     margin: 0 auto;
 
-    padding: 7px 12px 6px;
+    padding: 8px 12px 7px;
 
     background:
         linear-gradient(
@@ -72,7 +72,7 @@ body {
 .flydna-card h1 {
     margin: 0;
 
-    font-size: 19px;
+    font-size: 18px;
     line-height: 1;
 
     font-weight: 700;
@@ -81,7 +81,7 @@ body {
 }
 
 .subtitle {
-    margin-top: 2px;
+    margin: 2px 0 0;
 
     color: #9ca3b8;
 
@@ -94,14 +94,14 @@ body {
    ====================================== */
 
 .section {
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
 .section h2 {
     margin: 0;
 
     font-size: 12px;
-    line-height: 1.1;
+    line-height: 1.05;
 
     font-weight: 700;
 
@@ -109,7 +109,7 @@ body {
 }
 
 .section:first-of-type {
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
 .section:first-of-type h2 {
@@ -121,7 +121,8 @@ body {
    ====================================== */
 
 .intensityValue {
-    min-height: 31px;
+    min-height: 0;
+    height: auto;
 
     display: flex;
 
@@ -132,26 +133,80 @@ body {
 
     text-align: center;
 
-    margin-top: 1px;
+    margin: 1px 0 0;
+
+    padding: 0;
+
+    gap: 0;
 }
 
+/*
+   IMPORTANT:
+   Force the emoji/icon to stay compact.
+*/
+
 .intensityValue > div:first-child {
-    line-height: 1;
+    font-size: 24px !important;
+    line-height: 24px !important;
+
+    height: 24px !important;
+    min-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
 }
+
+/*
+   Score value
+*/
+
+.intensityValue > div:nth-child(2) {
+    font-size: 24px !important;
+    line-height: 25px !important;
+
+    height: 25px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/*
+   Intensity description
+*/
+
+.intensityValue > div:nth-child(3) {
+    font-size: 10px !important;
+    line-height: 12px !important;
+
+    height: 12px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* ======================================
+   Slider
+   ====================================== */
 
 .slider {
     width: 100%;
 
-    margin-top: 2px;
+    margin: 2px 0 0;
+
+    padding: 0;
 }
 
 .slider input[type="range"] {
     appearance: none;
 
+    display: block;
+
     width: 100%;
     height: 4px;
 
     margin: 0;
+
+    padding: 0;
 
     background:
         rgba(255,255,255,0.20);
@@ -226,7 +281,7 @@ body {
     color: #aeb3c2;
 
     font-size: 9px;
-    line-height: 1.1;
+    line-height: 10px;
 }
 
 .emotions {
@@ -234,14 +289,13 @@ body {
 
     display: grid;
 
-    /*
-       Exactly 5 columns x 2 rows
-       so all ten emotions stay compact.
-    */
     grid-template-columns:
         repeat(5, minmax(0, 1fr));
 
     gap: 3px;
+
+    margin: 0;
+    padding: 0;
 }
 
 /* ======================================
@@ -252,9 +306,9 @@ body {
     width: 100%;
     min-width: 0;
 
-    height: 25px;
+    height: 24px;
 
-    padding: 2px 4px;
+    padding: 2px 3px;
 
     display: flex;
 
@@ -290,9 +344,9 @@ body {
     outline: none;
 }
 
-/* --------------------------------------
+/* ======================================
    Hover
-   -------------------------------------- */
+   ====================================== */
 
 .emotion-btn:hover {
     background:
@@ -305,9 +359,10 @@ body {
         translateY(-1px);
 }
 
-/* --------------------------------------
+/* ======================================
    SELECTED STATE
-   -------------------------------------- */
+   DO NOT CHANGE — BUTTONS MUST WORK
+   ====================================== */
 
 .emotion-btn.selected {
     background:
@@ -333,7 +388,9 @@ body {
         translateY(-1px);
 }
 
-/* Keep selected state visually dominant on hover */
+/* ======================================
+   Selected + Hover
+   ====================================== */
 
 .emotion-btn.selected:hover {
     background:
@@ -352,9 +409,9 @@ body {
         rgba(59,130,246,0.35);
 }
 
-/* --------------------------------------
+/* ======================================
    Focus
-   -------------------------------------- */
+   ====================================== */
 
 .emotion-btn:focus-visible {
     box-shadow:
@@ -362,9 +419,9 @@ body {
         rgba(96,165,250,0.65);
 }
 
-/* --------------------------------------
-   Emotion contents
-   -------------------------------------- */
+/* ======================================
+   Emotion Contents
+   ====================================== */
 
 .emotion-emoji {
     display: inline-flex;
@@ -372,10 +429,16 @@ body {
     align-items: center;
 
     line-height: 1;
+
+    font-size: 9px !important;
 }
 
 .emotion-name {
     white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 /* ======================================
@@ -383,13 +446,15 @@ body {
    ====================================== */
 
 .emotion-counter {
-    margin-top: 2px;
+    margin: 2px 0 0;
 
     color: #8f95a8;
 
-    font-size: 9px;
+    font-size: 8px;
 
-    line-height: 1;
+    line-height: 9px;
+
+    height: 9px;
 
     text-align: right;
 }
@@ -407,11 +472,12 @@ body {
 #submitBtn {
     width: 100%;
 
-    min-height: 28px;
+    height: 26px;
+    min-height: 26px;
 
-    margin-top: 4px;
+    margin: 3px 0 0;
 
-    padding: 5px 10px;
+    padding: 3px 8px;
 
     border: 0;
 
@@ -429,7 +495,9 @@ body {
 
     font-family: inherit;
 
-    font-size: 10px;
+    font-size: 9px;
+
+    line-height: 1;
 
     font-weight: 600;
 
@@ -467,9 +535,9 @@ body {
    ====================================== */
 
 .stats {
-    margin-top: 4px;
+    margin: 3px 0 0;
 
-    padding-top: 4px;
+    padding: 3px 0 0;
 
     border-top:
         1px solid rgba(255,255,255,0.10);
@@ -481,9 +549,15 @@ body {
     align-items: center;
     justify-content: space-between;
 
-    min-height: 15px;
+    min-height: 14px;
+    height: 14px;
 
-    font-size: 9px;
+    margin: 0;
+    padding: 0;
+
+    font-size: 8px;
+
+    line-height: 1;
 }
 
 .stat span {
@@ -493,7 +567,7 @@ body {
 .stat strong {
     color: #ffffff;
 
-    font-size: 10px;
+    font-size: 9px;
 
     font-weight: 600;
 
@@ -501,22 +575,26 @@ body {
 }
 
 #fd-breakdown {
-    margin-top: 2px;
+    margin: 1px 0 0;
+
+    padding: 0;
+
+    font-size: 8px;
+    line-height: 9px;
 }
 
 /* ======================================
-   Mobile
+   MOBILE
    ====================================== */
 
 @media (max-width: 700px) {
 
     body {
-        padding: 1px;
+        padding: 0;
     }
 
     .flydna-card {
-        padding:
-            6px 9px 5px;
+        padding: 7px 9px 6px;
 
         border-radius: 10px;
     }
@@ -530,11 +608,37 @@ body {
     }
 
     .section {
-        margin-top: 4px;
+        margin-top: 3px;
     }
 
-    .intensityValue {
-        min-height: 27px;
+    .section h2 {
+        font-size: 11px;
+    }
+
+    .intensityValue > div:first-child {
+        font-size: 21px !important;
+        line-height: 21px !important;
+        height: 21px !important;
+        min-height: 21px !important;
+    }
+
+    .intensityValue > div:nth-child(2) {
+        font-size: 22px !important;
+        line-height: 23px !important;
+        height: 23px !important;
+    }
+
+    .intensityValue > div:nth-child(3) {
+        font-size: 9px !important;
+        line-height: 10px !important;
+        height: 10px !important;
+    }
+
+    .emotion-help {
+        font-size: 8px;
+        line-height: 9px;
+
+        margin: 1px 0 2px;
     }
 
     .emotions {
@@ -545,56 +649,82 @@ body {
     }
 
     .emotion-btn {
-        height: 23px;
+        height: 22px;
 
-        padding:
-            2px 3px;
+        padding: 2px;
 
         font-size: 8px;
 
         border-radius: 5px;
+
+        gap: 2px;
     }
 
     .emotion-emoji {
-        font-size: 9px;
+        font-size: 8px !important;
     }
 
     .emotion-counter {
-        font-size: 8px;
+        font-size: 7px;
+        line-height: 8px;
+        height: 8px;
     }
 
     #submitBtn {
-        min-height: 26px;
+        height: 24px;
+        min-height: 24px;
 
-        margin-top: 3px;
-
-        font-size: 9px;
-    }
-
-    .stat {
-        min-height: 14px;
+        margin-top: 2px;
 
         font-size: 8px;
     }
 
-    .stat strong {
-        font-size: 9px;
+    .stats {
+        margin-top: 2px;
+        padding-top: 2px;
     }
 
+    .stat {
+        min-height: 12px;
+        height: 12px;
+
+        font-size: 7px;
+    }
+
+    .stat strong {
+        font-size: 8px;
+    }
+
+    #fd-breakdown {
+        font-size: 7px;
+        line-height: 8px;
+    }
 }
 
 /* ======================================
-   Very Small Screens
+   VERY SMALL SCREENS
    ====================================== */
 
 @media (max-width: 380px) {
 
+    .flydna-card {
+        padding: 6px 7px 5px;
+    }
+
     .emotion-btn {
         font-size: 7px;
+        height: 21px;
     }
 
     .emotion-emoji {
-        font-size: 8px;
+        font-size: 7px !important;
     }
 
+    .emotion-help {
+        font-size: 7px;
+    }
+
+    #submitBtn {
+        font-size: 7px;
+    }
 }
