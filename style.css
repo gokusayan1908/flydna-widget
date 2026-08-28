@@ -374,7 +374,6 @@ body {
 
 /* ======================================
    SELECTED STATE
-   FROZEN
    ====================================== */
 
 .emotion-btn.selected {
@@ -756,4 +755,12 @@ body {
     #submitBtn {
         font-size: 7px;
     }
+}
+
+/* ======================================
+   HIDE "EMOTIONAL IMPACT" LABEL ONLY
+   ====================================== */
+
+.intensity > label {
+    display: none !important;
 }
