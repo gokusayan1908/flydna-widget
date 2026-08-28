@@ -170,7 +170,7 @@ ${level.text}
         console.log("FlyDNA ← Wix", event.data);
 
         // ------------------------------------------------
-        // Submission successful
+        // Successful submission
         // ------------------------------------------------
 
         if (event.data.type === "submitSuccess") {
@@ -245,6 +245,16 @@ ${level.text}
         submitBtn.innerHTML = `
             ⏳ Adding your DNA...
         `;
+
+        // ====================================================
+        // DIAGNOSTIC
+        // ====================================================
+
+        console.log("FlyDNA → sending submit to Wix");
+
+        // ====================================================
+        // Send submission to Wix
+        // ====================================================
 
         window.parent.postMessage({
 
@@ -387,8 +397,6 @@ function updateCommunityStats(data) {
     const avg = Number(data.avgIntensity || 0);
 
     const dominant = data.dominantEmotion || "-";
-
-    const dominantPct = Number(data.dominantPct || 0);
 
     const totalElement =
         document.getElementById("fd-total");
