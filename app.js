@@ -30,7 +30,16 @@ window.onload = () => {
 
     </div>
 
-    <div class="section" id="impactSection">
+    <div
+        id="checkingStatus"
+        style="text-align:center;padding:20px;">
+        🧬 Checking your FlyDNA...
+    </div>
+
+    <div
+        class="section"
+        id="impactSection"
+        style="display:none;">
 
         <h2>Emotional Impact</h2>
 
@@ -49,7 +58,10 @@ window.onload = () => {
 
     </div>
 
-    <div class="section" id="emotionSection">
+    <div
+        class="section"
+        id="emotionSection"
+        style="display:none;">
 
         <h2>What did you feel?</h2>
 
@@ -66,7 +78,9 @@ window.onload = () => {
 
     <div id="communityResult"></div>
 
-    <button id="submitBtn">
+    <button
+        id="submitBtn"
+        style="display:none;">
 
         🧬 Contribute Your DNA to the Community
 
@@ -108,7 +122,8 @@ window.onload = () => {
 
     renderEmotions();
 
-    const slider = document.getElementById("intensity");
+    const slider =
+        document.getElementById("intensity");
 
     const intensityLabels = {
 
@@ -174,104 +189,182 @@ window.onload = () => {
 
     };
 
+
     function updateIntensity() {
 
-        const value = Number(slider.value);
+        const value =
+            Number(slider.value);
 
-        const level = intensityLabels[value];
+        const level =
+            intensityLabels[value];
 
-        document.getElementById("intensityValue").innerHTML = `
+        document.getElementById(
+            "intensityValue"
+        ).innerHTML = `
 
 <div style="font-size:42px">
     ${level.emoji}
 </div>
 
-<div style="font-size:34px;font-weight:bold;color:${level.color}">
+<div
+    style="
+        font-size:34px;
+        font-weight:bold;
+        color:${level.color};
+    ">
     ${value} / 10
 </div>
 
-<div style="margin-top:8px;color:${level.color};font-size:16px">
+<div
+    style="
+        margin-top:8px;
+        color:${level.color};
+        font-size:16px;
+    ">
     ${level.text}
 </div>
 
 `;
 
-        slider.style.accentColor = level.color;
+        slider.style.accentColor =
+            level.color;
 
     }
 
-    slider.oninput = updateIntensity;
+
+    slider.oninput =
+        updateIntensity;
 
     updateIntensity();
 
-    initialiseVoting(TRACK_ID, ENTITY_TYPE);
 
-    const submitBtn = document.getElementById("submitBtn");
+    initialiseVoting(
+        TRACK_ID,
+        ENTITY_TYPE
+    );
+
+
+    const submitBtn =
+        document.getElementById(
+            "submitBtn"
+        );
+
 
     // ====================================================
     // Receive messages from Wix
     // ====================================================
 
-    window.addEventListener("message", function(event) {
+    window.addEventListener(
+        "message",
+        function(event) {
 
-        if (!event.data || !event.data.type) {
-            return;
+            if (
+                !event.data ||
+                !event.data.type
+            ) {
+                return;
+            }
+
+            console.log(
+                "FlyDNA ← Wix",
+                event.data
+            );
+
+
+            // ------------------------------------------------
+            // Successful submission
+            // ------------------------------------------------
+
+            if (
+                event.data.type ===
+                "submitSuccess"
+            ) {
+
+                showCommunityResult();
+
+                return;
+            }
+
+
+            // ------------------------------------------------
+            // Already submitted
+            // ------------------------------------------------
+
+            if (
+                event.data.type ===
+                "alreadySubmitted"
+            ) {
+
+                showAlreadySubmitted();
+
+                return;
+            }
+
+
+            // ------------------------------------------------
+            // Aggregate received
+            // ------------------------------------------------
+
+            if (
+                event.data.type ===
+                "aggregate"
+            ) {
+
+                latestAggregate =
+                    event.data.data;
+
+
+                // --------------------------------------------
+                // IMPORTANT:
+                // Initial page-load check
+                // --------------------------------------------
+
+                if (
+                    latestAggregate &&
+                    latestAggregate.alreadySubmitted
+                ) {
+
+                    showAlreadySubmitted();
+
+                } else {
+
+                    showVotingForm();
+
+                }
+
+
+                updateCommunityStats(
+                    latestAggregate
+                );
+
+                return;
+            }
+
+
+            // ------------------------------------------------
+            // Submission error
+            // ------------------------------------------------
+
+            if (
+                event.data.type ===
+                "submitError"
+            ) {
+
+                submitBtn.disabled =
+                    false;
+
+                submitBtn.style.display =
+                    "block";
+
+                submitBtn.textContent =
+                    "🧬 Contribute Your DNA to the Community";
+
+                return;
+            }
+
         }
+    );
 
-        console.log("FlyDNA ← Wix", event.data);
-
-        // ------------------------------------------------
-        // Successful submission
-        // ------------------------------------------------
-
-        if (event.data.type === "submitSuccess") {
-
-            showCommunityResult();
-
-            return;
-        }
-
-        // ------------------------------------------------
-        // Already submitted
-        // ------------------------------------------------
-
-        if (event.data.type === "alreadySubmitted") {
-
-            showAlreadySubmitted();
-
-            return;
-        }
-
-        // ------------------------------------------------
-        // Aggregate received
-        // ------------------------------------------------
-
-        if (event.data.type === "aggregate") {
-
-            latestAggregate = event.data.data;
-
-            updateCommunityStats(latestAggregate);
-
-            return;
-        }
-
-        // ------------------------------------------------
-        // Submission error
-        // ------------------------------------------------
-
-        if (event.data.type === "submitError") {
-
-            submitBtn.disabled = false;
-
-            submitBtn.style.display = "block";
-
-            submitBtn.textContent =
-                "🧬 Contribute Your DNA to the Community";
-
-            return;
-        }
-
-    });
 
     // ====================================================
     // Submit Vote
@@ -283,28 +376,42 @@ window.onload = () => {
             return;
         }
 
+
         if (
-            typeof selectedEmotions === "undefined" ||
+            typeof selectedEmotions ===
+                "undefined" ||
             selectedEmotions.length === 0
         ) {
+
             return;
+
         }
 
-        submittedIntensity = Number(slider.value);
 
-        submittedEmotions = selectedEmotions.slice();
+        submittedIntensity =
+            Number(slider.value);
 
-        submitBtn.disabled = true;
+        submittedEmotions =
+            selectedEmotions.slice();
+
+
+        submitBtn.disabled =
+            true;
+
 
         submitBtn.innerHTML = `
             ⏳ Adding your DNA...
         `;
 
+
         // ====================================================
         // Send submission to Wix
         // ====================================================
 
-        console.log("FlyDNA → sending submit to Wix");
+        console.log(
+            "FlyDNA → sending submit to Wix"
+        );
+
 
         window.parent.postMessage({
 
@@ -312,31 +419,104 @@ window.onload = () => {
 
             payload: {
 
-                trackId: TRACK_ID,
+                trackId:
+                    TRACK_ID,
 
-                title: TRACK_TITLE,
+                title:
+                    TRACK_TITLE,
 
-                type: ENTITY_TYPE,
+                type:
+                    ENTITY_TYPE,
 
-                intensity: submittedIntensity,
+                intensity:
+                    submittedIntensity,
 
-                emotions: submittedEmotions
+                emotions:
+                    submittedEmotions
 
             }
 
         }, "*");
 
-        console.log("FlyDNA → postMessage executed");
+
+        console.log(
+            "FlyDNA → postMessage executed"
+        );
 
     };
+
 
     // ====================================================
     // Request Community DNA
     // ====================================================
 
-    requestAggregate(TRACK_ID, ENTITY_TYPE);
+    requestAggregate(
+        TRACK_ID,
+        ENTITY_TYPE
+    );
 
 };
+
+
+// ========================================================
+// SHOW VOTING FORM
+// ========================================================
+
+function showVotingForm() {
+
+    const impactSection =
+        document.getElementById(
+            "impactSection"
+        );
+
+    const emotionSection =
+        document.getElementById(
+            "emotionSection"
+        );
+
+    const submitBtn =
+        document.getElementById(
+            "submitBtn"
+        );
+
+    const checkingStatus =
+        document.getElementById(
+            "checkingStatus"
+        );
+
+
+    if (checkingStatus) {
+
+        checkingStatus.style.display =
+            "none";
+
+    }
+
+
+    if (impactSection) {
+
+        impactSection.style.display =
+            "block";
+
+    }
+
+
+    if (emotionSection) {
+
+        emotionSection.style.display =
+            "block";
+
+    }
+
+
+    if (submitBtn) {
+
+        submitBtn.style.display =
+            "block";
+
+    }
+
+}
 
 
 // ========================================================
@@ -346,33 +526,68 @@ window.onload = () => {
 function showCommunityResult() {
 
     const submitBtn =
-        document.getElementById("submitBtn");
+        document.getElementById(
+            "submitBtn"
+        );
 
     const impactSection =
-        document.getElementById("impactSection");
+        document.getElementById(
+            "impactSection"
+        );
 
     const emotionSection =
-        document.getElementById("emotionSection");
+        document.getElementById(
+            "emotionSection"
+        );
+
+    const checkingStatus =
+        document.getElementById(
+            "checkingStatus"
+        );
 
     const communityResult =
-        document.getElementById("communityResult");
+        document.getElementById(
+            "communityResult"
+        );
+
+
+    if (checkingStatus) {
+
+        checkingStatus.style.display =
+            "none";
+
+    }
+
 
     if (impactSection) {
-        impactSection.style.display = "none";
+
+        impactSection.style.display =
+            "none";
+
     }
+
 
     if (emotionSection) {
-        emotionSection.style.display = "none";
+
+        emotionSection.style.display =
+            "none";
+
     }
 
+
     if (submitBtn) {
-        submitBtn.style.display = "none";
+
+        submitBtn.style.display =
+            "none";
+
     }
+
 
     const emotionsText =
         submittedEmotions.length > 0
             ? submittedEmotions.join(" · ")
             : "Your emotional DNA";
+
 
     communityResult.innerHTML = `
 
@@ -410,7 +625,9 @@ function showCommunityResult() {
 
 `;
 
-    updateCommunityStats(latestAggregate);
+    updateCommunityStats(
+        latestAggregate
+    );
 
 }
 
@@ -422,28 +639,62 @@ function showCommunityResult() {
 function showAlreadySubmitted() {
 
     const impactSection =
-        document.getElementById("impactSection");
+        document.getElementById(
+            "impactSection"
+        );
 
     const emotionSection =
-        document.getElementById("emotionSection");
+        document.getElementById(
+            "emotionSection"
+        );
 
     const submitBtn =
-        document.getElementById("submitBtn");
+        document.getElementById(
+            "submitBtn"
+        );
+
+    const checkingStatus =
+        document.getElementById(
+            "checkingStatus"
+        );
 
     const communityResult =
-        document.getElementById("communityResult");
+        document.getElementById(
+            "communityResult"
+        );
+
+
+    if (checkingStatus) {
+
+        checkingStatus.style.display =
+            "none";
+
+    }
+
 
     if (impactSection) {
-        impactSection.style.display = "none";
+
+        impactSection.style.display =
+            "none";
+
     }
+
 
     if (emotionSection) {
-        emotionSection.style.display = "none";
+
+        emotionSection.style.display =
+            "none";
+
     }
 
+
     if (submitBtn) {
-        submitBtn.style.display = "none";
+
+        submitBtn.style.display =
+            "none";
+
     }
+
 
     if (communityResult) {
 
@@ -469,7 +720,10 @@ function showAlreadySubmitted() {
 
     }
 
-    updateCommunityStats(latestAggregate);
+
+    updateCommunityStats(
+        latestAggregate
+    );
 
 }
 
@@ -484,23 +738,36 @@ function updateCommunityStats(data) {
         return;
     }
 
+
     const total =
-        Number(data.totalResponses || 0);
+        Number(
+            data.totalResponses || 0
+        );
 
     const avg =
-        Number(data.avgIntensity || 0);
+        Number(
+            data.avgIntensity || 0
+        );
 
     const dominant =
         data.dominantEmotion || "-";
 
+
     const totalElement =
-        document.getElementById("fd-total");
+        document.getElementById(
+            "fd-total"
+        );
 
     const intensityElement =
-        document.getElementById("fd-intensity");
+        document.getElementById(
+            "fd-intensity"
+        );
 
     const dominantElement =
-        document.getElementById("fd-dominant");
+        document.getElementById(
+            "fd-dominant"
+        );
+
 
     if (totalElement) {
 
@@ -509,12 +776,14 @@ function updateCommunityStats(data) {
 
     }
 
+
     if (intensityElement) {
 
         intensityElement.textContent =
             `${avg} / 10`;
 
     }
+
 
     if (dominantElement) {
 
@@ -524,6 +793,7 @@ function updateCommunityStats(data) {
                 : dominant;
 
     }
+
 
     renderBreakdown(data);
 
@@ -537,17 +807,23 @@ function updateCommunityStats(data) {
 function renderBreakdown(data) {
 
     const container =
-        document.getElementById("fd-breakdown");
+        document.getElementById(
+            "fd-breakdown"
+        );
 
     if (!container) {
         return;
     }
 
+
     const breakdown =
         data.emotionBreakdown || {};
 
     const total =
-        Number(data.totalResponses || 0);
+        Number(
+            data.totalResponses || 0
+        );
+
 
     if (!total) {
 
@@ -556,25 +832,38 @@ function renderBreakdown(data) {
         return;
     }
 
+
     const sorted =
         Object.entries(breakdown)
-            .sort((a, b) => b[1] - a[1]);
+            .sort(
+                (a, b) =>
+                    b[1] - a[1]
+            );
+
 
     container.innerHTML =
-        sorted.map(([emotion, count]) => {
+        sorted.map(
+            ([emotion, count]) => {
 
-            const percentage =
-                Math.round((count / total) * 100);
+                const percentage =
+                    Math.round(
+                        (count / total) * 100
+                    );
 
-            return `
+
+                return `
 
 <div class="emotion-result">
 
     <div class="emotion-result-label">
 
-        <span>${emotion}</span>
+        <span>
+            ${emotion}
+        </span>
 
-        <strong>${percentage}%</strong>
+        <strong>
+            ${percentage}%
+        </strong>
 
     </div>
 
@@ -591,6 +880,7 @@ function renderBreakdown(data) {
 
 `;
 
-        }).join("");
+            }
+        ).join("");
 
 }
