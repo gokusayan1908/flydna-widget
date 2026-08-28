@@ -25,54 +25,39 @@ function renderAggregate(data) {
 
 
     if (total) {
-
         total.innerText =
             data.totalResponses || 0;
-
     }
-
 
     if (intensity) {
-
         intensity.innerText =
             (data.avgIntensity || 0) + " / 10";
-
     }
-
 
     if (dominant) {
-
         dominant.innerText =
             data.dominantEmotion || "-";
-
     }
-
 
     if (!breakdown) return;
 
     breakdown.innerHTML = "";
 
-
     if (
         !data.emotionBreakdown ||
         !data.totalResponses
     ) {
-
         return;
-
     }
-
 
     const emotions =
         Object.entries(
             data.emotionBreakdown
         );
 
-
     emotions.sort(
         (a, b) => b[1] - a[1]
     );
-
 
     emotions.forEach(
         ([emotion, count]) => {
@@ -82,7 +67,6 @@ function renderAggregate(data) {
                     (count / data.totalResponses) * 100
                 );
 
-
             breakdown.innerHTML += `
 
 <div class="emotionRow">
@@ -91,7 +75,8 @@ function renderAggregate(data) {
         style="
         display:flex;
         justify-content:space-between;
-        margin-bottom:4px;">
+        margin-bottom:3px;
+        font-size:12px;">
 
         <span>${emotion}</span>
 
@@ -102,9 +87,9 @@ function renderAggregate(data) {
     <div
         style="
         width:100%;
-        height:10px;
+        height:7px;
         background:#2b2b38;
-        border-radius:10px;
+        border-radius:7px;
         overflow:hidden;">
 
         <div
@@ -132,7 +117,7 @@ function renderAggregate(data) {
 
 
 // ======================================
-// Render Already Submitted Experience
+// Render Already Submitted
 // ======================================
 
 function renderAlreadySubmitted(data) {
@@ -143,117 +128,131 @@ function renderAlreadySubmitted(data) {
     if (!app) return;
 
 
-    // Keep the community statistics
-    // available below the message.
-
     app.innerHTML = `
 
-<div class="logo">
+<div style="
+    width:100%;
+    box-sizing:border-box;
+">
 
-    🧬
 
-    <h1>FlyDNA</h1>
+    <!-- Header -->
 
-    <p>
-        What impact did this experience have on you?
-    </p>
+    <div style="
+        display:flex;
+        align-items:center;
+        gap:8px;
+        margin-bottom:2px;
+    ">
 
-</div>
+        <span style="
+            font-size:22px;
+            line-height:1;
+        ">🧬</span>
 
-<div class="track">
+        <span style="
+            font-size:24px;
+            font-weight:600;
+            line-height:1.1;
+        ">
+            FlyDNA
+        </span>
 
-    <h2 id="trackTitle">
+    </div>
+
+
+    <!-- Track -->
+
+    <div style="
+        font-size:13px;
+        color:#8eb8ff;
+        margin-bottom:4px;
+    ">
         ${window.TRACK_TITLE || ""}
-    </h2>
-
-</div>
+    </div>
 
 
-<div
-    style="
-    text-align:center;
-    padding:35px 10px 25px;">
+    <!-- Already contributed -->
 
-    <div
-        style="
-        font-size:28px;
-        margin-bottom:10px;">
+    <div style="
+        text-align:center;
+        padding:12px 4px 10px;
+    ">
 
-        🧬
+        <div style="
+            font-size:19px;
+            font-weight:600;
+            line-height:1.2;
+        ">
+            🧬 Your DNA is already part of the universe
+        </div>
 
     </div>
 
-    <div
-        style="
-        font-size:24px;
-        font-weight:bold;">
 
-        Your DNA is already part of the universe
+    <!-- Community -->
 
-    </div>
+    <div style="
+        border-top:1px solid #30303b;
+        padding-top:9px;
+    ">
 
-</div>
-
-
-<hr>
-
-
-<div
-    style="
-    text-align:center;
-    margin:20px 0;">
-
-    <div
-        style="
-        font-size:24px;
-        font-weight:bold;">
-
-        🌍 The Community Feeling
-
-    </div>
-
-</div>
+        <div style="
+            text-align:center;
+            font-size:19px;
+            font-weight:600;
+            margin-bottom:8px;
+        ">
+            🌍 The Community Feeling
+        </div>
 
 
-<div class="stats">
+        <div class="stats">
 
-    <div class="stat">
+            <div class="stat">
 
-        <span>
-            Community Contributors
-        </span>
+                <span>
+                    Community Contributors
+                </span>
 
-        <strong id="fd-total">
-            0
-        </strong>
+                <strong id="fd-total">
+                    0
+                </strong>
 
-    </div>
+            </div>
 
-    <div class="stat">
 
-        <span>
-            Average Emotional Impact
-        </span>
+            <div class="stat">
 
-        <strong id="fd-intensity">
-            0 / 10
-        </strong>
+                <span>
+                    Average Emotional Impact
+                </span>
 
-    </div>
+                <strong id="fd-intensity">
+                    0 / 10
+                </strong>
 
-    <div class="stat">
+            </div>
 
-        <span>
-            Community Emotional DNA
-        </span>
 
-        <strong id="fd-dominant">
-            -
-        </strong>
+            <div class="stat">
 
-    </div>
+                <span>
+                    Community Emotional DNA
+                </span>
 
-    <div id="fd-breakdown">
+                <strong id="fd-dominant">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div id="fd-breakdown">
+            </div>
+
+        </div>
+
     </div>
 
 </div>
@@ -276,131 +275,6 @@ function renderAlreadySubmitted(data) {
 
 function renderSubmittedExperience(data) {
 
-    const app =
-        document.getElementById("app");
-
-    if (!app) return;
-
-
-    app.innerHTML = `
-
-<div class="logo">
-
-    🧬
-
-    <h1>FlyDNA</h1>
-
-    <p>
-        What impact did this experience have on you?
-    </p>
-
-</div>
-
-<div class="track">
-
-    <h2 id="trackTitle">
-        ${window.TRACK_TITLE || ""}
-    </h2>
-
-</div>
-
-
-<div
-    style="
-    text-align:center;
-    padding:30px 10px 20px;">
-
-    <div
-        style="
-        font-size:28px;
-        margin-bottom:10px;">
-
-        🧬
-
-    </div>
-
-    <div
-        style="
-        font-size:24px;
-        font-weight:bold;">
-
-        Your DNA is now part of the universe
-
-    </div>
-
-</div>
-
-
-<hr>
-
-
-<div
-    style="
-    text-align:center;
-    margin:20px 0;">
-
-    <div
-        style="
-        font-size:24px;
-        font-weight:bold;">
-
-        🌍 The Community Feeling
-
-    </div>
-
-</div>
-
-
-<div class="stats">
-
-    <div class="stat">
-
-        <span>
-            Community Contributors
-        </span>
-
-        <strong id="fd-total">
-            0
-        </strong>
-
-    </div>
-
-    <div class="stat">
-
-        <span>
-            Average Emotional Impact
-        </span>
-
-        <strong id="fd-intensity">
-            0 / 10
-        </strong>
-
-    </div>
-
-    <div class="stat">
-
-        <span>
-            Community Emotional DNA
-        </span>
-
-        <strong id="fd-dominant">
-            -
-        </strong>
-
-    </div>
-
-    <div id="fd-breakdown">
-    </div>
-
-</div>
-
-`;
-
-
-    if (data) {
-
-        renderAggregate(data);
-
-    }
+    renderAlreadySubmitted(data);
 
 }
