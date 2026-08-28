@@ -1,7 +1,7 @@
 /* ======================================
-   FlyDNA Application v1.5
+   FlyDNA Application v1.6
    Premium Dark UI
-   Ultra Compact Layout
+   Compact Fixed-Box Layout
    ====================================== */
 
 * {
@@ -31,15 +31,17 @@ body {
     padding: 2px;
 }
 
-/* ======================================
-   Main FlyDNA Card
-   ====================================== */
-
 #app {
     width: 100%;
 }
 
+/* ======================================
+   MAIN CARD
+   ====================================== */
+
 .flydna-card {
+    position: relative;
+
     width: 100%;
     max-width: 1400px;
 
@@ -66,7 +68,7 @@ body {
 }
 
 /* ======================================
-   Header
+   HEADER
    ====================================== */
 
 .flydna-card h1 {
@@ -90,11 +92,11 @@ body {
 }
 
 /* ======================================
-   Sections
+   SECTIONS
    ====================================== */
 
 .section {
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
 .section h2 {
@@ -112,13 +114,54 @@ body {
     margin-top: 3px;
 }
 
-.section:first-of-type h2 {
+/* ======================================
+   TOP INFORMATION AREA
+   ====================================== */
+
+/*
+   Use the empty horizontal space on the
+   right side of the card.
+
+   First heading = track title
+   Second heading = Emotional Impact
+*/
+
+.flydna-card .section:first-of-type {
+    position: relative;
+}
+
+/* Track title */
+.flydna-card .section:first-of-type h2:first-of-type {
+    position: absolute;
+
+    top: -30px;
+    right: 0;
+
+    margin: 0;
+
+    text-align: right;
+
     font-size: 12px;
+    line-height: 1.05;
+}
+
+/* Emotional Impact heading */
+.flydna-card .section:first-of-type h2:nth-of-type(2) {
+    position: absolute;
+
+    top: -15px;
+    right: 0;
+
+    margin: 0;
+
+    text-align: right;
+
+    font-size: 12px;
+    line-height: 1.05;
 }
 
 /* ======================================
    INTENSITY
-   EXTREME COMPACT TEST
    ====================================== */
 
 .intensityValue {
@@ -129,44 +172,47 @@ body {
     padding: 0 !important;
 
     display: flex !important;
+
     flex-direction: column !important;
+
     align-items: center !important;
     justify-content: flex-start !important;
 
     text-align: center !important;
+
     line-height: 1 !important;
 
     overflow: visible !important;
 }
 
-/* Force everything inside the intensity
-   display to be substantially smaller */
-
 .intensityValue * {
-    font-size: 12px !important;
     line-height: 1 !important;
 
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* Score */
+/* Flame / intensity icon */
+.intensityValue > div:first-child {
+    font-size: 13px !important;
+    line-height: 13px !important;
+}
 
+/* Score */
 .intensityValue strong,
 .intensityValue b {
     font-size: 14px !important;
     line-height: 14px !important;
 }
 
-/* Emoji / icon */
-
-.intensityValue > div:first-child {
-    font-size: 13px !important;
-    line-height: 13px !important;
+/* Other intensity text */
+.intensityValue span {
+    font-size: 12px !important;
+    line-height: 12px !important;
 }
 
 /* ======================================
-   Slider
+   SLIDER
    ====================================== */
 
 .slider {
@@ -247,7 +293,7 @@ body {
 }
 
 /* ======================================
-   Emotion Section
+   EMOTION SECTION
    ====================================== */
 
 .emotion-help {
@@ -271,7 +317,7 @@ body {
 }
 
 /* ======================================
-   Emotion Buttons
+   EMOTION BUTTONS
    ====================================== */
 
 .emotion-btn {
@@ -331,7 +377,7 @@ body {
 
 /* ======================================
    SELECTED STATE
-   DO NOT CHANGE
+   KEEP EXACTLY AS WORKING
    ====================================== */
 
 .emotion-btn.selected {
@@ -375,8 +421,6 @@ body {
         rgba(59,130,246,0.35);
 }
 
-/* Focus */
-
 .emotion-btn:focus-visible {
     box-shadow:
         0 0 0 2px
@@ -384,7 +428,7 @@ body {
 }
 
 /* ======================================
-   Emotion Contents
+   EMOTION CONTENT
    ====================================== */
 
 .emotion-emoji {
@@ -400,7 +444,7 @@ body {
 }
 
 /* ======================================
-   Emotion Counter
+   EMOTION COUNTER
    ====================================== */
 
 .emotion-counter {
@@ -422,7 +466,7 @@ body {
 }
 
 /* ======================================
-   Contribution Button
+   CONTRIBUTION BUTTON
    ====================================== */
 
 #submitBtn {
@@ -484,7 +528,7 @@ body {
 }
 
 /* ======================================
-   Community Statistics
+   COMMUNITY STATISTICS
    ====================================== */
 
 .stats {
@@ -526,7 +570,7 @@ body {
 }
 
 /* ======================================
-   Mobile
+   MOBILE
    ====================================== */
 
 @media (max-width: 700px) {
@@ -554,6 +598,22 @@ body {
         margin-top: 3px;
     }
 
+    /* Keep the right-hand layout on mobile
+       but make it fit the compact card */
+    .flydna-card .section:first-of-type h2:first-of-type {
+        top: -27px;
+        right: 0;
+
+        font-size: 9px;
+    }
+
+    .flydna-card .section:first-of-type h2:nth-of-type(2) {
+        top: -15px;
+        right: 0;
+
+        font-size: 9px;
+    }
+
     .intensityValue {
         height: 34px !important;
         min-height: 34px !important;
@@ -568,6 +628,11 @@ body {
     .intensityValue b {
         font-size: 12px !important;
         line-height: 12px !important;
+    }
+
+    .intensityValue span {
+        font-size: 10px !important;
+        line-height: 10px !important;
     }
 
     .slider {
@@ -620,10 +685,18 @@ body {
 }
 
 /* ======================================
-   Very Small Screens
+   VERY SMALL SCREENS
    ====================================== */
 
 @media (max-width: 380px) {
+
+    .flydna-card .section:first-of-type h2:first-of-type {
+        font-size: 8px;
+    }
+
+    .flydna-card .section:first-of-type h2:nth-of-type(2) {
+        font-size: 8px;
+    }
 
     .emotion-btn {
         font-size: 7px;
@@ -632,5 +705,4 @@ body {
     .emotion-emoji {
         font-size: 8px;
     }
-
 }
