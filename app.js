@@ -149,21 +149,33 @@ ${level.text}
 
     initialiseVoting(TRACK_ID, ENTITY_TYPE);
 
-    document
-        .getElementById("submitBtn")
-        .onclick = () => {
+    const submitBtn = document.getElementById("submitBtn");
 
-            submitVote({
+    submitBtn.onclick = () => {
 
-                trackId: TRACK_ID,
-                title: TRACK_TITLE,
-                type: ENTITY_TYPE,
-                intensity: Number(slider.value),
-                emotions: selectedEmotions
+        // Prevent multiple submissions from repeated clicks
+        if (submitBtn.disabled) {
+            return;
+        }
 
-            });
+        // Lock the button immediately
+        submitBtn.disabled = true;
 
-        };
+        submitBtn.innerHTML = `
+            ⏳ Submitting...
+        `;
+
+        submitVote({
+
+            trackId: TRACK_ID,
+            title: TRACK_TITLE,
+            type: ENTITY_TYPE,
+            intensity: Number(slider.value),
+            emotions: selectedEmotions
+
+        });
+
+    };
 
     requestAggregate(TRACK_ID, ENTITY_TYPE);
 
