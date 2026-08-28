@@ -140,7 +140,7 @@ body {
     gap: 0;
 }
 
-/* Emotion / intensity icon */
+/* Intensity icon */
 
 .intensityValue > div:first-child {
     font-size: 24px !important;
@@ -155,14 +155,13 @@ body {
 
 /* ======================================
    SCORE
-   Reduced further to save vertical space
    ====================================== */
 
 .intensityValue > div:nth-child(2) {
-    font-size: 18px !important;
-    line-height: 19px !important;
+    font-size: 13px !important;
+    line-height: 14px !important;
 
-    height: 19px !important;
+    height: 14px !important;
 
     margin: 0 !important;
     padding: 0 !important;
@@ -621,10 +620,10 @@ body {
     /* Smaller mobile score */
 
     .intensityValue > div:nth-child(2) {
-        font-size: 17px !important;
-        line-height: 18px !important;
+        font-size: 12px !important;
+        line-height: 13px !important;
 
-        height: 18px !important;
+        height: 13px !important;
     }
 
     .intensityValue > div:nth-child(3) {
