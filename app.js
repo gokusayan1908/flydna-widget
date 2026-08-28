@@ -326,6 +326,8 @@ window.onload = () => {
 
         }, "*");
 
+        console.log("FlyDNA → postMessage executed");
+
     };
 
     // ====================================================
