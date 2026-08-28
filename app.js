@@ -151,31 +151,115 @@ ${level.text}
 
     const submitBtn = document.getElementById("submitBtn");
 
+    // ====================================================
+    // Receive response from Wix
+    // ====================================================
+
+    window.addEventListener("message", function(event) {
+
+        if (!event.data) {
+            return;
+        }
+
+        // --------------------------------------------
+        // Successful submission
+        // --------------------------------------------
+
+        if (event.data.type === "submitSuccess") {
+
+            submitBtn.disabled = true;
+
+            submitBtn.innerHTML = `
+                ✅ Thank you!
+            `;
+
+            return;
+        }
+
+        // --------------------------------------------
+        // Already submitted
+        // --------------------------------------------
+
+        if (event.data.type === "alreadySubmitted") {
+
+            submitBtn.disabled = true;
+
+            submitBtn.innerHTML = `
+                ✅ Already submitted
+            `;
+
+            return;
+        }
+
+        // --------------------------------------------
+        // Submission error
+        // --------------------------------------------
+
+        if (event.data.type === "submitError") {
+
+            submitBtn.disabled = false;
+
+            submitBtn.innerHTML = `
+                🧬 Contribute Your DNA to the Community
+            `;
+
+            return;
+        }
+
+    });
+
+    // ====================================================
+    // Submit Vote
+    // ====================================================
+
     submitBtn.onclick = () => {
 
-        // Prevent multiple submissions from repeated clicks
+        // Prevent multiple submissions
         if (submitBtn.disabled) {
             return;
         }
 
-        // Lock the button immediately
+        // Prevent submission without emotions
+        if (
+            typeof selectedEmotions === "undefined" ||
+            selectedEmotions.length === 0
+        ) {
+            return;
+        }
+
+        // Lock immediately
         submitBtn.disabled = true;
 
         submitBtn.innerHTML = `
             ⏳ Submitting...
         `;
 
-        submitVote({
+        // Send submission to Wix page
+        window.parent.postMessage({
 
-            trackId: TRACK_ID,
-            title: TRACK_TITLE,
-            type: ENTITY_TYPE,
-            intensity: Number(slider.value),
-            emotions: selectedEmotions
+            type: "submit",
 
-        });
+            payload: {
+
+                trackId: TRACK_ID,
+
+                title: TRACK_TITLE,
+
+                type: ENTITY_TYPE,
+
+                intensity: Number(slider.value),
+
+                emotions: selectedEmotions.slice()
+
+            }
+
+        }, "*");
 
     };
+
+    // ====================================================
+    // Request Community DNA
+    // ====================================================
 
     requestAggregate(TRACK_ID, ENTITY_TYPE);
 
