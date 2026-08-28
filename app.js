@@ -112,16 +112,65 @@ window.onload = () => {
 
     const intensityLabels = {
 
-        1:{emoji:"😐",text:"No Emotional Impact",color:"#808080"},
-        2:{emoji:"🙂",text:"Slightly Touched",color:"#9ca3af"},
-        3:{emoji:"😊",text:"Pleasant",color:"#38bdf8"},
-        4:{emoji:"❤️",text:"Emotionally Connected",color:"#3b82f6"},
-        5:{emoji:"🔥",text:"Strong Impact",color:"#2563eb"},
-        6:{emoji:"✨",text:"Deep Impact",color:"#0ea5e9"},
-        7:{emoji:"💥",text:"Powerful",color:"#7c3aed"},
-        8:{emoji:"🚀",text:"Exceptional",color:"#9333ea"},
-        9:{emoji:"🤯",text:"Unforgettable",color:"#f59e0b"},
-        10:{emoji:"🧬",text:"Changed Me",color:"#facc15"}
+        1: {
+            emoji: "😐",
+            text: "No Emotional Impact",
+            color: "#808080"
+        },
+
+        2: {
+            emoji: "🙂",
+            text: "Slightly Touched",
+            color: "#9ca3af"
+        },
+
+        3: {
+            emoji: "😊",
+            text: "Pleasant",
+            color: "#38bdf8"
+        },
+
+        4: {
+            emoji: "❤️",
+            text: "Emotionally Connected",
+            color: "#3b82f6"
+        },
+
+        5: {
+            emoji: "🔥",
+            text: "Strong Impact",
+            color: "#2563eb"
+        },
+
+        6: {
+            emoji: "✨",
+            text: "Deep Impact",
+            color: "#0ea5e9"
+        },
+
+        7: {
+            emoji: "💥",
+            text: "Powerful",
+            color: "#7c3aed"
+        },
+
+        8: {
+            emoji: "🚀",
+            text: "Exceptional",
+            color: "#9333ea"
+        },
+
+        9: {
+            emoji: "🤯",
+            text: "Unforgettable",
+            color: "#f59e0b"
+        },
+
+        10: {
+            emoji: "🧬",
+            text: "Changed Me",
+            color: "#facc15"
+        }
 
     };
 
@@ -133,14 +182,16 @@ window.onload = () => {
 
         document.getElementById("intensityValue").innerHTML = `
 
-<div style="font-size:42px">${level.emoji}</div>
+<div style="font-size:42px">
+    ${level.emoji}
+</div>
 
 <div style="font-size:34px;font-weight:bold;color:${level.color}">
-${value} / 10
+    ${value} / 10
 </div>
 
 <div style="margin-top:8px;color:${level.color};font-size:16px">
-${level.text}
+    ${level.text}
 </div>
 
 `;
@@ -212,6 +263,8 @@ ${level.text}
 
             submitBtn.disabled = false;
 
+            submitBtn.style.display = "block";
+
             submitBtn.textContent =
                 "🧬 Contribute Your DNA to the Community";
 
@@ -221,7 +274,7 @@ ${level.text}
     });
 
     // ====================================================
-    // Submit
+    // Submit Vote
     // ====================================================
 
     submitBtn.onclick = () => {
@@ -238,6 +291,7 @@ ${level.text}
         }
 
         submittedIntensity = Number(slider.value);
+
         submittedEmotions = selectedEmotions.slice();
 
         submitBtn.disabled = true;
@@ -247,14 +301,10 @@ ${level.text}
         `;
 
         // ====================================================
-        // DIAGNOSTIC
+        // Send submission to Wix
         // ====================================================
 
         console.log("FlyDNA → sending submit to Wix");
-
-        // ====================================================
-        // Send submission to Wix
-        // ====================================================
 
         window.parent.postMessage({
 
@@ -288,16 +338,22 @@ ${level.text}
 
 
 // ========================================================
-// SHOW COMMUNITY RESULT
+// SHOW COMMUNITY RESULT AFTER NEW SUBMISSION
 // ========================================================
 
 function showCommunityResult() {
 
-    const submitBtn = document.getElementById("submitBtn");
+    const submitBtn =
+        document.getElementById("submitBtn");
 
-    const impactSection = document.getElementById("impactSection");
-    const emotionSection = document.getElementById("emotionSection");
-    const communityResult = document.getElementById("communityResult");
+    const impactSection =
+        document.getElementById("impactSection");
+
+    const emotionSection =
+        document.getElementById("emotionSection");
+
+    const communityResult =
+        document.getElementById("communityResult");
 
     if (impactSection) {
         impactSection.style.display = "none";
@@ -358,14 +414,22 @@ function showCommunityResult() {
 
 
 // ========================================================
-// ALREADY SUBMITTED
+// SHOW RESULT FOR A VISITOR WHO ALREADY SUBMITTED
 // ========================================================
 
 function showAlreadySubmitted() {
 
-    const impactSection = document.getElementById("impactSection");
-    const emotionSection = document.getElementById("emotionSection");
-    const submitBtn = document.getElementById("submitBtn");
+    const impactSection =
+        document.getElementById("impactSection");
+
+    const emotionSection =
+        document.getElementById("emotionSection");
+
+    const submitBtn =
+        document.getElementById("submitBtn");
+
+    const communityResult =
+        document.getElementById("communityResult");
 
     if (impactSection) {
         impactSection.style.display = "none";
@@ -378,6 +442,32 @@ function showAlreadySubmitted() {
     if (submitBtn) {
         submitBtn.style.display = "none";
     }
+
+    if (communityResult) {
+
+        communityResult.innerHTML = `
+
+<div class="community-result">
+
+    <div class="community-title">
+        🧬 Your DNA is already part of the universe
+    </div>
+
+    <div class="community-track">
+        ${TRACK_TITLE}
+    </div>
+
+    <div class="community-heading">
+        🌍 The Community Feeling
+    </div>
+
+</div>
+
+`;
+
+    }
+
+    updateCommunityStats(latestAggregate);
 
 }
 
@@ -392,11 +482,14 @@ function updateCommunityStats(data) {
         return;
     }
 
-    const total = Number(data.totalResponses || 0);
+    const total =
+        Number(data.totalResponses || 0);
 
-    const avg = Number(data.avgIntensity || 0);
+    const avg =
+        Number(data.avgIntensity || 0);
 
-    const dominant = data.dominantEmotion || "-";
+    const dominant =
+        data.dominantEmotion || "-";
 
     const totalElement =
         document.getElementById("fd-total");
@@ -408,19 +501,26 @@ function updateCommunityStats(data) {
         document.getElementById("fd-dominant");
 
     if (totalElement) {
-        totalElement.textContent = total;
+
+        totalElement.textContent =
+            total;
+
     }
 
     if (intensityElement) {
+
         intensityElement.textContent =
             `${avg} / 10`;
+
     }
 
     if (dominantElement) {
+
         dominantElement.textContent =
             dominant === "-"
                 ? "-"
-                : `${dominant}`;
+                : dominant;
+
     }
 
     renderBreakdown(data);
