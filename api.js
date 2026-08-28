@@ -89,6 +89,24 @@ window.addEventListener("message", (event) => {
 
 
         // ==================================
+        // WIX READY
+        // ==================================
+
+        case "wixReady":
+
+            console.log(
+                "FlyDNA ← Wix is ready"
+            );
+
+            window.requestAggregate(
+                voteTrackId,
+                voteType
+            );
+
+            break;
+
+
+        // ==================================
         // COMMUNITY AGGREGATE
         // ==================================
 
