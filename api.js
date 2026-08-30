@@ -1,14 +1,15 @@
 // ======================================
-// FlyDNA API Bridge
+// FlyDNA API Bridge v2.0
+// Compact Widget
 // ======================================
 
 let voteTrackId = "";
 let voteType = "";
 
 
-// --------------------------------------
+// ======================================
 // Initialise
-// --------------------------------------
+// ======================================
 
 window.initialiseVoting = function(trackId, type) {
 
@@ -23,16 +24,23 @@ window.initialiseVoting = function(trackId, type) {
 };
 
 
-// --------------------------------------
+// ======================================
 // Request Community DNA
-// --------------------------------------
+// ======================================
 
-window.requestAggregate = function(trackId, entityType) {
+window.requestAggregate = function(
+    trackId,
+    entityType
+) {
 
-    console.log("FlyDNA → requesting aggregate:", {
-        trackId: trackId,
-        entityType: entityType
-    });
+    console.log(
+        "FlyDNA → requesting aggregate:",
+        {
+            trackId: trackId,
+            entityType: entityType
+        }
+    );
+
 
     window.parent.postMessage({
 
@@ -47,16 +55,17 @@ window.requestAggregate = function(trackId, entityType) {
 };
 
 
-// --------------------------------------
+// ======================================
 // Submit Vote
-// --------------------------------------
+// ======================================
 
 window.submitVote = function(vote) {
 
     console.log(
-        "FlyDNA → sending submit to Wix",
+        "FlyDNA → sending submit to Wix:",
         vote
     );
+
 
     window.parent.postMessage({
 
@@ -69,70 +78,143 @@ window.submitVote = function(vote) {
 };
 
 
-// --------------------------------------
+// ======================================
 // Receive messages from Wix
-// --------------------------------------
+// ======================================
 
-window.addEventListener("message", (event) => {
+window.addEventListener(
+    "message",
+    (event) => {
 
-    if (!event.data) {
-        return;
-    }
-
-    console.log(
-        "FlyDNA ← Wix",
-        event.data
-    );
+        if (!event.data) {
+            return;
+        }
 
 
-    switch (event.data.type) {
+        console.log(
+            "FlyDNA ← Wix:",
+            event.data
+        );
 
 
-        // ==================================
-        // WIX READY
-        // ==================================
-
-        case "wixReady":
-
-            console.log(
-                "FlyDNA ← Wix is ready"
-            );
-
-            window.requestAggregate(
-                voteTrackId,
-                voteType
-            );
-
-            break;
+        const message =
+            event.data;
 
 
-        // ==================================
-        // COMMUNITY AGGREGATE
-        // ==================================
-
-        case "aggregate":
-
-            console.log(
-                "FlyDNA aggregate received:",
-                event.data.data
-            );
-
-            const aggregate =
-                event.data.data;
+        switch (message.type) {
 
 
-            // --------------------------------
-            // Visitor already contributed
-            // --------------------------------
+            // ==================================
+            // WIX READY
+            // ==================================
 
-            if (
-                aggregate &&
-                aggregate.alreadySubmitted === true
-            ) {
+            case "wixReady":
 
                 console.log(
-                    "FlyDNA → visitor already submitted"
+                    "FlyDNA ← Wix is ready"
                 );
+
+
+                window.requestAggregate(
+                    voteTrackId,
+                    voteType
+                );
+
+                break;
+
+
+            // ==================================
+            // COMMUNITY AGGREGATE
+            // ==================================
+
+            case "aggregate":
+
+                console.log(
+                    "FlyDNA aggregate received:",
+                    message.data
+                );
+
+
+                const aggregate =
+                    message.data;
+
+
+                if (
+                    aggregate &&
+                    aggregate.alreadySubmitted === true
+                ) {
+
+                    console.log(
+                        "FlyDNA → visitor already submitted"
+                    );
+
+
+                    if (
+                        typeof renderAlreadySubmitted ===
+                        "function"
+                    ) {
+
+                        renderAlreadySubmitted(
+                            aggregate
+                        );
+
+                    }
+
+                }
+                else {
+
+                    if (
+                        typeof renderAggregate ===
+                        "function"
+                    ) {
+
+                        renderAggregate(
+                            aggregate
+                        );
+
+                    }
+
+                }
+
+                break;
+
+
+            // ==================================
+            // SUCCESSFUL SUBMISSION
+            // ==================================
+
+            case "submitSuccess":
+
+                console.log(
+                    "FlyDNA submission successful:",
+                    message.data
+                );
+
+
+                if (
+                    typeof renderSubmittedExperience ===
+                    "function"
+                ) {
+
+                    renderSubmittedExperience(
+                        message.data
+                    );
+
+                }
+
+                break;
+
+
+            // ==================================
+            // ALREADY SUBMITTED
+            // ==================================
+
+            case "alreadySubmitted":
+
+                console.log(
+                    "FlyDNA → already submitted"
+                );
+
 
                 if (
                     typeof renderAlreadySubmitted ===
@@ -140,127 +222,53 @@ window.addEventListener("message", (event) => {
                 ) {
 
                     renderAlreadySubmitted(
-                        aggregate
+                        message.data
                     );
 
                 }
 
-            }
+                break;
 
 
-            // --------------------------------
-            // Visitor has not contributed
-            // --------------------------------
+            // ==================================
+            // SUBMISSION ERROR
+            // ==================================
 
-            else {
+            case "submitError":
 
-                renderAggregate(
-                    aggregate
+                console.error(
+                    "FlyDNA submission failed:",
+                    message.data
                 );
 
-            }
 
-            break;
-
-
-        // ==================================
-        // SUCCESSFUL SUBMISSION
-        // ==================================
-
-        case "submitSuccess":
-
-            console.log(
-                "FlyDNA submission successful:",
-                event.data.data
-            );
-
-            if (
-                typeof renderSubmittedExperience ===
-                "function"
-            ) {
-
-                renderSubmittedExperience(
-                    event.data.data
-                );
-
-            }
-            else {
-
-                const submitBtn =
+                const errorBtn =
                     document.getElementById(
                         "submitBtn"
                     );
 
-                if (submitBtn) {
 
-                    submitBtn.innerHTML =
-                        "✅ Your DNA is now part of the universe";
+                if (errorBtn) {
 
-                    submitBtn.disabled = true;
+                    errorBtn.disabled = false;
 
-                }
-
-                if (event.data.data) {
-
-                    renderAggregate(
-                        event.data.data
-                    );
+                    errorBtn.innerHTML =
+                        "🧬 Contribute Your DNA to the Community";
 
                 }
 
-            }
-
-            break;
+                break;
 
 
-        // ==================================
-        // ALREADY SUBMITTED
-        // ==================================
+            // ==================================
+            // UNKNOWN MESSAGE
+            // ==================================
 
-        case "alreadySubmitted":
+            default:
 
-            console.log(
-                "FlyDNA → already submitted"
-            );
+                break;
 
-            if (
-                typeof renderAlreadySubmitted ===
-                "function"
-            ) {
-
-                renderAlreadySubmitted();
-
-            }
-
-            break;
-
-
-        // ==================================
-        // SUBMISSION ERROR
-        // ==================================
-
-        case "submitError":
-
-            console.error(
-                "FlyDNA submission failed"
-            );
-
-            const errorBtn =
-                document.getElementById(
-                    "submitBtn"
-                );
-
-            if (errorBtn) {
-
-                errorBtn.disabled = false;
-
-                errorBtn.innerHTML =
-                    "🧬 Contribute Your DNA to the Community";
-
-            }
-
-            break;
+        }
 
     }
-
-});
+);
