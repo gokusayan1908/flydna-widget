@@ -1,7 +1,7 @@
 /* ======================================
-   FlyDNA
-   Compact Embedded UI
-   v2.0
+   FlyDNA Widget v1.5
+   Responsive Emotion Layout
+   4 + 3 + 3
    ====================================== */
 
 * {
@@ -15,103 +15,41 @@ body {
     width: 100%;
     min-height: 100%;
 
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     background: transparent;
     color: #ffffff;
-
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-}
-
-body {
-    padding: 0;
 }
 
 
 /* ======================================
-   MAIN APP
+   APP
    ====================================== */
 
 #app {
     width: 100%;
     max-width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-
-/* ======================================
-   FLYDNA CARD
-   ====================================== */
-
-.flydna-card {
-    width: 100%;
-    max-width: 100%;
 
     margin: 0;
-    padding: 8px 10px 7px;
+    padding: 8px;
+
+    box-sizing: border-box;
 
     background:
         linear-gradient(
-            145deg,
-            #171720 0%,
-            #111119 100%
+            180deg,
+            #171721 0%,
+            #101018 100%
         );
 
-    border:
-        1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
 
-    border-radius: 10px;
-
-    box-shadow:
-        0 6px 18px rgba(0,0,0,0.22);
+    color: #ffffff;
 
     overflow: hidden;
-}
-
-
-/* ======================================
-   HEADER
-   ====================================== */
-
-.logo {
-    margin: 0;
-    padding: 0;
-}
-
-.flydna-title {
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    margin: 0;
-
-    font-size: 17px;
-    line-height: 18px;
-
-    font-weight: 700;
-
-    letter-spacing: -0.2px;
-}
-
-.flydna-title span {
-    font-size: 17px;
-}
-
-.logo p {
-    margin: 2px 0 0;
-
-    color: #9ca3b8;
-
-    font-size: 9px;
-
-    line-height: 10px;
 }
 
 
@@ -120,48 +58,24 @@ body {
    ====================================== */
 
 .track {
-    margin: 4px 0 0;
+    width: 100%;
+    margin: 0 0 6px 0;
     padding: 0;
 }
 
-.track h2 {
+#trackTitle {
     margin: 0;
 
     color: #8eb8ff;
 
-    font-size: 11px;
-
-    line-height: 13px;
-
+    font-size: 13px;
     font-weight: 600;
 
+    line-height: 1.2;
+
     white-space: nowrap;
-
     overflow: hidden;
-
     text-overflow: ellipsis;
-}
-
-
-/* ======================================
-   GENERAL SECTIONS
-   ====================================== */
-
-.section {
-    margin: 4px 0 0;
-    padding: 0;
-}
-
-.section h2 {
-    margin: 0;
-
-    color: #ffffff;
-
-    font-size: 11px;
-
-    line-height: 12px;
-
-    font-weight: 700;
 }
 
 
@@ -171,178 +85,62 @@ body {
 
 .intensity {
     width: 100%;
-
-    margin: 5px 0 0;
+    margin: 0;
     padding: 0;
 }
 
-
-/* Hide old label if app.js creates one */
-
-.intensity > label {
-    display: none !important;
-}
-
-
-/* ======================================
-   SLIDER
-   ====================================== */
-
-.intensity input[type="range"],
-.slider input[type="range"] {
-
-    appearance: none;
-
+#intensity {
     display: block;
 
     width: 100%;
-
-    height: 4px;
+    height: 18px;
 
     margin: 0;
 
-    padding: 0;
-
-    background:
-        rgba(255,255,255,0.20);
-
-    border-radius: 999px;
-
-    cursor: pointer;
-}
-
-
-/* Chrome / Safari */
-
-.intensity input[type="range"]::-webkit-slider-runnable-track,
-.slider input[type="range"]::-webkit-slider-runnable-track {
-
-    height: 4px;
-
-    border-radius: 999px;
-
-    background:
-        rgba(255,255,255,0.22);
-}
-
-
-.intensity input[type="range"]::-webkit-slider-thumb,
-.slider input[type="range"]::-webkit-slider-thumb {
-
-    appearance: none;
-
-    width: 11px;
-    height: 11px;
-
-    margin-top: -3.5px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid rgba(255,255,255,0.90);
-
-    background:
-        #2563eb;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 0 0 2px rgba(37,99,235,0.15);
-}
-
-
-/* Firefox */
-
-.intensity input[type="range"]::-moz-range-track,
-.slider input[type="range"]::-moz-range-track {
-
-    height: 4px;
-
-    border-radius: 999px;
-
-    background:
-        rgba(255,255,255,0.22);
-}
-
-
-.intensity input[type="range"]::-moz-range-thumb,
-.slider input[type="range"]::-moz-range-thumb {
-
-    width: 11px;
-    height: 11px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid rgba(255,255,255,0.90);
-
-    background:
-        #2563eb;
+    accent-color: #2878ff;
 
     cursor: pointer;
 }
 
 
 /* ======================================
-   INTENSITY VALUE
+   INTENSITY DISPLAY
    ====================================== */
 
-#intensityValue,
-.intensityValue {
+#intensityValue {
+    width: 100%;
 
-    min-height: 0;
-
-    margin: 3px 0 0;
-
-    padding: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
+    margin-top: 0;
 
     text-align: center;
 
-    gap: 0;
+    color: #ffffff;
 }
 
+.intensity-score {
+    display: flex;
 
-/* Score */
+    align-items: center;
+    justify-content: center;
 
-#intensityValue > div:nth-child(2),
-.intensityValue > div:nth-child(2) {
+    gap: 5px;
 
-    font-size: 13px !important;
-
-    line-height: 14px !important;
-
-    min-height: 14px;
-
-    margin: 0 !important;
-
-    padding: 0 !important;
+    font-size: 22px;
+    line-height: 1.1;
 }
 
+.intensity-score strong {
+    font-size: 22px;
+    font-weight: 700;
+}
 
-/* Description */
+.intensity-description {
+    margin-top: 1px;
 
-#intensityValue > div:nth-child(3),
-.intensityValue > div:nth-child(3) {
+    font-size: 16px;
+    line-height: 1.1;
 
-    font-size: 9px !important;
-
-    line-height: 11px !important;
-
-    min-height: 11px;
-
-    margin: 0 !important;
-
-    padding: 0 !important;
-
-    color: #aeb3c2;
+    color: #ffffff;
 }
 
 
@@ -352,132 +150,186 @@ body {
 
 .emotions {
     width: 100%;
-
-    margin: 5px 0 0;
-    padding: 0;
+    margin-top: 5px;
 }
 
-
-/* Question */
-
 .emotions > label {
-
     display: block;
 
-    margin: 0;
+    margin-bottom: 4px;
 
     color: #ffffff;
 
-    font-size: 10px;
+    font-size: 14px;
+    font-weight: 700;
 
-    line-height: 11px;
-
-    font-weight: 600;
-}
-
-
-/* Subtitle */
-
-.emotion-subtitle {
-
-    margin: 1px 0 3px;
-
-    color: #8f95a8;
-
-    font-size: 8px;
-
-    line-height: 9px;
+    line-height: 1.1;
 }
 
 
 /* ======================================
-   EMOTION CONTAINER
+   EMOTION GRID
    ====================================== */
 
 #emotionContainer {
+    display: grid;
+
+    /*
+       12-column grid allows:
+
+       Row 1 = 4 buttons
+       Row 2 = 3 buttons
+       Row 3 = 3 buttons
+    */
+
+    grid-template-columns:
+        repeat(12, minmax(0, 1fr));
+
+    gap: 4px;
 
     width: 100%;
 
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-
-    gap: 3px;
-
     margin: 0;
-
     padding: 0;
+
+    box-sizing: border-box;
 }
 
 
 /* ======================================
-   EMOTION BUTTONS
+   ROW 1 — 4 BUTTONS
+   ====================================== */
+
+.emotion-btn:nth-child(1),
+.emotion-btn:nth-child(2),
+.emotion-btn:nth-child(3),
+.emotion-btn:nth-child(4) {
+
+    grid-column: span 3;
+}
+
+
+/* ======================================
+   ROW 2 — 3 BUTTONS
+   ====================================== */
+
+.emotion-btn:nth-child(5),
+.emotion-btn:nth-child(6),
+.emotion-btn:nth-child(7) {
+
+    grid-column: span 4;
+}
+
+
+/* ======================================
+   ROW 3 — 3 BUTTONS
+   ====================================== */
+
+.emotion-btn:nth-child(8),
+.emotion-btn:nth-child(9),
+.emotion-btn:nth-child(10) {
+
+    grid-column: span 4;
+}
+
+
+/* ======================================
+   EMOTION BUTTON
    ====================================== */
 
 .emotion-btn {
 
     width: 100%;
-
     min-width: 0;
 
-    height: 24px;
+    height: 30px;
 
-    margin: 0;
-
-    padding: 2px 3px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 3px;
+    padding: 4px 5px;
 
     border:
-        1px solid rgba(255,255,255,0.12);
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.16
+        );
 
     border-radius: 6px;
 
     background:
-        rgba(255,255,255,0.045);
+        rgba(
+            255,
+            255,
+            255,
+            0.045
+        );
 
     color: #ffffff;
 
-    font-family: inherit;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    font-size: 8px;
+    font-size: 10px;
 
-    font-weight: 500;
+    line-height: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    overflow: hidden;
 
     cursor: pointer;
 
     transition:
         background 0.15s ease,
-        border 0.15s ease,
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
-
-    outline: none;
-}
-
-
-.emotion-btn:hover {
-
-    background:
-        rgba(255,255,255,0.09);
-
-    border-color:
-        rgba(255,255,255,0.22);
-
-    transform:
-        translateY(-1px);
+        border-color 0.15s ease,
+        transform 0.1s ease;
 }
 
 
 /* ======================================
-   SELECTED EMOTION
+   HOVER
+   ====================================== */
+
+.emotion-btn:hover {
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.10
+        );
+
+    border-color:
+        rgba(
+            255,
+            255,
+            255,
+            0.30
+        );
+}
+
+
+/* ======================================
+   ACTIVE
+   ====================================== */
+
+.emotion-btn:active {
+
+    transform: scale(0.97);
+}
+
+
+/* ======================================
+   SELECTED
    ====================================== */
 
 .emotion-btn.selected {
@@ -485,181 +337,162 @@ body {
     background:
         linear-gradient(
             135deg,
-            #2563eb 0%,
-            #3b82f6 45%,
-            #7c3aed 100%
+            #2878ff,
+            #7540e8
         );
 
     border-color:
-        rgba(255,255,255,0.65);
+        rgba(
+            255,
+            255,
+            255,
+            0.40
+        );
 
     color: #ffffff;
-
-    font-weight: 600;
-
-    box-shadow:
-        0 4px 12px
-        rgba(59,130,246,0.25);
-
-    transform:
-        translateY(-1px);
-}
-
-
-.emotion-btn.selected:hover {
-
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb 0%,
-            #3b82f6 45%,
-            #7c3aed 100%
-        );
-
-    border-color:
-        rgba(255,255,255,0.85);
 }
 
 
 /* ======================================
-   EMOTION CONTENT
+   EMOJI
    ====================================== */
 
 .emotion-emoji {
 
-    display: inline-flex;
+    flex: 0 0 auto;
 
-    align-items: center;
-
-    justify-content: center;
+    font-size: 10px;
 
     line-height: 1;
-
-    font-size: 9px !important;
-
-    flex-shrink: 0;
 }
 
 
+/* ======================================
+   EMOTION NAME
+   ====================================== */
+
 .emotion-name {
 
+    display: block;
+
     min-width: 0;
+    max-width: 100%;
 
     white-space: nowrap;
+
+    /*
+       No aggressive truncation.
+       The wider 3-column rows should
+       now accommodate the longer names.
+    */
 
     overflow: hidden;
 
     text-overflow: ellipsis;
+
+    line-height: 1;
 }
 
 
 /* ======================================
-   EMOTION COUNTER
+   COUNTER
    ====================================== */
 
 .emotion-counter {
 
-    margin: 2px 0 0;
+    width: 100%;
 
-    color: #8f95a8;
-
-    font-size: 8px;
-
-    line-height: 9px;
-
-    height: 9px;
+    margin-top: 4px;
 
     text-align: right;
-}
 
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.55
+        );
 
-.emotion-counter.complete {
+    font-size: 10px;
 
-    color: #a78bfa;
-
-    font-weight: 600;
+    line-height: 1.1;
 }
 
 
 /* ======================================
-   SUBMIT BUTTON
+   SUBMIT
    ====================================== */
 
 #submitBtn {
 
+    display: block;
+
     width: 100%;
 
-    height: 26px;
+    min-height: 34px;
 
-    min-height: 26px;
+    margin-top: 7px;
 
-    margin: 4px 0 0;
+    padding: 7px 8px;
 
-    padding: 3px 7px;
+    border: none;
 
-    border: 0;
-
-    border-radius: 7px;
+    border-radius: 8px;
 
     background:
         linear-gradient(
-            135deg,
-            #2563eb 0%,
-            #3b82f6 50%,
-            #7c3aed 100%
+            90deg,
+            #2878ff,
+            #7640e8
         );
 
     color: #ffffff;
 
-    font-family: inherit;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    font-size: 8px;
+    font-size: 10px;
 
-    line-height: 1;
+    font-weight: 700;
 
-    font-weight: 600;
+    line-height: 1.1;
+
+    text-align: center;
 
     cursor: pointer;
-
-    box-shadow:
-        0 4px 12px
-        rgba(37,99,235,0.20);
-
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        filter 0.15s ease;
 }
 
+
+/* ======================================
+   SUBMIT HOVER
+   ====================================== */
 
 #submitBtn:hover {
-
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-        0 6px 15px
-        rgba(37,99,235,0.28);
-
-    filter:
-        brightness(1.05);
+    opacity: 0.92;
 }
 
+
+/* ======================================
+   SUBMIT ACTIVE
+   ====================================== */
 
 #submitBtn:active {
-
-    transform:
-        translateY(0);
+    transform: scale(0.99);
 }
 
+
+/* ======================================
+   SUBMIT DISABLED
+   ====================================== */
 
 #submitBtn:disabled {
 
+    opacity: 0.65;
+
     cursor: default;
-
-    opacity: 0.75;
-
-    transform: none;
 }
 
 
@@ -671,222 +504,116 @@ body {
 
     width: 100%;
 
-    margin: 3px 0 0;
+    margin-top: 5px;
 
-    padding: 0;
-
-    color: #9ca3b8;
-
-    font-size: 8px;
-
-    line-height: 9px;
-
-    text-align: center;
-}
-
-
-/* ======================================
-   COMMUNITY
-   ====================================== */
-
-.community {
-
-    width: 100%;
-
-    margin: 5px 0 0;
-
-    padding: 0;
-}
-
-
-.community hr {
-
-    margin: 0 0 5px;
-
-    padding: 0;
-
-    border: 0;
-
-    border-top:
-        1px solid rgba(255,255,255,0.10);
-}
-
-
-.community h3 {
-
-    margin: 0;
-
-    color: #ffffff;
+    color: #ffb4b4;
 
     font-size: 10px;
 
-    line-height: 11px;
-
-    font-weight: 600;
+    line-height: 1.2;
 
     text-align: center;
 }
 
 
 /* ======================================
-   COMMUNITY STATS
+   ALREADY SUBMITTED
    ====================================== */
 
-.stats {
+.submitted-state {
 
-    margin: 4px 0 0;
+    width: 100%;
 
-    padding: 0;
+    padding: 18px 8px;
+
+    text-align: center;
 }
 
-
-.stat {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    min-height: 14px;
-
-    height: 14px;
-
-    margin: 0;
-
-    padding: 0;
-
-    font-size: 8px;
-
-    line-height: 1;
-}
-
-
-.stat span {
-
-    color: #d5d8e1;
-}
-
-
-.stat strong {
+.submitted-message {
 
     color: #ffffff;
 
-    font-size: 9px;
+    font-size: 17px;
 
     font-weight: 600;
 
-    text-align: right;
+    line-height: 1.3;
 }
 
 
 /* ======================================
-   COMMUNITY BREAKDOWN
+   NARROW WIDGET
    ====================================== */
 
-#fd-breakdown {
+@media (max-width: 320px) {
 
-    margin: 3px 0 0;
-
-    padding: 0;
-
-    font-size: 8px;
-
-    line-height: 9px;
-}
-
-
-/* ======================================
-   SMALL SCREEN
-   ====================================== */
-
-@media (max-width: 380px) {
-
-    .flydna-card {
-
-        padding:
-            6px 7px 5px;
+    #app {
+        padding: 7px;
     }
 
-
-    .flydna-title,
-    .flydna-title span {
-
-        font-size: 16px;
+    .intensity-score {
+        font-size: 20px;
     }
 
-
-    .track h2 {
-
-        font-size: 10px;
+    .intensity-score strong {
+        font-size: 20px;
     }
 
-
-    #emotionContainer {
-
-        gap: 2px;
+    .intensity-description {
+        font-size: 15px;
     }
 
+    .emotions > label {
+        font-size: 13px;
+    }
 
     .emotion-btn {
+        height: 29px;
 
-        height: 22px;
+        font-size: 9px;
 
-        padding: 2px;
-
-        font-size: 7px;
-
-        border-radius: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
     }
-
 
     .emotion-emoji {
-
-        font-size: 8px !important;
+        font-size: 9px;
     }
 
+    .emotion-counter {
+        font-size: 9px;
+    }
 
     #submitBtn {
+        font-size: 9px;
+    }
+}
 
-        height: 24px;
 
-        min-height: 24px;
+/* ======================================
+   VERY NARROW WIDGET
+   ====================================== */
 
-        font-size: 7px;
+@media (max-width: 260px) {
+
+    #app {
+        padding: 6px;
     }
 
+    .emotion-btn {
+        height: 28px;
 
-    .stat {
+        font-size: 8px;
 
-        font-size: 7px;
-
-        height: 13px;
-
-        min-height: 13px;
+        padding-left: 2px;
+        padding-right: 2px;
     }
 
-
-    .stat strong {
-
+    .emotion-emoji {
         font-size: 8px;
     }
 
-}
-
-
-/* ======================================
-   MOBILE
-   ====================================== */
-
-@media (max-width: 700px) {
-
-    body {
-        padding: 0;
+    #submitBtn {
+        font-size: 8px;
     }
-
-    .flydna-card {
-
-        border-radius: 9px;
-    }
-
 }
