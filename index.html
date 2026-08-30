@@ -7,15 +7,13 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0">
 
     <title>FlyDNA</title>
 
     <link
         rel="stylesheet"
-        href="style.css?v=5"
-    >
+        href="style.css?v=5">
 
 </head>
 
@@ -24,183 +22,187 @@
 
 <div id="app">
 
-
-    <!-- =========================================================
-         FLYDNA HEADER
-         ========================================================= -->
-
-    <div class="logo">
-
-        <div class="flydna-title">
-            🧬 <span>FlyDNA</span>
-        </div>
-
-        <p>
-            How deeply did this music move you?
-        </p>
-
-    </div>
+    <div class="flydna-card">
 
 
-    <!-- =========================================================
-         TRACK
-         ========================================================= -->
+        <!-- ======================================
+             HEADER
+             ====================================== -->
 
-    <div class="track">
+        <div class="logo">
 
-        <h2 id="trackTitle">
-            Loading...
-        </h2>
+            <div class="flydna-title">
 
-    </div>
+                <span>🧬</span>
 
-
-    <!-- =========================================================
-         INTENSITY
-         ========================================================= -->
-
-    <div class="intensity">
-
-        <input
-            id="intensity"
-            type="range"
-            min="1"
-            max="10"
-            value="5"
-        >
-
-        <div id="intensityValue">
-            5 / 10
-        </div>
-
-    </div>
-
-
-    <!-- =========================================================
-         EMOTIONS
-         ========================================================= -->
-
-    <div class="emotions">
-
-        <label>
-            What did you feel?
-        </label>
-
-        <div class="emotion-subtitle">
-            Choose up to 3
-        </div>
-
-        <div id="emotionContainer">
-        </div>
-
-        <div
-            id="emotionCounter"
-            class="emotion-counter"
-        >
-            0 of 3 emotions selected
-        </div>
-
-    </div>
-
-
-    <!-- =========================================================
-         SUBMIT
-         ========================================================= -->
-
-    <button id="submitBtn">
-
-        🧬 Contribute Your DNA to the Community
-
-    </button>
-
-
-    <!-- =========================================================
-         STATUS
-         ========================================================= -->
-
-    <div id="status">
-    </div>
-
-
-    <!-- =========================================================
-         COMMUNITY DNA
-         ========================================================= -->
-
-    <div class="community">
-
-        <hr>
-
-        <h3>
-            🌍 The Community Feeling
-        </h3>
-
-
-        <div class="stats">
-
-
-            <div class="stat">
-
-                <span>
-                    Community Contributors
-                </span>
-
-                <strong id="fd-total">
-                    0
-                </strong>
+                <span>FlyDNA</span>
 
             </div>
 
-
-            <div class="stat">
-
-                <span>
-                    Average Emotional Impact
-                </span>
-
-                <strong id="fd-intensity">
-                    0 / 10
-                </strong>
-
-            </div>
-
-
-            <div class="stat">
-
-                <span>
-                    Community Emotional DNA
-                </span>
-
-                <strong id="fd-dominant">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div id="fd-breakdown">
-            </div>
-
+            <p>
+                How deeply did this music move you?
+            </p>
 
         </div>
 
-    </div>
 
+        <!-- ======================================
+             TRACK
+             ====================================== -->
+
+        <div class="track">
+
+            <h2 id="trackTitle">
+                Loading...
+            </h2>
+
+        </div>
+
+
+        <!-- ======================================
+             INTENSITY
+             ====================================== -->
+
+        <div class="intensity">
+
+            <input
+                id="intensity"
+                type="range"
+                min="1"
+                max="10"
+                value="5">
+
+            <div id="intensityValue">
+                5 / 10
+            </div>
+
+        </div>
+
+
+        <!-- ======================================
+             EMOTIONS
+             ====================================== -->
+
+        <div class="emotions">
+
+            <label>
+                What did you feel?
+            </label>
+
+            <div id="emotionContainer">
+            </div>
+
+            <div
+                id="emotionCounter"
+                class="emotion-counter">
+
+                0 of 3 emotions selected
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================
+             SUBMIT
+             ====================================== -->
+
+        <button id="submitBtn">
+
+            🧬 Contribute Your DNA to the Community
+
+        </button>
+
+
+        <!-- ======================================
+             STATUS
+             ====================================== -->
+
+        <div id="status">
+        </div>
+
+
+        <!-- ======================================
+             COMMUNITY
+             ====================================== -->
+
+        <div class="community">
+
+            <hr>
+
+            <h3>
+                🌍 Community DNA
+            </h3>
+
+
+            <div class="stats">
+
+
+                <div class="stat">
+
+                    <span>
+                        Community Contributors
+                    </span>
+
+                    <strong id="fd-total">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span>
+                        Average Emotional Impact
+                    </span>
+
+                    <strong id="fd-intensity">
+                        0 / 10
+                    </strong>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span>
+                        Community Emotional DNA
+                    </span>
+
+                    <strong id="fd-dominant">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div id="fd-breakdown">
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
 
 </div>
 
 
-<!-- =========================================================
+<!-- ======================================
      JAVASCRIPT
-     IMPORTANT: LOAD ORDER
-     ========================================================= -->
+     Load order is important
+     ====================================== -->
 
 <script src="emotions.js?v=2"></script>
 
-<script src="renderer.js?v=5"></script>
+<script src="renderer.js?v=4"></script>
 
-<script src="api.js?v=3"></script>
+<script src="api.js?v=4"></script>
 
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 
 
 </body>
