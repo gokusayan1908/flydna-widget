@@ -1,7 +1,7 @@
 /* ======================================
-   FlyDNA Widget v1.6
+   FlyDNA Widget v1.7
    Compact Responsive Layout
-   Matching Wix Box Background
+   Wix Box Color Match
    ====================================== */
 
 
@@ -26,7 +26,6 @@ body {
         sans-serif;
 
     background: transparent;
-
     color: #ffffff;
 }
 
@@ -44,8 +43,8 @@ body {
 
     box-sizing: border-box;
 
-    /* Match Wix track box */
-    background: #467E8E;
+    /* EXACT MATCH TO WIX BOX */
+    background: #417586;
 
     border-radius: 12px;
 
@@ -77,9 +76,7 @@ body {
     line-height: 1.2;
 
     white-space: nowrap;
-
     overflow: hidden;
-
     text-overflow: ellipsis;
 }
 
@@ -128,31 +125,38 @@ body {
     color: #ffffff;
 }
 
+
+/* ======================================
+   SMALLER INTENSITY SCORE
+   ====================================== */
+
 .intensity-score {
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    gap: 5px;
+    gap: 4px;
 
-    font-size: 22px;
+    font-size: 19px;
 
-    line-height: 1.1;
+    line-height: 1.05;
 }
 
+
 .intensity-score strong {
-    font-size: 22px;
+    font-size: 20px;
 
     font-weight: 700;
 }
 
+
 .intensity-description {
-    margin-top: 1px;
+    margin-top: 0;
 
-    font-size: 16px;
+    font-size: 14px;
 
-    line-height: 1.1;
+    line-height: 1.05;
 
     color: #ffffff;
 }
@@ -181,7 +185,6 @@ body {
     color: #ffffff;
 
     font-size: 14px;
-
     font-weight: 700;
 
     line-height: 1.1;
@@ -237,10 +240,10 @@ body {
 
     background:
         rgba(
-            0,
-            0,
-            0,
-            0.12
+            255,
+            255,
+            255,
+            0.045
         );
 
     color: #ffffff;
@@ -257,7 +260,6 @@ body {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     gap: 2px;
@@ -280,10 +282,10 @@ body {
 .emotion-btn:hover {
     background:
         rgba(
-            0,
-            0,
-            0,
-            0.22
+            255,
+            255,
+            255,
+            0.10
         );
 
     border-color:
@@ -350,7 +352,6 @@ body {
     display: block;
 
     min-width: 0;
-
     max-width: 100%;
 
     white-space: nowrap;
@@ -379,7 +380,7 @@ body {
             255,
             255,
             255,
-            0.65
+            0.55
         );
 
     font-size: 10px;
@@ -497,6 +498,7 @@ body {
     text-align: center;
 }
 
+
 .submitted-message {
     color: #ffffff;
 
@@ -519,15 +521,15 @@ body {
     }
 
     .intensity-score {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .intensity-score strong {
-        font-size: 20px;
+        font-size: 19px;
     }
 
     .intensity-description {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .emotions > label {
