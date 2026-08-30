@@ -1,7 +1,11 @@
 /* ======================================
-   FlyDNA Widget v1.5
-   Responsive Emotion Layout
-   4 + 3 + 3
+   FlyDNA Widget v1.4
+   Compact Responsive Layout
+   ====================================== */
+
+
+/* ======================================
+   GLOBAL
    ====================================== */
 
 * {
@@ -32,7 +36,6 @@ body {
 #app {
     width: 100%;
     max-width: 100%;
-
     margin: 0;
     padding: 8px;
 
@@ -104,7 +107,7 @@ body {
 
 
 /* ======================================
-   INTENSITY DISPLAY
+   INTENSITY VALUE
    ====================================== */
 
 #intensityValue {
@@ -145,13 +148,19 @@ body {
 
 
 /* ======================================
-   EMOTIONS
+   EMOTIONS SECTION
    ====================================== */
 
 .emotions {
     width: 100%;
+
     margin-top: 5px;
 }
+
+
+/* ======================================
+   EMOTION QUESTION
+   ====================================== */
 
 .emotions > label {
     display: block;
@@ -168,22 +177,14 @@ body {
 
 
 /* ======================================
-   EMOTION GRID
+   EMOTION CONTAINER
    ====================================== */
 
 #emotionContainer {
     display: grid;
 
-    /*
-       12-column grid allows:
-
-       Row 1 = 4 buttons
-       Row 2 = 3 buttons
-       Row 3 = 3 buttons
-    */
-
     grid-template-columns:
-        repeat(12, minmax(0, 1fr));
+        repeat(4, minmax(0, 1fr));
 
     gap: 4px;
 
@@ -197,63 +198,25 @@ body {
 
 
 /* ======================================
-   ROW 1 — 4 BUTTONS
-   ====================================== */
-
-.emotion-btn:nth-child(1),
-.emotion-btn:nth-child(2),
-.emotion-btn:nth-child(3),
-.emotion-btn:nth-child(4) {
-
-    grid-column: span 3;
-}
-
-
-/* ======================================
-   ROW 2 — 3 BUTTONS
-   ====================================== */
-
-.emotion-btn:nth-child(5),
-.emotion-btn:nth-child(6),
-.emotion-btn:nth-child(7) {
-
-    grid-column: span 4;
-}
-
-
-/* ======================================
-   ROW 3 — 3 BUTTONS
-   ====================================== */
-
-.emotion-btn:nth-child(8),
-.emotion-btn:nth-child(9),
-.emotion-btn:nth-child(10) {
-
-    grid-column: span 4;
-}
-
-
-/* ======================================
    EMOTION BUTTON
    ====================================== */
 
 .emotion-btn {
-
     width: 100%;
     min-width: 0;
 
+    box-sizing: border-box;
+
     height: 30px;
 
-    padding: 4px 5px;
+    padding: 4px 2px;
 
-    border:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.16
-        );
+    border: 1px solid rgba(
+        255,
+        255,
+        255,
+        0.16
+    );
 
     border-radius: 6px;
 
@@ -281,7 +244,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    gap: 3px;
+    gap: 2px;
 
     overflow: hidden;
 
@@ -295,11 +258,10 @@ body {
 
 
 /* ======================================
-   HOVER
+   EMOTION BUTTON HOVER
    ====================================== */
 
 .emotion-btn:hover {
-
     background:
         rgba(
             255,
@@ -319,21 +281,19 @@ body {
 
 
 /* ======================================
-   ACTIVE
+   EMOTION BUTTON ACTIVE
    ====================================== */
 
 .emotion-btn:active {
-
     transform: scale(0.97);
 }
 
 
 /* ======================================
-   SELECTED
+   SELECTED EMOTION
    ====================================== */
 
 .emotion-btn.selected {
-
     background:
         linear-gradient(
             135deg,
@@ -354,11 +314,10 @@ body {
 
 
 /* ======================================
-   EMOJI
+   EMOTION EMOJI
    ====================================== */
 
 .emotion-emoji {
-
     flex: 0 0 auto;
 
     font-size: 10px;
@@ -372,19 +331,12 @@ body {
    ====================================== */
 
 .emotion-name {
-
     display: block;
 
     min-width: 0;
     max-width: 100%;
 
     white-space: nowrap;
-
-    /*
-       No aggressive truncation.
-       The wider 3-column rows should
-       now accommodate the longer names.
-    */
 
     overflow: hidden;
 
@@ -395,11 +347,10 @@ body {
 
 
 /* ======================================
-   COUNTER
+   SELECTION COUNTER
    ====================================== */
 
 .emotion-counter {
-
     width: 100%;
 
     margin-top: 4px;
@@ -421,11 +372,10 @@ body {
 
 
 /* ======================================
-   SUBMIT
+   SUBMIT BUTTON
    ====================================== */
 
 #submitBtn {
-
     display: block;
 
     width: 100%;
@@ -463,6 +413,10 @@ body {
     text-align: center;
 
     cursor: pointer;
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.1s ease;
 }
 
 
@@ -489,7 +443,6 @@ body {
    ====================================== */
 
 #submitBtn:disabled {
-
     opacity: 0.65;
 
     cursor: default;
@@ -501,7 +454,6 @@ body {
    ====================================== */
 
 #status {
-
     width: 100%;
 
     margin-top: 5px;
@@ -521,7 +473,6 @@ body {
    ====================================== */
 
 .submitted-state {
-
     width: 100%;
 
     padding: 18px 8px;
@@ -530,7 +481,6 @@ body {
 }
 
 .submitted-message {
-
     color: #ffffff;
 
     font-size: 17px;
@@ -542,7 +492,7 @@ body {
 
 
 /* ======================================
-   NARROW WIDGET
+   MOBILE / NARROW WIDGET
    ====================================== */
 
 @media (max-width: 320px) {
@@ -572,8 +522,8 @@ body {
 
         font-size: 9px;
 
-        padding-left: 3px;
-        padding-right: 3px;
+        padding-left: 1px;
+        padding-right: 1px;
     }
 
     .emotion-emoji {
@@ -604,9 +554,6 @@ body {
         height: 28px;
 
         font-size: 8px;
-
-        padding-left: 2px;
-        padding-right: 2px;
     }
 
     .emotion-emoji {
