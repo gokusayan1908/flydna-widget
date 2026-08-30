@@ -1,25 +1,36 @@
 // ======================================
-// FlyDNA API Bridge v2.0
-// Compact Widget
+// FlyDNA API Bridge v3.0
 // ======================================
 
 let voteTrackId = "";
 let voteType = "";
+let voteSessionId = "";
 
 
 // ======================================
 // Initialise
 // ======================================
 
-window.initialiseVoting = function(trackId, type) {
+window.initialiseVoting = function(
+    trackId,
+    type,
+    sessionId
+) {
 
     voteTrackId = trackId;
+
     voteType = type;
 
-    console.log("FlyDNA API initialised:", {
-        trackId: trackId,
-        entityType: type
-    });
+    voteSessionId = sessionId || "";
+
+    console.log(
+        "FlyDNA API initialised:",
+        {
+            trackId: trackId,
+            entityType: type,
+            sessionId: voteSessionId
+        }
+    );
 
 };
 
@@ -30,14 +41,20 @@ window.initialiseVoting = function(trackId, type) {
 
 window.requestAggregate = function(
     trackId,
-    entityType
+    entityType,
+    sessionId
 ) {
+
+    const activeSessionId =
+        sessionId || voteSessionId;
+
 
     console.log(
         "FlyDNA → requesting aggregate:",
         {
             trackId: trackId,
-            entityType: entityType
+            entityType: entityType,
+            sessionId: activeSessionId
         }
     );
 
@@ -48,7 +65,9 @@ window.requestAggregate = function(
 
         trackId: trackId,
 
-        entityType: entityType
+        entityType: entityType,
+
+        sessionId: activeSessionId
 
     }, "*");
 
@@ -117,7 +136,8 @@ window.addEventListener(
 
                 window.requestAggregate(
                     voteTrackId,
-                    voteType
+                    voteType,
+                    voteSessionId
                 );
 
                 break;
@@ -250,7 +270,9 @@ window.addEventListener(
 
                 if (errorBtn) {
 
-                    errorBtn.disabled = false;
+                    errorBtn.disabled =
+                        false;
+
 
                     errorBtn.innerHTML =
                         "🧬 Contribute Your DNA to the Community";
