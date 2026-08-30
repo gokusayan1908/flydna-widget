@@ -1,6 +1,7 @@
 // ======================================
-// FlyDNA Application v2.0
+// FlyDNA Application v3.0
 // Compact Widget
+// Persistent Anonymous Visitor ID
 // ======================================
 
 
@@ -32,6 +33,76 @@ const ENTITY_TYPE =
 
 window.TRACK_TITLE =
     TRACK_TITLE;
+
+
+// ======================================
+// ANONYMOUS VISITOR / SESSION ID
+// ======================================
+//
+// One anonymous ID is created per browser.
+// It is stored locally and reused on future visits.
+//
+// This is NOT personal information.
+// It is only used to enforce one FlyDNA
+// response per visitor per track.
+//
+
+const FLYDNA_SESSION_KEY =
+    "flydna_visitor_id";
+
+
+function getFlyDNASessionId() {
+
+    let sessionId =
+        localStorage.getItem(
+            FLYDNA_SESSION_KEY
+        );
+
+
+    if (!sessionId) {
+
+        if (
+            typeof crypto !== "undefined" &&
+            typeof crypto.randomUUID === "function"
+        ) {
+
+            sessionId =
+                crypto.randomUUID();
+
+        } else {
+
+            sessionId =
+                "flydna-" +
+                Date.now() +
+                "-" +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 15);
+
+        }
+
+
+        localStorage.setItem(
+            FLYDNA_SESSION_KEY,
+            sessionId
+        );
+
+    }
+
+
+    return sessionId;
+
+}
+
+
+const SESSION_ID =
+    getFlyDNASessionId();
+
+
+console.log(
+    "FlyDNA visitor ID:",
+    SESSION_ID
+);
 
 
 // ======================================
@@ -112,6 +183,7 @@ function updateIntensity() {
         document.getElementById(
             "intensity"
         );
+
 
     const display =
         document.getElementById(
@@ -253,7 +325,8 @@ window.addEventListener(
 
             initialiseVoting(
                 TRACK_ID,
-                ENTITY_TYPE
+                ENTITY_TYPE,
+                SESSION_ID
             );
 
         }
@@ -270,7 +343,8 @@ window.addEventListener(
 
             requestAggregate(
                 TRACK_ID,
-                ENTITY_TYPE
+                ENTITY_TYPE,
+                SESSION_ID
             );
 
         }
@@ -374,7 +448,10 @@ function handleSubmit() {
             submittedIntensity,
 
         emotions:
-            submittedEmotions
+            submittedEmotions,
+
+        sessionId:
+            SESSION_ID
 
     };
 
