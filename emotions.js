@@ -1,5 +1,6 @@
 // ======================================
-// FlyDNA Emotions v1.2
+// FlyDNA Emotions v1.3
+// 4-column compact layout
 // ======================================
 
 const EMOTIONS = [
@@ -70,27 +71,56 @@ function renderEmotions() {
         document.getElementById("emotionContainer");
 
     if (!container) {
+
         console.error(
             "FlyDNA: emotionContainer not found"
         );
+
         return;
     }
 
+
+    // ==================================
+    // 4 COLUMNS
+    // ==================================
+
+    container.style.display = "grid";
+
+    container.style.gridTemplateColumns =
+        "repeat(4, minmax(0, 1fr))";
+
+    container.style.gap = "5px";
+
+    container.style.width = "100%";
+
+    container.style.boxSizing = "border-box";
+
+
+    // Clear existing buttons
+
     container.innerHTML = "";
+
+
+    // ==================================
+    // CREATE EMOTION BUTTONS
+    // ==================================
 
     EMOTIONS.forEach(emotion => {
 
         const button =
             document.createElement("button");
 
+
         button.type = "button";
 
-        // IMPORTANT:
-        // This must match style.css
-        button.className = "emotion-btn";
+
+        button.className =
+            "emotion-btn";
+
 
         button.dataset.emotion =
             emotion.label;
+
 
         button.innerHTML = `
             <span class="emotion-emoji">
@@ -102,6 +132,7 @@ function renderEmotions() {
             </span>
         `;
 
+
         button.addEventListener(
             "click",
             () => toggleEmotion(
@@ -110,15 +141,19 @@ function renderEmotions() {
             )
         );
 
+
         container.appendChild(button);
 
     });
 
+
     updateEmotionCounter();
+
 
     console.log(
         "FlyDNA emotions rendered:",
-        EMOTIONS.length
+        EMOTIONS.length,
+        "in 4-column layout"
     );
 }
 
@@ -135,6 +170,7 @@ function toggleEmotion(
     const index =
         selectedEmotions.indexOf(emotion);
 
+
     // ----------------------------------
     // Already selected → remove
     // ----------------------------------
@@ -146,14 +182,17 @@ function toggleEmotion(
             1
         );
 
+
         button.classList.remove(
             "selected"
         );
+
 
         updateEmotionCounter();
 
         return;
     }
+
 
     // ----------------------------------
     // Maximum reached
@@ -167,6 +206,7 @@ function toggleEmotion(
         return;
     }
 
+
     // ----------------------------------
     // Add emotion
     // ----------------------------------
@@ -175,9 +215,11 @@ function toggleEmotion(
         emotion
     );
 
+
     button.classList.add(
         "selected"
     );
+
 
     updateEmotionCounter();
 }
@@ -194,12 +236,16 @@ function updateEmotionCounter() {
             "emotionCounter"
         );
 
+
     if (!counter) {
+
         return;
     }
 
+
     const count =
         selectedEmotions.length;
+
 
     counter.textContent =
         `${count} of ${MAX_EMOTIONS} emotions selected`;
