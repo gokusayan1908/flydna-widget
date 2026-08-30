@@ -1,5 +1,6 @@
 // ======================================
-// FlyDNA Renderer
+// FlyDNA Renderer v2.0
+// Compact Community Experience
 // ======================================
 
 
@@ -9,7 +10,9 @@
 
 function renderAggregate(data) {
 
-    if (!data) return;
+    if (!data) {
+        return;
+    }
 
     const total =
         document.getElementById("fd-total");
@@ -24,40 +27,75 @@ function renderAggregate(data) {
         document.getElementById("fd-breakdown");
 
 
+    // ----------------------------------
+    // Community contributors
+    // ----------------------------------
+
     if (total) {
+
         total.innerText =
             data.totalResponses || 0;
+
     }
+
+
+    // ----------------------------------
+    // Average intensity
+    // ----------------------------------
 
     if (intensity) {
+
         intensity.innerText =
-            (data.avgIntensity || 0) + " / 10";
+            `${data.avgIntensity || 0} / 10`;
+
     }
+
+
+    // ----------------------------------
+    // Dominant emotion
+    // ----------------------------------
 
     if (dominant) {
+
         dominant.innerText =
             data.dominantEmotion || "-";
+
     }
 
-    if (!breakdown) return;
+
+    // ----------------------------------
+    // Emotion breakdown
+    // ----------------------------------
+
+    if (!breakdown) {
+        return;
+    }
 
     breakdown.innerHTML = "";
+
 
     if (
         !data.emotionBreakdown ||
         !data.totalResponses
     ) {
+
         return;
+
     }
+
 
     const emotions =
         Object.entries(
             data.emotionBreakdown
         );
 
+
+    // Highest percentage first
+
     emotions.sort(
         (a, b) => b[1] - a[1]
     );
+
 
     emotions.forEach(
         ([emotion, count]) => {
@@ -67,48 +105,74 @@ function renderAggregate(data) {
                     (count / data.totalResponses) * 100
                 );
 
-            breakdown.innerHTML += `
 
-<div class="emotionRow">
+            const row =
+                document.createElement("div");
 
-    <div
-        style="
-        display:flex;
-        justify-content:space-between;
-        margin-bottom:3px;
-        font-size:12px;">
+            row.className =
+                "emotionRow";
 
-        <span>${emotion}</span>
 
-        <strong>${pct}%</strong>
+            // --------------------------------
+            // Label + percentage
+            // --------------------------------
 
-    </div>
+            const label =
+                document.createElement("div");
 
-    <div
-        style="
-        width:100%;
-        height:7px;
-        background:#2b2b38;
-        border-radius:7px;
-        overflow:hidden;">
+            label.className =
+                "emotionRowHeader";
 
-        <div
-            style="
-            width:${pct}%;
-            height:100%;
-            background:linear-gradient(
-                90deg,
-                #3b82f6,
-                #06b6d4
-            );">
 
-        </div>
+            const name =
+                document.createElement("span");
 
-    </div>
+            name.innerText =
+                emotion;
 
-</div>
 
-`;
+            const percentage =
+                document.createElement("strong");
+
+            percentage.innerText =
+                `${pct}%`;
+
+
+            label.appendChild(name);
+
+            label.appendChild(percentage);
+
+
+            // --------------------------------
+            // Progress bar
+            // --------------------------------
+
+            const bar =
+                document.createElement("div");
+
+            bar.className =
+                "emotionBar";
+
+
+            const fill =
+                document.createElement("div");
+
+            fill.className =
+                "emotionBarFill";
+
+            fill.style.width =
+                `${pct}%`;
+
+
+            bar.appendChild(fill);
+
+
+            row.appendChild(label);
+
+            row.appendChild(bar);
+
+
+            breakdown.appendChild(row);
 
         }
     );
@@ -125,140 +189,128 @@ function renderAlreadySubmitted(data) {
     const app =
         document.getElementById("app");
 
-    if (!app) return;
+    if (!app) {
+        return;
+    }
 
 
     app.innerHTML = `
 
-<div style="
-    width:100%;
-    box-sizing:border-box;
-">
+        <div class="flydna-card submitted-card">
 
 
-    <!-- Header -->
+            <!-- ==================================
+                 HEADER
+                 ================================== -->
 
-    <div style="
-        display:flex;
-        align-items:center;
-        gap:8px;
-        margin-bottom:2px;
-    ">
+            <div class="logo">
 
-        <span style="
-            font-size:22px;
-            line-height:1;
-        ">🧬</span>
-
-        <span style="
-            font-size:24px;
-            font-weight:600;
-            line-height:1.1;
-        ">
-            FlyDNA
-        </span>
-
-    </div>
-
-
-    <!-- Track -->
-
-    <div style="
-        font-size:13px;
-        color:#8eb8ff;
-        margin-bottom:4px;
-    ">
-        ${window.TRACK_TITLE || ""}
-    </div>
-
-
-    <!-- Already contributed -->
-
-    <div style="
-        text-align:center;
-        padding:12px 4px 10px;
-    ">
-
-        <div style="
-            font-size:19px;
-            font-weight:600;
-            line-height:1.2;
-        ">
-            🧬 Your DNA is already part of the universe
-        </div>
-
-    </div>
-
-
-    <!-- Community -->
-
-    <div style="
-        border-top:1px solid #30303b;
-        padding-top:9px;
-    ">
-
-        <div style="
-            text-align:center;
-            font-size:19px;
-            font-weight:600;
-            margin-bottom:8px;
-        ">
-            🌍 The Community Feeling
-        </div>
-
-
-        <div class="stats">
-
-            <div class="stat">
-
-                <span>
-                    Community Contributors
-                </span>
-
-                <strong id="fd-total">
-                    0
-                </strong>
+                <div class="flydna-title">
+                    🧬 <span>FlyDNA</span>
+                </div>
 
             </div>
 
 
-            <div class="stat">
+            <!-- ==================================
+                 TRACK
+                 ================================== -->
 
-                <span>
-                    Average Emotional Impact
-                </span>
+            <div class="track">
 
-                <strong id="fd-intensity">
-                    0 / 10
-                </strong>
-
-            </div>
-
-
-            <div class="stat">
-
-                <span>
-                    Community Emotional DNA
-                </span>
-
-                <strong id="fd-dominant">
-                    -
-                </strong>
+                <h2 id="trackTitle">
+                    ${window.TRACK_TITLE || ""}
+                </h2>
 
             </div>
 
 
-            <div id="fd-breakdown">
+            <!-- ==================================
+                 PERSONAL STATUS
+                 ================================== -->
+
+            <div class="submitted-message">
+
+                <div class="submitted-title">
+                    🧬 Your DNA is already part
+                    of the universe
+                </div>
+
             </div>
+
+
+            <!-- ==================================
+                 COMMUNITY
+                 ================================== -->
+
+            <div class="community">
+
+                <hr>
+
+                <h3>
+                    🌍 The Community Feeling
+                </h3>
+
+
+                <div class="stats">
+
+
+                    <div class="stat">
+
+                        <span>
+                            Community Contributors
+                        </span>
+
+                        <strong id="fd-total">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span>
+                            Average Emotional Impact
+                        </span>
+
+                        <strong id="fd-intensity">
+                            0 / 10
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <span>
+                            Community Emotional DNA
+                        </span>
+
+                        <strong id="fd-dominant">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div id="fd-breakdown">
+                    </div>
+
+
+                </div>
+
+            </div>
+
 
         </div>
 
-    </div>
+    `;
 
-</div>
 
-`;
-
+    // ----------------------------------
+    // Populate aggregate
+    // ----------------------------------
 
     if (data) {
 
