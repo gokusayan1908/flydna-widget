@@ -1,6 +1,5 @@
 // ======================================
-// FlyDNA Renderer v2.0
-// Compact Community Experience
+// FlyDNA Renderer
 // ======================================
 
 
@@ -26,10 +25,26 @@ function renderAggregate(data) {
     const breakdown =
         document.getElementById("fd-breakdown");
 
+    const communitySection =
+        document.getElementById("communitySection");
 
-    // ----------------------------------
-    // Community contributors
-    // ----------------------------------
+
+    // ======================================
+    // COMMUNITY SECTION
+    // ======================================
+
+    // Community DNA is only shown after
+    // the visitor has submitted.
+    if (communitySection) {
+
+        communitySection.style.display = "none";
+
+    }
+
+
+    // ======================================
+    // TOTAL RESPONSES
+    // ======================================
 
     if (total) {
 
@@ -39,21 +54,21 @@ function renderAggregate(data) {
     }
 
 
-    // ----------------------------------
-    // Average intensity
-    // ----------------------------------
+    // ======================================
+    // AVERAGE INTENSITY
+    // ======================================
 
     if (intensity) {
 
         intensity.innerText =
-            `${data.avgIntensity || 0} / 10`;
+            (data.avgIntensity || 0) + " / 10";
 
     }
 
 
-    // ----------------------------------
-    // Dominant emotion
-    // ----------------------------------
+    // ======================================
+    // DOMINANT EMOTION
+    // ======================================
 
     if (dominant) {
 
@@ -63,13 +78,16 @@ function renderAggregate(data) {
     }
 
 
-    // ----------------------------------
-    // Emotion breakdown
-    // ----------------------------------
+    // ======================================
+    // EMOTION BREAKDOWN
+    // ======================================
 
     if (!breakdown) {
+
         return;
+
     }
+
 
     breakdown.innerHTML = "";
 
@@ -90,8 +108,6 @@ function renderAggregate(data) {
         );
 
 
-    // Highest percentage first
-
     emotions.sort(
         (a, b) => b[1] - a[1]
     );
@@ -106,73 +122,53 @@ function renderAggregate(data) {
                 );
 
 
-            const row =
-                document.createElement("div");
+            breakdown.innerHTML += `
 
-            row.className =
-                "emotionRow";
+<div class="emotionRow">
 
+    <div
+        style="
+        display:flex;
+        justify-content:space-between;
+        margin-bottom:3px;
+        font-size:12px;">
 
-            // --------------------------------
-            // Label + percentage
-            // --------------------------------
+        <span>
+            ${emotion}
+        </span>
 
-            const label =
-                document.createElement("div");
+        <strong>
+            ${pct}%
+        </strong>
 
-            label.className =
-                "emotionRowHeader";
-
-
-            const name =
-                document.createElement("span");
-
-            name.innerText =
-                emotion;
+    </div>
 
 
-            const percentage =
-                document.createElement("strong");
+    <div
+        style="
+        width:100%;
+        height:7px;
+        background:#2b2b38;
+        border-radius:7px;
+        overflow:hidden;">
 
-            percentage.innerText =
-                `${pct}%`;
+        <div
+            style="
+            width:${pct}%;
+            height:100%;
+            background:linear-gradient(
+                90deg,
+                #3b82f6,
+                #06b6d4
+            );">
 
+        </div>
 
-            label.appendChild(name);
+    </div>
 
-            label.appendChild(percentage);
+</div>
 
-
-            // --------------------------------
-            // Progress bar
-            // --------------------------------
-
-            const bar =
-                document.createElement("div");
-
-            bar.className =
-                "emotionBar";
-
-
-            const fill =
-                document.createElement("div");
-
-            fill.className =
-                "emotionBarFill";
-
-            fill.style.width =
-                `${pct}%`;
-
-
-            bar.appendChild(fill);
-
-
-            row.appendChild(label);
-
-            row.appendChild(bar);
-
-
-            breakdown.appendChild(row);
+`;
 
         }
     );
@@ -189,130 +185,173 @@ function renderAlreadySubmitted(data) {
     const app =
         document.getElementById("app");
 
+
     if (!app) {
+
         return;
+
     }
 
 
     app.innerHTML = `
 
-        <div class="flydna-card submitted-card">
+<div style="
+    width:100%;
+    box-sizing:border-box;
+">
 
 
-            <!-- ==================================
-                 HEADER
-                 ================================== -->
+    <!-- ==================================
+         TRACK
+         ================================== -->
 
-            <div class="logo">
+    <div style="
+        font-size:13px;
+        color:#8eb8ff;
+        margin-bottom:8px;
+    ">
 
-                <div class="flydna-title">
-                    🧬 <span>FlyDNA</span>
-                </div>
+        ${window.TRACK_TITLE || ""}
+
+    </div>
+
+
+    <!-- ==================================
+         ALREADY CONTRIBUTED
+         ================================== -->
+
+    <div style="
+        text-align:center;
+        padding:12px 4px 10px;
+    ">
+
+        <div style="
+            font-size:19px;
+            font-weight:600;
+            line-height:1.2;
+        ">
+
+            🧬 Your DNA is already part of the universe
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================
+         COMMUNITY
+         ================================== -->
+
+    <div
+        id="communitySection"
+        style="
+            border-top:1px solid #30303b;
+            padding-top:9px;
+        ">
+
+
+        <div style="
+            text-align:center;
+            font-size:19px;
+            font-weight:600;
+            margin-bottom:8px;
+        ">
+
+            🌍 The Community Feeling
+
+        </div>
+
+
+        <div class="stats">
+
+
+            <!-- ==============================
+                 CONTRIBUTORS
+                 ============================== -->
+
+            <div class="stat">
+
+                <span>
+                    Community Contributors
+                </span>
+
+                <strong id="fd-total">
+                    0
+                </strong>
 
             </div>
 
 
-            <!-- ==================================
-                 TRACK
-                 ================================== -->
+            <!-- ==============================
+                 AVERAGE INTENSITY
+                 ============================== -->
 
-            <div class="track">
+            <div class="stat">
 
-                <h2 id="trackTitle">
-                    ${window.TRACK_TITLE || ""}
-                </h2>
+                <span>
+                    Average Emotional Impact
+                </span>
 
-            </div>
-
-
-            <!-- ==================================
-                 PERSONAL STATUS
-                 ================================== -->
-
-            <div class="submitted-message">
-
-                <div class="submitted-title">
-                    🧬 Your DNA is already part
-                    of the universe
-                </div>
+                <strong id="fd-intensity">
+                    0 / 10
+                </strong>
 
             </div>
 
 
-            <!-- ==================================
-                 COMMUNITY
-                 ================================== -->
+            <!-- ==============================
+                 DOMINANT EMOTION
+                 ============================== -->
 
-            <div class="community">
+            <div class="stat">
 
-                <hr>
+                <span>
+                    Community Emotional DNA
+                </span>
 
-                <h3>
-                    🌍 The Community Feeling
-                </h3>
+                <strong id="fd-dominant">
+                    -
+                </strong>
 
-
-                <div class="stats">
-
-
-                    <div class="stat">
-
-                        <span>
-                            Community Contributors
-                        </span>
-
-                        <strong id="fd-total">
-                            0
-                        </strong>
-
-                    </div>
+            </div>
 
 
-                    <div class="stat">
+            <!-- ==============================
+                 EMOTION BREAKDOWN
+                 ============================== -->
 
-                        <span>
-                            Average Emotional Impact
-                        </span>
-
-                        <strong id="fd-intensity">
-                            0 / 10
-                        </strong>
-
-                    </div>
-
-
-                    <div class="stat">
-
-                        <span>
-                            Community Emotional DNA
-                        </span>
-
-                        <strong id="fd-dominant">
-                            -
-                        </strong>
-
-                    </div>
-
-
-                    <div id="fd-breakdown">
-                    </div>
-
-
-                </div>
-
+            <div id="fd-breakdown">
             </div>
 
 
         </div>
 
-    `;
+    </div>
+
+</div>
+
+`;
 
 
-    // ----------------------------------
-    // Populate aggregate
-    // ----------------------------------
+    // ======================================
+    // RENDER COMMUNITY DATA
+    // ======================================
 
     if (data) {
+
+        const communitySection =
+            document.getElementById(
+                "communitySection"
+            );
+
+
+        if (communitySection) {
+
+            communitySection.style.display =
+                "block";
+
+        }
+
 
         renderAggregate(data);
 
