@@ -1,7 +1,7 @@
 // ======================================
 // FlyDNA Application v3.1
 // Compact Widget
-// Global BFH Universe Contribution Status
+// Per-Track Anonymous Visitor Voting
 // ======================================
 
 
@@ -29,12 +29,28 @@ const ENTITY_TYPE =
     params.get("type") || "music";
 
 
+// Make title available to renderer.js
+
 window.TRACK_TITLE =
     TRACK_TITLE;
 
 
 // ======================================
-// ANONYMOUS VISITOR ID
+// ANONYMOUS VISITOR / SESSION ID
+// ======================================
+//
+// One anonymous ID is created per browser.
+//
+// The same ID is reused on future visits.
+//
+// Wix uses this together with TRACK_ID
+// to determine whether this visitor has
+// already submitted DNA for THIS track.
+//
+// Therefore:
+//   Track A submitted  → Track A locked
+//   Track B not submitted → Track B available
+//
 // ======================================
 
 const FLYDNA_SESSION_KEY =
@@ -94,39 +110,6 @@ console.log(
     "FlyDNA visitor ID:",
     SESSION_ID
 );
-
-
-// ======================================
-// GLOBAL BFH CONTRIBUTION STATUS
-// ======================================
-
-const FLYDNA_CONTRIBUTED_KEY =
-    "flydna_has_contributed";
-
-
-function hasContributedToUniverse() {
-
-    try {
-
-        return (
-            localStorage.getItem(
-                FLYDNA_CONTRIBUTED_KEY
-            ) === "true"
-        );
-
-    }
-    catch (error) {
-
-        console.error(
-            "FlyDNA → localStorage read failed:",
-            error
-        );
-
-        return false;
-
-    }
-
-}
 
 
 // ======================================
@@ -198,7 +181,7 @@ const intensityLabels = {
 
 
 // ======================================
-// INTENSITY DISPLAY
+// UPDATE INTENSITY DISPLAY
 // ======================================
 
 function updateIntensity() {
@@ -255,29 +238,6 @@ function updateIntensity() {
 
 
 // ======================================
-// SHOW ALREADY PART OF UNIVERSE
-// ======================================
-
-function showUniverseMemberState() {
-
-    console.log(
-        "FlyDNA → visitor already belongs to BFH Universe"
-    );
-
-
-    if (
-        typeof renderAlreadySubmitted ===
-        "function"
-    ) {
-
-        renderAlreadySubmitted();
-
-    }
-
-}
-
-
-// ======================================
 // INITIALISE APPLICATION
 // ======================================
 
@@ -304,8 +264,13 @@ window.addEventListener(
         );
 
         console.log(
-            "Global contribution:",
-            hasContributedToUniverse()
+            "Entity type:",
+            ENTITY_TYPE
+        );
+
+        console.log(
+            "Session ID:",
+            SESSION_ID
         );
 
         console.log(
@@ -331,82 +296,74 @@ window.addEventListener(
         }
 
 
-        // ==================================
-        // IMPORTANT:
-        // CHECK GLOBAL STATUS FIRST
-        // ==================================
+        // ----------------------------------
+        // Render normal FlyDNA interface
+        // ----------------------------------
+        //
+        // We initially render the voting
+        // interface.
+        //
+        // Wix will then tell us whether this
+        // visitor has already submitted for
+        // THIS specific track.
+        //
+        // ----------------------------------
 
         if (
-            hasContributedToUniverse()
+            typeof renderEmotions ===
+            "function"
         ) {
 
-            showUniverseMemberState();
+            renderEmotions();
 
         }
 
-        else {
 
-            // ----------------------------------
-            // Render emotions
-            // ----------------------------------
+        // ----------------------------------
+        // Intensity slider
+        // ----------------------------------
 
-            if (
-                typeof renderEmotions ===
-                "function"
-            ) {
-
-                renderEmotions();
-
-            }
+        const slider =
+            document.getElementById(
+                "intensity"
+            );
 
 
-            // ----------------------------------
-            // Intensity slider
-            // ----------------------------------
+        if (slider) {
 
-            const slider =
-                document.getElementById(
-                    "intensity"
-                );
+            slider.addEventListener(
+                "input",
+                updateIntensity
+            );
 
 
-            if (slider) {
+            updateIntensity();
 
-                slider.addEventListener(
-                    "input",
-                    updateIntensity
-                );
+        }
 
 
-                updateIntensity();
+        // ----------------------------------
+        // Submit button
+        // ----------------------------------
 
-            }
-
-
-            // ----------------------------------
-            // Submit button
-            // ----------------------------------
-
-            const submitBtn =
-                document.getElementById(
-                    "submitBtn"
-                );
+        const submitBtn =
+            document.getElementById(
+                "submitBtn"
+            );
 
 
-            if (submitBtn) {
+        if (submitBtn) {
 
-                submitBtn.addEventListener(
-                    "click",
-                    handleSubmit
-                );
-
-            }
+            submitBtn.addEventListener(
+                "click",
+                handleSubmit
+            );
 
         }
 
 
         // ==================================
-        // API INITIALISATION
+        // INITIALISE API
         // ==================================
 
         if (
@@ -424,7 +381,7 @@ window.addEventListener(
 
 
         // ==================================
-        // REQUEST AGGREGATE
+        // ASK WIX FOR THIS TRACK'S STATUS
         // ==================================
 
         if (
@@ -497,7 +454,7 @@ function handleSubmit() {
 
 
     // ----------------------------------
-    // Capture selection
+    // Capture visitor selection
     // ----------------------------------
 
     submittedIntensity =
@@ -548,13 +505,45 @@ function handleSubmit() {
 
 
     console.log(
-        "FlyDNA → vote prepared:",
-        vote
+        "=========================================="
+    );
+
+    console.log(
+        "FLYDNA / SUBMIT"
+    );
+
+    console.log(
+        "Track:",
+        TRACK_TITLE
+    );
+
+    console.log(
+        "Track ID:",
+        TRACK_ID
+    );
+
+    console.log(
+        "Intensity:",
+        submittedIntensity
+    );
+
+    console.log(
+        "Emotions:",
+        submittedEmotions
+    );
+
+    console.log(
+        "Session ID:",
+        SESSION_ID
+    );
+
+    console.log(
+        "=========================================="
     );
 
 
     // ----------------------------------
-    // Send to Wix
+    // Send through API bridge
     // ----------------------------------
 
     if (
@@ -565,7 +554,6 @@ function handleSubmit() {
         submitVote(vote);
 
     }
-
     else {
 
         console.error(
