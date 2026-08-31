@@ -1,6 +1,7 @@
 // ======================================
-// FlyDNA Renderer v3.1
+// FlyDNA Renderer v3.2
 // Personal Contribution + Universe Comparison
+// Premium Result Layout
 // ======================================
 
 
@@ -56,7 +57,7 @@ function formatEmotionList(emotions) {
 
     return emotions
         .map(formatEmotion)
-        .join(" · ");
+        .join("  ·  ");
 
 }
 
@@ -73,7 +74,6 @@ function formatScore(value) {
     if (Number.isNaN(number)) {
         return "0 / 10";
     }
-
 
     return `${number} / 10`;
 
@@ -115,12 +115,24 @@ function getIntensityComparison(
     if (difference > 0) {
 
         return `
-            <div class="dna-comparison positive">
-                ⬆️ You felt it
-                <strong>${difference}</strong>
-                point${difference === 1 ? "" : "s"}
-                more intensely than the Universe.
+
+            <div class="dna-comparison dna-comparison-positive">
+
+                <div class="dna-comparison-icon">
+                    ⬆️
+                </div>
+
+                <div>
+                    You felt it
+                    <strong>
+                        ${difference}
+                    </strong>
+                    point${difference === 1 ? "" : "s"}
+                    more intensely than the Universe.
+                </div>
+
             </div>
+
         `;
 
     }
@@ -133,21 +145,44 @@ function getIntensityComparison(
 
 
         return `
-            <div class="dna-comparison negative">
-                ⬇️ The Universe felt it
-                <strong>${absoluteDifference}</strong>
-                point${absoluteDifference === 1 ? "" : "s"}
-                more intensely than you.
+
+            <div class="dna-comparison dna-comparison-negative">
+
+                <div class="dna-comparison-icon">
+                    ⬇️
+                </div>
+
+                <div>
+                    The Universe felt it
+                    <strong>
+                        ${absoluteDifference}
+                    </strong>
+                    point${absoluteDifference === 1 ? "" : "s"}
+                    more intensely than you.
+                </div>
+
             </div>
+
         `;
 
     }
 
 
     return `
-        <div class="dna-comparison equal">
-            🧬 Your emotional intensity matches the Universe.
+
+        <div class="dna-comparison dna-comparison-equal">
+
+            <div class="dna-comparison-icon">
+                🧬
+            </div>
+
+            <div>
+                Your emotional intensity
+                <strong>matches the Universe.</strong>
+            </div>
+
         </div>
+
     `;
 
 }
@@ -174,16 +209,6 @@ function renderAggregate(data) {
 
 // ======================================
 // RENDER ALREADY SUBMITTED
-// ======================================
-//
-// This is shown when the visitor has already
-// contributed DNA to the current track.
-//
-// IMPORTANT:
-// The widget remains in "already submitted"
-// mode, but now rewards the visitor by showing
-// their personal contribution versus the
-// current community / Universe contribution.
 // ======================================
 
 function renderAlreadySubmitted(data) {
@@ -256,116 +281,167 @@ function renderAlreadySubmitted(data) {
         );
 
 
+    // ==================================
+    // PREMIUM RESULT SCREEN
+    // ==================================
+
     app.innerHTML = `
 
         <div class="submitted-state">
 
-            <div class="submitted-message">
+            <!-- ========================= -->
+            <!-- THANK YOU                 -->
+            <!-- ========================= -->
 
-                <div class="dna-thank-you">
+            <div class="dna-thank-you">
 
-                    🧬 Your DNA is already part
+                <span class="dna-icon">
+                    🧬
+                </span>
+
+                <span>
+                    Your DNA is already part
                     of the BFH Universe
+                </span>
+
+            </div>
+
+
+            <div class="dna-intro">
+
+                Your contribution to this track
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- YOUR DNA                  -->
+            <!-- ========================= -->
+
+            <div class="dna-card dna-personal">
+
+                <div class="dna-section-title">
+
+                    🧬 YOUR EMOTIONAL DNA
 
                 </div>
 
 
-                <div class="dna-subtitle">
+                <div class="dna-score">
 
-                    Your contribution to this track
-
-                </div>
-
-
-                <div class="dna-personal">
-
-                    <div class="dna-section-title">
-
-                        🧬 YOUR EMOTIONAL DNA
-
-                    </div>
-
-
-                    <div class="dna-score">
-
+                    <span class="dna-score-emoji">
                         🔥
-                        <strong>
-                            ${formatScore(userIntensity)}
-                        </strong>
+                    </span>
 
-                    </div>
-
-
-                    <div class="dna-emotions">
-
-                        ${userEmotionText}
-
-                    </div>
+                    <strong>
+                        ${formatScore(userIntensity)}
+                    </strong>
 
                 </div>
 
 
-                <div class="dna-divider"></div>
+                <div class="dna-emotions">
+
+                    ${userEmotionText}
+
+                </div>
+
+            </div>
 
 
-                <div class="dna-universe">
+            <!-- ========================= -->
+            <!-- DIVIDER                   -->
+            <!-- ========================= -->
 
-                    <div class="dna-section-title">
+            <div class="dna-divider">
 
-                        🌍 THE BFH UNIVERSE
+                <span>VS</span>
 
-                    </div>
+            </div>
 
 
-                    <div class="dna-score">
+            <!-- ========================= -->
+            <!-- UNIVERSE                  -->
+            <!-- ========================= -->
 
+            <div class="dna-card dna-universe">
+
+                <div class="dna-section-title">
+
+                    🌍 THE BFH UNIVERSE
+
+                </div>
+
+
+                <div class="dna-score">
+
+                    <span class="dna-score-emoji">
                         🌍
-                        <strong>
-                            ${formatScore(universeIntensity)}
-                        </strong>
+                    </span>
 
-                    </div>
-
-
-                    <div class="dna-emotions">
-
-                        Most felt:
-                        <strong>
-                            ${universeEmotion}
-                        </strong>
-
-                        ${
-                            dominantEmotion
-                                ? ` · ${dominantPct}%`
-                                : ""
-                        }
-
-                    </div>
-
-
-                    <div class="dna-responses">
-
-                        Based on
-                        ${totalResponses}
-                        ${
-                            totalResponses === 1
-                                ? "contribution"
-                                : "contributions"
-                        }
-
-                    </div>
+                    <strong>
+                        ${formatScore(universeIntensity)}
+                    </strong>
 
                 </div>
 
 
-                ${comparison}
+                <div class="dna-emotions">
+
+                    Most felt:
+
+                    <strong>
+                        ${universeEmotion}
+                    </strong>
+
+                    ${
+                        dominantEmotion
+                            ? `<span class="dna-percentage">
+                                ${dominantPct}%
+                               </span>`
+                            : ""
+                    }
+
+                </div>
 
 
-                <div class="dna-footer">
+                <div class="dna-responses">
 
-                    Your reaction is now part of
-                    the collective DNA of BeatsFlyHigh.
+                    Based on
+                    <strong>
+                        ${totalResponses}
+                    </strong>
+                    ${
+                        totalResponses === 1
+                            ? "contribution"
+                            : "contributions"
+                    }
 
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- COMPARISON                -->
+            <!-- ========================= -->
+
+            ${comparison}
+
+
+            <!-- ========================= -->
+            <!-- FOOTER                   -->
+            <!-- ========================= -->
+
+            <div class="dna-footer">
+
+                <div class="dna-footer-icon">
+                    🧬
+                </div>
+
+                <div>
+                    Your reaction is now part of the
+                    collective DNA of BeatsFlyHigh.
                 </div>
 
             </div>
@@ -379,15 +455,6 @@ function renderAlreadySubmitted(data) {
 
 // ======================================
 // RENDER AFTER SUCCESSFUL SUBMISSION
-// ======================================
-//
-// The backend returns the newly calculated
-// aggregate after inserting the visitor's vote.
-//
-// We deliberately use the same renderer so
-// the visitor immediately receives the same
-// rewarding experience without needing to
-// reload the track.
 // ======================================
 
 function renderSubmittedExperience(data) {
