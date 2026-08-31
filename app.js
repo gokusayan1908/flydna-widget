@@ -1,45 +1,128 @@
 // ======================================
-// FlyDNA API Bridge v3.1
-// Global Universe Contribution Status
+// FlyDNA Application v3.1
+// Compact Widget
+// Global BFH Universe Contribution Status
 // ======================================
-
-let voteTrackId = "";
-let voteType = "";
-let voteSessionId = "";
 
 
 // ======================================
-// GLOBAL CONTRIBUTION KEY
+// TRACK CONTEXT
+// ======================================
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const TRACK_ID =
+    params.get("track") || "unknown";
+
+
+const TRACK_TITLE =
+    decodeURIComponent(
+        params.get("title") || "Unknown Track"
+    );
+
+
+const ENTITY_TYPE =
+    params.get("type") || "music";
+
+
+window.TRACK_TITLE =
+    TRACK_TITLE;
+
+
+// ======================================
+// ANONYMOUS VISITOR ID
+// ======================================
+
+const FLYDNA_SESSION_KEY =
+    "flydna_visitor_id";
+
+
+function getFlyDNASessionId() {
+
+    let sessionId =
+        localStorage.getItem(
+            FLYDNA_SESSION_KEY
+        );
+
+
+    if (!sessionId) {
+
+        if (
+            typeof crypto !== "undefined" &&
+            typeof crypto.randomUUID === "function"
+        ) {
+
+            sessionId =
+                crypto.randomUUID();
+
+        }
+        else {
+
+            sessionId =
+                "flydna-" +
+                Date.now() +
+                "-" +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 15);
+
+        }
+
+
+        localStorage.setItem(
+            FLYDNA_SESSION_KEY,
+            sessionId
+        );
+
+    }
+
+
+    return sessionId;
+
+}
+
+
+const SESSION_ID =
+    getFlyDNASessionId();
+
+
+console.log(
+    "FlyDNA visitor ID:",
+    SESSION_ID
+);
+
+
+// ======================================
+// GLOBAL BFH CONTRIBUTION STATUS
 // ======================================
 
 const FLYDNA_CONTRIBUTED_KEY =
     "flydna_has_contributed";
 
 
-// ======================================
-// Mark Visitor as Part of BFH Universe
-// ======================================
-
-function markUniverseContribution() {
+function hasContributedToUniverse() {
 
     try {
 
-        localStorage.setItem(
-            FLYDNA_CONTRIBUTED_KEY,
-            "true"
-        );
-
-        console.log(
-            "FlyDNA → visitor is now part of the BFH Universe"
+        return (
+            localStorage.getItem(
+                FLYDNA_CONTRIBUTED_KEY
+            ) === "true"
         );
 
     }
     catch (error) {
 
         console.error(
-            "FlyDNA → could not store Universe contribution:",
+            "FlyDNA → localStorage read failed:",
             error
         );
+
+        return false;
 
     }
 
@@ -47,323 +130,456 @@ function markUniverseContribution() {
 
 
 // ======================================
-// Initialise
+// STATE
 // ======================================
 
-window.initialiseVoting = function(
-    trackId,
-    type,
-    sessionId
-) {
+let submittedIntensity = null;
 
-    voteTrackId =
-        trackId;
-
-    voteType =
-        type;
-
-    voteSessionId =
-        sessionId || "";
+let submittedEmotions = [];
 
 
-    console.log(
-        "FlyDNA API initialised:",
-        {
-            trackId: trackId,
-            entityType: type,
-            sessionId: voteSessionId
-        }
-    );
+// ======================================
+// INTENSITY LABELS
+// ======================================
+
+const intensityLabels = {
+
+    1: {
+        emoji: "😐",
+        text: "No Emotional Impact"
+    },
+
+    2: {
+        emoji: "🙂",
+        text: "Slightly Touched"
+    },
+
+    3: {
+        emoji: "😊",
+        text: "Pleasant"
+    },
+
+    4: {
+        emoji: "❤️",
+        text: "Emotionally Connected"
+    },
+
+    5: {
+        emoji: "🔥",
+        text: "Strong Impact"
+    },
+
+    6: {
+        emoji: "✨",
+        text: "Deep Impact"
+    },
+
+    7: {
+        emoji: "💥",
+        text: "Powerful"
+    },
+
+    8: {
+        emoji: "🚀",
+        text: "Exceptional"
+    },
+
+    9: {
+        emoji: "🤯",
+        text: "Unforgettable"
+    },
+
+    10: {
+        emoji: "🧬",
+        text: "Changed Me"
+    }
 
 };
 
 
 // ======================================
-// Request Community DNA
+// INTENSITY DISPLAY
 // ======================================
 
-window.requestAggregate = function(
-    trackId,
-    entityType,
-    sessionId
-) {
+function updateIntensity() {
 
-    const activeSessionId =
-        sessionId || voteSessionId;
-
-
-    console.log(
-        "FlyDNA → requesting aggregate:",
-        {
-            trackId: trackId,
-            entityType: entityType,
-            sessionId: activeSessionId
-        }
-    );
-
-
-    window.parent.postMessage({
-
-        type: "getAggregate",
-
-        trackId:
-            trackId,
-
-        entityType:
-            entityType,
-
-        sessionId:
-            activeSessionId
-
-    }, "*");
-
-};
-
-
-// ======================================
-// Submit Vote
-// ======================================
-
-window.submitVote = function(vote) {
-
-    console.log(
-        "FlyDNA → sending submit to Wix:",
-        vote
-    );
-
-
-    window.parent.postMessage({
-
-        type: "submit",
-
-        payload:
-            vote
-
-    }, "*");
-
-};
-
-
-// ======================================
-// Receive Messages from Wix
-// ======================================
-
-window.addEventListener(
-    "message",
-    (event) => {
-
-        if (!event.data) {
-            return;
-        }
-
-
-        console.log(
-            "FlyDNA ← Wix:",
-            event.data
+    const slider =
+        document.getElementById(
+            "intensity"
         );
 
 
-        const message =
-            event.data;
+    const display =
+        document.getElementById(
+            "intensityValue"
+        );
 
 
-        switch (message.type) {
+    if (!slider || !display) {
+        return;
+    }
 
 
-            // ==================================
-            // WIX READY
-            // ==================================
+    const value =
+        Number(slider.value);
 
-            case "wixReady":
 
-                console.log(
-                    "FlyDNA ← Wix is ready"
+    const level =
+        intensityLabels[value];
+
+
+    if (!level) {
+        return;
+    }
+
+
+    display.innerHTML = `
+
+        <div class="intensity-score">
+
+            ${level.emoji}
+
+            <strong>
+                ${value} / 10
+            </strong>
+
+        </div>
+
+        <div class="intensity-description">
+            ${level.text}
+        </div>
+
+    `;
+
+}
+
+
+// ======================================
+// SHOW ALREADY PART OF UNIVERSE
+// ======================================
+
+function showUniverseMemberState() {
+
+    console.log(
+        "FlyDNA → visitor already belongs to BFH Universe"
+    );
+
+
+    if (
+        typeof renderAlreadySubmitted ===
+        "function"
+    ) {
+
+        renderAlreadySubmitted();
+
+    }
+
+}
+
+
+// ======================================
+// INITIALISE APPLICATION
+// ======================================
+
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        console.log(
+            "=========================================="
+        );
+
+        console.log(
+            "FLYDNA APPLICATION START"
+        );
+
+        console.log(
+            "Track:",
+            TRACK_TITLE
+        );
+
+        console.log(
+            "Track ID:",
+            TRACK_ID
+        );
+
+        console.log(
+            "Global contribution:",
+            hasContributedToUniverse()
+        );
+
+        console.log(
+            "=========================================="
+        );
+
+
+        // ----------------------------------
+        // Track title
+        // ----------------------------------
+
+        const trackTitle =
+            document.getElementById(
+                "trackTitle"
+            );
+
+
+        if (trackTitle) {
+
+            trackTitle.textContent =
+                TRACK_TITLE;
+
+        }
+
+
+        // ==================================
+        // IMPORTANT:
+        // CHECK GLOBAL STATUS FIRST
+        // ==================================
+
+        if (
+            hasContributedToUniverse()
+        ) {
+
+            showUniverseMemberState();
+
+        }
+
+        else {
+
+            // ----------------------------------
+            // Render emotions
+            // ----------------------------------
+
+            if (
+                typeof renderEmotions ===
+                "function"
+            ) {
+
+                renderEmotions();
+
+            }
+
+
+            // ----------------------------------
+            // Intensity slider
+            // ----------------------------------
+
+            const slider =
+                document.getElementById(
+                    "intensity"
                 );
 
 
-                window.requestAggregate(
-                    voteTrackId,
-                    voteType,
-                    voteSessionId
-                );
+            if (slider) {
 
-                break;
-
-
-            // ==================================
-            // COMMUNITY AGGREGATE
-            // ==================================
-
-            case "aggregate":
-
-                console.log(
-                    "FlyDNA aggregate received:",
-                    message.data
+                slider.addEventListener(
+                    "input",
+                    updateIntensity
                 );
 
 
-                const aggregate =
-                    message.data;
+                updateIntensity();
+
+            }
 
 
-                // ----------------------------------
-                // Visitor already submitted
-                // ----------------------------------
+            // ----------------------------------
+            // Submit button
+            // ----------------------------------
 
-                if (
-                    aggregate &&
-                    aggregate.alreadySubmitted === true
-                ) {
-
-                    console.log(
-                        "FlyDNA → visitor already submitted"
-                    );
-
-
-                    // Store global Universe membership
-                    markUniverseContribution();
-
-
-                    if (
-                        typeof renderAlreadySubmitted ===
-                        "function"
-                    ) {
-
-                        renderAlreadySubmitted(
-                            aggregate
-                        );
-
-                    }
-
-                }
-
-                else {
-
-                    if (
-                        typeof renderAggregate ===
-                        "function"
-                    ) {
-
-                        renderAggregate(
-                            aggregate
-                        );
-
-                    }
-
-                }
-
-                break;
-
-
-            // ==================================
-            // SUCCESSFUL SUBMISSION
-            // ==================================
-
-            case "submitSuccess":
-
-                console.log(
-                    "FlyDNA submission successful:",
-                    message.data
+            const submitBtn =
+                document.getElementById(
+                    "submitBtn"
                 );
 
 
-                // ----------------------------------
-                // IMPORTANT:
-                // Remember that this visitor has
-                // contributed to the BFH Universe.
-                // ----------------------------------
+            if (submitBtn) {
 
-                markUniverseContribution();
-
-
-                // ----------------------------------
-                // Show Thank You message
-                // ----------------------------------
-
-                if (
-                    typeof renderSubmittedExperience ===
-                    "function"
-                ) {
-
-                    renderSubmittedExperience(
-                        message.data
-                    );
-
-                }
-
-                break;
-
-
-            // ==================================
-            // ALREADY SUBMITTED
-            // ==================================
-
-            case "alreadySubmitted":
-
-                console.log(
-                    "FlyDNA → already submitted"
+                submitBtn.addEventListener(
+                    "click",
+                    handleSubmit
                 );
 
+            }
 
-                // Also remember global membership
-                markUniverseContribution();
-
-
-                if (
-                    typeof renderAlreadySubmitted ===
-                    "function"
-                ) {
-
-                    renderAlreadySubmitted(
-                        message.data
-                    );
-
-                }
-
-                break;
+        }
 
 
-            // ==================================
-            // SUBMISSION ERROR
-            // ==================================
+        // ==================================
+        // API INITIALISATION
+        // ==================================
 
-            case "submitError":
+        if (
+            typeof initialiseVoting ===
+            "function"
+        ) {
 
-                console.error(
-                    "FlyDNA submission failed:",
-                    message.data
-                );
+            initialiseVoting(
+                TRACK_ID,
+                ENTITY_TYPE,
+                SESSION_ID
+            );
 
-
-                const errorBtn =
-                    document.getElementById(
-                        "submitBtn"
-                    );
-
-
-                if (errorBtn) {
-
-                    errorBtn.disabled =
-                        false;
+        }
 
 
-                    errorBtn.innerHTML =
-                        "🧬 Contribute Your DNA to the Community";
+        // ==================================
+        // REQUEST AGGREGATE
+        // ==================================
 
-                }
+        if (
+            typeof requestAggregate ===
+            "function"
+        ) {
 
-                break;
-
-
-            // ==================================
-            // UNKNOWN MESSAGE
-            // ==================================
-
-            default:
-
-                break;
+            requestAggregate(
+                TRACK_ID,
+                ENTITY_TYPE,
+                SESSION_ID
+            );
 
         }
 
     }
 );
+
+
+// ======================================
+// SUBMIT VOTE
+// ======================================
+
+function handleSubmit() {
+
+    const slider =
+        document.getElementById(
+            "intensity"
+        );
+
+
+    const submitBtn =
+        document.getElementById(
+            "submitBtn"
+        );
+
+
+    if (!slider || !submitBtn) {
+        return;
+    }
+
+
+    // ----------------------------------
+    // Check emotions
+    // ----------------------------------
+
+    if (
+        typeof selectedEmotions ===
+            "undefined" ||
+        selectedEmotions.length === 0
+    ) {
+
+        const status =
+            document.getElementById(
+                "status"
+            );
+
+
+        if (status) {
+
+            status.textContent =
+                "Please select at least one emotion.";
+
+        }
+
+
+        return;
+
+    }
+
+
+    // ----------------------------------
+    // Capture selection
+    // ----------------------------------
+
+    submittedIntensity =
+        Number(slider.value);
+
+
+    submittedEmotions =
+        selectedEmotions.slice();
+
+
+    // ----------------------------------
+    // Disable button
+    // ----------------------------------
+
+    submitBtn.disabled =
+        true;
+
+
+    submitBtn.textContent =
+        "⏳ Adding your DNA...";
+
+
+    // ----------------------------------
+    // Build vote
+    // ----------------------------------
+
+    const vote = {
+
+        trackId:
+            TRACK_ID,
+
+        title:
+            TRACK_TITLE,
+
+        type:
+            ENTITY_TYPE,
+
+        intensity:
+            submittedIntensity,
+
+        emotions:
+            submittedEmotions,
+
+        sessionId:
+            SESSION_ID
+
+    };
+
+
+    console.log(
+        "FlyDNA → vote prepared:",
+        vote
+    );
+
+
+    // ----------------------------------
+    // Send to Wix
+    // ----------------------------------
+
+    if (
+        typeof submitVote ===
+        "function"
+    ) {
+
+        submitVote(vote);
+
+    }
+
+    else {
+
+        console.error(
+            "FlyDNA: submitVote() unavailable"
+        );
+
+
+        submitBtn.disabled =
+            false;
+
+
+        submitBtn.textContent =
+            "🧬 Contribute Your DNA to the Community";
+
+    }
+
+}
