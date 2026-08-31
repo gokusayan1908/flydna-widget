@@ -106,6 +106,32 @@ console.log(
 
 
 // ======================================
+// GLOBAL CONTRIBUTION STATUS
+// ======================================
+//
+// Once a visitor successfully contributes
+// DNA to ANY track, this flag is stored locally.
+//
+// This allows the FlyDNA widget to immediately
+// recognize the visitor on other tracks.
+//
+
+const FLYDNA_CONTRIBUTED_KEY =
+    "flydna_has_contributed";
+
+
+function hasContributedToUniverse() {
+
+    return (
+        localStorage.getItem(
+            FLYDNA_CONTRIBUTED_KEY
+        ) === "true"
+    );
+
+}
+
+
+// ======================================
 // STATE
 // ======================================
 
@@ -238,7 +264,6 @@ window.addEventListener(
     "DOMContentLoaded",
     () => {
 
-
         // ----------------------------------
         // Track title
         // ----------------------------------
@@ -258,58 +283,90 @@ window.addEventListener(
 
 
         // ----------------------------------
-        // Render emotions
+        // Check global FlyDNA status
         // ----------------------------------
+        //
+        // If this visitor already contributed
+        // DNA to the BFH Universe, immediately
+        // show the already-submitted state.
+        //
 
         if (
-            typeof renderEmotions ===
-            "function"
+            hasContributedToUniverse()
         ) {
 
-            renderEmotions();
+            console.log(
+                "FlyDNA → visitor already belongs to BFH Universe"
+            );
+
+
+            if (
+                typeof renderAlreadySubmitted ===
+                "function"
+            ) {
+
+                renderAlreadySubmitted();
+
+            }
 
         }
+        else {
+
+            // ----------------------------------
+            // Render emotions
+            // ----------------------------------
+
+            if (
+                typeof renderEmotions ===
+                "function"
+            ) {
+
+                renderEmotions();
+
+            }
 
 
-        // ----------------------------------
-        // Intensity slider
-        // ----------------------------------
+            // ----------------------------------
+            // Intensity slider
+            // ----------------------------------
 
-        const slider =
-            document.getElementById(
-                "intensity"
-            );
-
-
-        if (slider) {
-
-            slider.addEventListener(
-                "input",
-                updateIntensity
-            );
+            const slider =
+                document.getElementById(
+                    "intensity"
+                );
 
 
-            updateIntensity();
+            if (slider) {
 
-        }
-
-
-        // ----------------------------------
-        // Submit button
-        // ----------------------------------
-
-        const submitBtn =
-            document.getElementById(
-                "submitBtn"
-            );
+                slider.addEventListener(
+                    "input",
+                    updateIntensity
+                );
 
 
-        if (submitBtn) {
+                updateIntensity();
 
-            submitBtn.addEventListener(
-                "click",
-                handleSubmit
-            );
+            }
+
+
+            // ----------------------------------
+            // Submit button
+            // ----------------------------------
+
+            const submitBtn =
+                document.getElementById(
+                    "submitBtn"
+                );
+
+
+            if (submitBtn) {
+
+                submitBtn.addEventListener(
+                    "click",
+                    handleSubmit
+                );
+
+            }
 
         }
 
