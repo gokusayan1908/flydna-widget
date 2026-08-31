@@ -1,7 +1,7 @@
 /* ======================================
    FlyDNA Widget v1.7
    Compact Responsive Layout
-   Wix Box Color Match
+   BFH Premium Integrated Background
    ====================================== */
 
 
@@ -25,7 +25,8 @@ body {
         Helvetica,
         sans-serif;
 
-    background: #417586;
+    /* Integrated with BFH Premium Player */
+    background: transparent;
     color: #ffffff;
 }
 
@@ -43,8 +44,8 @@ body {
 
     box-sizing: border-box;
 
-    /* EXACT MATCH TO WIX BOX */
-    background: #417586;
+    /* Integrated with BFH Premium Player */
+    background: transparent;
 
     border-radius: 12px;
 
