@@ -1,7 +1,8 @@
 // ======================================
-// FlyDNA Renderer v3.2
+// FlyDNA Renderer v3.3
 // Personal Contribution + Universe Comparison
 // Premium Result Layout
+// Separate New Submission / Returning State
 // ======================================
 
 
@@ -72,7 +73,9 @@ function formatScore(value) {
         Number(value);
 
     if (Number.isNaN(number)) {
+
         return "0 / 10";
+
     }
 
     return `${number} / 10`;
@@ -112,6 +115,10 @@ function getIntensityComparison(
         ) / 10;
 
 
+    // ==================================
+    // USER FELT IT MORE
+    // ==================================
+
     if (difference > 0) {
 
         return `
@@ -137,6 +144,10 @@ function getIntensityComparison(
 
     }
 
+
+    // ==================================
+    // UNIVERSE FELT IT MORE
+    // ==================================
 
     if (difference < 0) {
 
@@ -168,6 +179,10 @@ function getIntensityComparison(
     }
 
 
+    // ==================================
+    // EXACT MATCH
+    // ==================================
+
     return `
 
         <div class="dna-comparison dna-comparison-equal">
@@ -195,7 +210,9 @@ function getIntensityComparison(
 function renderAggregate(data) {
 
     if (!data) {
+
         return;
+
     }
 
 
@@ -208,19 +225,36 @@ function renderAggregate(data) {
 
 
 // ======================================
-// RENDER ALREADY SUBMITTED
+// RENDER PERSONAL RESULT
+// ======================================
+//
+// This function is shared by:
+//
+// 1. New successful submission
+// 2. Returning visitor who already submitted
+//
+// isNewSubmission determines the opening message.
 // ======================================
 
-function renderAlreadySubmitted(data) {
+function renderPersonalResult(
+    data,
+    isNewSubmission
+) {
 
     const app =
         document.getElementById("app");
 
 
     if (!app) {
+
         return;
+
     }
 
+
+    // ==================================
+    // USER CONTRIBUTION
+    // ==================================
 
     const userContribution =
         data?.userContribution || {};
@@ -239,6 +273,10 @@ function renderAlreadySubmitted(data) {
             ? userContribution.emotions
             : [];
 
+
+    // ==================================
+    // UNIVERSE DATA
+    // ==================================
 
     const universeIntensity =
         Number(
@@ -262,6 +300,10 @@ function renderAlreadySubmitted(data) {
         );
 
 
+    // ==================================
+    // FORMATTED DATA
+    // ==================================
+
     const universeEmotion =
         dominantEmotion
             ? formatEmotion(dominantEmotion)
@@ -282,16 +324,42 @@ function renderAlreadySubmitted(data) {
 
 
     // ==================================
-    // PREMIUM RESULT SCREEN
+    // OPENING MESSAGE
     // ==================================
 
-    app.innerHTML = `
+    let openingMessage;
 
-        <div class="submitted-state">
 
-            <!-- ========================= -->
-            <!-- THANK YOU                 -->
-            <!-- ========================= -->
+    if (isNewSubmission) {
+
+        openingMessage = `
+
+            <div class="dna-thank-you">
+
+                <span class="dna-icon">
+                    🧬
+                </span>
+
+                <span>
+                    Thank you very much!
+                </span>
+
+            </div>
+
+
+            <div class="dna-intro">
+
+                Your DNA is now part of the
+                BeatsFlyHigh Universe.
+
+            </div>
+
+        `;
+
+    }
+    else {
+
+        openingMessage = `
 
             <div class="dna-thank-you">
 
@@ -313,9 +381,29 @@ function renderAlreadySubmitted(data) {
 
             </div>
 
+        `;
+
+    }
+
+
+    // ==================================
+    // PREMIUM RESULT SCREEN
+    // ==================================
+
+    app.innerHTML = `
+
+        <div class="submitted-state">
+
 
             <!-- ========================= -->
-            <!-- YOUR DNA                  -->
+            <!-- OPENING MESSAGE            -->
+            <!-- ========================= -->
+
+            ${openingMessage}
+
+
+            <!-- ========================= -->
+            <!-- YOUR DNA                   -->
             <!-- ========================= -->
 
             <div class="dna-card dna-personal">
@@ -350,7 +438,7 @@ function renderAlreadySubmitted(data) {
 
 
             <!-- ========================= -->
-            <!-- DIVIDER                   -->
+            <!-- DIVIDER                    -->
             <!-- ========================= -->
 
             <div class="dna-divider">
@@ -361,7 +449,7 @@ function renderAlreadySubmitted(data) {
 
 
             <!-- ========================= -->
-            <!-- UNIVERSE                  -->
+            <!-- BFH UNIVERSE               -->
             <!-- ========================= -->
 
             <div class="dna-card dna-universe">
@@ -396,9 +484,11 @@ function renderAlreadySubmitted(data) {
 
                     ${
                         dominantEmotion
-                            ? `<span class="dna-percentage">
-                                ${dominantPct}%
-                               </span>`
+                            ? `
+                                <span class="dna-percentage">
+                                    ${dominantPct}%
+                                </span>
+                              `
                             : ""
                     }
 
@@ -411,6 +501,7 @@ function renderAlreadySubmitted(data) {
                     <strong>
                         ${totalResponses}
                     </strong>
+
                     ${
                         totalResponses === 1
                             ? "contribution"
@@ -423,14 +514,14 @@ function renderAlreadySubmitted(data) {
 
 
             <!-- ========================= -->
-            <!-- COMPARISON                -->
+            <!-- COMPARISON                 -->
             <!-- ========================= -->
 
             ${comparison}
 
 
             <!-- ========================= -->
-            <!-- FOOTER                   -->
+            <!-- FOOTER                     -->
             <!-- ========================= -->
 
             <div class="dna-footer">
@@ -446,6 +537,7 @@ function renderAlreadySubmitted(data) {
 
             </div>
 
+
         </div>
 
     `;
@@ -454,17 +546,54 @@ function renderAlreadySubmitted(data) {
 
 
 // ======================================
+// RENDER ALREADY SUBMITTED
+// ======================================
+//
+// Used when the visitor selects a track
+// they have already contributed to.
+//
+// IMPORTANT:
+// This is NOT used after a fresh submission.
+// ======================================
+
+function renderAlreadySubmitted(data) {
+
+    console.log(
+        "FlyDNA → rendering already submitted state:",
+        data
+    );
+
+
+    renderPersonalResult(
+        data,
+        false
+    );
+
+}
+
+
+// ======================================
 // RENDER AFTER SUCCESSFUL SUBMISSION
+// ======================================
+//
+// Used immediately after the visitor clicks
+// "Contribute Your DNA to the Community"
+// and Wix confirms the submission.
+//
+// This shows the THANK YOU experience.
 // ======================================
 
 function renderSubmittedExperience(data) {
 
     console.log(
-        "FlyDNA → rendering personal DNA experience:",
+        "FlyDNA → rendering successful submission:",
         data
     );
 
 
-    renderAlreadySubmitted(data);
+    renderPersonalResult(
+        data,
+        true
+    );
 
 }
