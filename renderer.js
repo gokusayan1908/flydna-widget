@@ -5,16 +5,16 @@
 
 
 // ======================================
+// GLOBAL CONTRIBUTION KEY
+// ======================================
+
+const FLYDNA_CONTRIBUTED_KEY =
+    "flydna_has_contributed";
+
+
+// ======================================
 // Render Community Aggregate
 // ======================================
-//
-// Community data is received from Wix,
-// but it is intentionally NOT displayed
-// inside the compact FlyDNA voting widget.
-//
-// The community experience will be handled
-// elsewhere in the BeatsFlyHigh interface.
-//
 
 function renderAggregate(data) {
 
@@ -35,7 +35,7 @@ function renderAggregate(data) {
 // ======================================
 //
 // Used when this visitor has already
-// submitted DNA for this track.
+// contributed DNA to the BFH Universe.
 //
 
 function renderAlreadySubmitted(data) {
@@ -55,7 +55,7 @@ function renderAlreadySubmitted(data) {
 
     <div class="submitted-message">
 
-        🧬 Your DNA is already part of the Universe
+        🧬 Your DNA is already part of the BFH Universe.
 
     </div>
 
@@ -75,6 +75,22 @@ function renderAlreadySubmitted(data) {
 //
 
 function renderSubmittedExperience(data) {
+
+    // ----------------------------------
+    // Remember that this visitor has
+    // contributed to the BFH Universe.
+    // ----------------------------------
+
+    localStorage.setItem(
+        FLYDNA_CONTRIBUTED_KEY,
+        "true"
+    );
+
+
+    console.log(
+        "FlyDNA → visitor added to BFH Universe"
+    );
+
 
     const app =
         document.getElementById("app");
